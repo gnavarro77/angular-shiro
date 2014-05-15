@@ -1,0 +1,9 @@
+{
+  "name": "angular-authx",
+  "version": "0.1",
+  "dependencies": {
+    "jasmine": "~2.0.0",
+    "angular": "~1.2.6",
+    "angular-mocks": "~1.2.6"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "name": "petstore-demo",
+  "version": "0.1",
+  "dependencies": {
+    "angular": "~1.2.6",
+    "bootstrap": "~3.0.3",
+    "angular-bootstrap": "~0.9.0",
+    "angular-route": "~1.2.7",
+    "ng-grid": "~2.0.7",
+    "angular-translate": "~1.1.1",
+    "angular-translate-loader-static-files": "~0.1.6",
+    "angular-translate-storage-local": "~0.1.6"
+  }
+}

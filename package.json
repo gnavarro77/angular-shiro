@@ -1,0 +1,30 @@
+{
+  "name": "angular-security",
+  "version": "0.1.0",
+  "description": "0.1",
+  "main": "karma.conf.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "angularjs",
+    "security",
+    "authentication",
+    "authorization"
+  ],
+  "author": "gilles navarro",
+  "license": "MIT",
+  "devDependencies": {
+    "grunt": "~0.4.2",
+    "grunt-contrib-uglify": "~0.3.3",
+    "grunt-jsdoc": "~0.5.1",
+    "grunt-karma": "~0.6.2",
+    "karma-junit-reporter": "~0.2.1",
+    "grunt-ngdocs": "~0.2.1",
+    "grunt-contrib-clean": "~0.5.0",
+    "grunt-contrib-connect": "~0.7.1"
+  }
+}
