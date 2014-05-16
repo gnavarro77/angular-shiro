@@ -28,29 +28,47 @@
  *          name="animations.css"> .animate-if { background:white; border:1px
  *          solid black; padding:10px; }
  * 
- * .animate-if.ng-enter, .animate-if.ng-leave { -webkit-transition:all
- * cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s; transition:all
- * cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s; }
- * 
- * .animate-if.ng-enter, .animate-if.ng-leave.ng-leave-active { opacity:0; }
- * 
- * .animate-if.ng-leave, .animate-if.ng-enter.ng-enter-active { opacity:1; }
  * </file> </example>
  */
-var hasRoleDirective = [ '$subject', function($subject) {
+var hasRoleDirective = [ '$subject','$animate','$interpolate', function($subject, $animate, $interpolate) {
 	return {
-		transclude : 'element',
-		priority : 600,
-		terminal : true,
-		restrict : 'A',
-		replace : true,
-		template : '<div ng-transclude></div>',
-		link : function($scope, $element, $attr, ctrl, $transclude) {
-			if ($subject.hasRole($attr.hasRole)) {
-				$transclude($scope, function(clone) {
-					$element.append(clone);
-				});
-			}
-		}
-	};
+		transclude: 'element',
+		priority: 600,
+		terminal: true,
+		restrict: 'A',
+		$$tlb: true,
+		link: function ($scope, $element, $attr, ctrl, $transclude) {
+	        var block, childScope, previousElements;
+			$scope.$watch($attr.hasRole, function hasRoleWatchAction(role) {
+				console.log('*** role =>' + role);
+				if ($subject.hasRole(role)) {
+					if (!childScope) {
+					  childScope = $scope.$new();
+					  $transclude(childScope, function (clone) {
+						block = {
+						  clone: clone
+						};
+						$animate.enter(clone, $element.parent(), $element);
+					  });
+					}
+				} else {
+		            if(previousElements) {
+		              previousElements.remove();
+		              previousElements = null;
+		            }
+		            if(childScope) {
+		              childScope.$destroy();
+		              childScope = null;
+		            }
+		            if (block) {
+		              previousElements = getBlockElements(block.clone);
+		              $animate.leave(previousElements, function() {
+		                previousElements = null;
+		              });
+		              block = null;
+		            }
+				}
+	        });
+	    }
+	  };
 } ];

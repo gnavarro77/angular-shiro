@@ -3,7 +3,10 @@
  * A Subject represents state and security operations for an application user.
  * Operations goes from authentication (login and logout) to authorization and
  * session management.
- * 
+ *
+ * @class Subject
+ * @constructor
+ *
  * @param {Authenticator}
  *            $authenticator - Authenticator instance in charge of the
  *            authentication of the Subject
@@ -11,7 +14,7 @@
  *            $authorizationInfoLoader - AuthorizationInfoLoader instance
  *            responsible for authroization data loading
  * 
- * @constructor
+ *
  * @since 0.1
  */
 var Subject = function($authenticator, $authorizationInfoLoader) {
@@ -56,53 +59,48 @@ var Subject = function($authenticator, $authorizationInfoLoader) {
 };
 
 /**
+ * Returns the principal (primary key, username, ...) that uniquely
+ * identify the <code>Subject</code> throughout the entire application, or <code>null</code> if the
+ * Subject is not yet known from the application.
+ *
+ * @method getPrincipal
+ * @return {string} the principal of the Subject
  * @public
- * 
- * @desc Returns the principal (primary key, username, ...) that uniquely
- *       identify the Subject throughout the entire application, or null if the
- *       Subject is not yet known from the application.
- * 
- * @returns {string} the principal of the Subject
- * 
  */
 Subject.prototype.getPrincipal = function() {
 	return this.authenticationInfo.getPrincipal();
 };
 
 /**
- * @proteted
+ * Indicates if a principal exits for the Subject
  * 
- * @desc Indicates if a principal exits for the Subject
- * 
- * @returns {boolean} <code>true</code> if a principal exists for the Subject,
+ * @method hasPrincipal
+ * @return {boolean} <code>true</code> if a principal exists for the Subject,
  *          <code>false</code> otherwise
- * 
+ * @protected
  */
 Subject.prototype.hasPrincipal = function() {
 	return (this.getPrincipal() != null);
 }
 
 /**
- * @public
+ * Performs a login attempt for this Subject. On unsuccessful attempts an
+* exception is thrown; On the contrary authentication informations along
+* with with the submitted principals/credentials are associated with this
+* Subject and the method will return quietly. On successful
+* authentication, the Subject instance is considered authenticated so
+* that the isAuthenticated() method will return true and the
+* getPrincipal() method must return a non-null value and .
+*
+ * @method login
+ *
+ * @param  token {UsernamePasswordToken}  token the token encapsulating the subject's principals and credentials to be passed to the Authentication subsystem for verification.
  * 
- * @desc Performs a login attempt for this Subject. On unsuccessful attempts an
- *       exception is thrown; On the contrary authentication informations along
- *       with with the submitted principals/credentials are associated with this
- *       Subject and the method will return quietly. On successful
- *       authentication, the Subject instance is considered authenticated so
- *       that the isAuthenticated() method will return true and the
- *       getPrincipal() method must return a non-null value and .
- * 
- * @param {UsernamePasswordToken}
- *            token the token encapsulating the subject's principals and
- *            credentials to be passed to the Authentication subsystem for
- *            verification.
- * 
- * @returns {ng.promise} promise
+ * @return {ng.promise} promise
  * 
  * @throws {exception}
  *             if the authentication attempt fails.
- * 
+ * @public
  */
 Subject.prototype.login = function(token) {
 	var promise = this.authenticator.authenticate(token);
@@ -137,9 +135,12 @@ Subject.prototype.errorCallback = function(data, status, headers, config) {
 
 /**
  * Logs out this Subject and invalidates and/or removes any associated entities,
- * such as a {@link Session Session} and authorization data. After this method
+ * such as <code>Session</code> and authorization data. After this method
  * is called, the Subject is considered 'anonymous' and may continue to be used
  * for another log-in if desired.
+ * 
+ * @method logout
+ * @public
  */
 Subject.prototype.logout = function() {
 	this.authenticationInfo = null;
@@ -163,38 +164,13 @@ Subject.prototype.isPermittedAll = function(permissions) {
 }
 
 /**
- * Returns <code>true</code> if this Subject/user has authenticated himself to
- * the system ,{@code false} otherwise.
- * 
- * @return <code>true</code> if this Subject/user is authenticated
- * @memberof Subject
+ * Returns <code>true</code> if the <code>Subject</code> has provided valid credentials, <code>false</code> otherwise.
+ * @method isAuthenticated
+ * @return <code>true</code> if the <code>Subject</code> is authenticated, <code>false</code> otherwise
+ * @public
  */
 Subject.prototype.isAuthenticated = function() {
 	return this.authenticated;
-};
-
-/**
- * @see Authorizer#hasRole(role)
- */
-Subject.prototype.hasRole = function(role) {
-	var hasRole = this.isAuthenticated() && angular.isDefined(this.authorizer)
-			&& this.authorizer.hasRole(role);
-	console.log('hasRole = ' + hasRole);
-	return hasRole;
-};
-
-/**
- * @see Authorizer#hasAllRoles(roles)
- */
-Subject.prototype.hasRoles = function(roles) {
-	return this.isAuthenticated() && this.authorizer.hasRoles(roles);
-};
-
-/**
- * @see Authorizer#hasAllRoles(roles)
- */
-Subject.prototype.hasAllRoles = function(roles) {
-	return this.isAuthenticated() && this.authorizer.hasAllRoles(roles);
 };
 
 /**
@@ -208,4 +184,38 @@ Subject.prototype.hasAllRoles = function(roles) {
  */
 Subject.prototype.getSession = function(create) {
 
+};
+/**
+* Returns <code>true</code> if the <code>Subject</code> has the specified role, <code>false</code> otherwise. 
+ * @method hasRole
+ * @param roleIdentifier {string} the application-specific role identifier (usually a role id or role name)
+ * @return {boolean} <code>true</code> if the <code>Subject</code> has the specified role, <code>false</code> otherwise
+ * @public
+ */
+Subject.prototype.hasRole = function(role) {
+	var hasRole = this.isAuthenticated() && angular.isDefined(this.authorizer)
+			&& this.authorizer.hasRole(role);
+	return hasRole;
+};
+/**
+* Checks if the <code>Subject</code> has the specified roles, returning a boolean array indicating which roles are associated
+* @method hasRoles
+* @param roleIdentifiers {array} the application-specific role identifiers to check (usually role ids or role names)
+* @return {array} a boolean array where indices correspond to the index of the roles in the given identifiers. 
+* A <code>true</code> value indicates the <code>Subject</code> has the role at that index. <code>false</code> indicates the <code>Subject</code> does not have the role at that index
+* @public
+*/
+Subject.prototype.hasRoles = function(roles) {
+	return this.isAuthenticated() && this.authorizer.hasRoles(roles);
+};
+
+/**
+* Returns <code>true</code> if the <code>Subject</code> has all of the specified roles, <code>false</code> otherwise. 
+ * @method  hasAllRoles
+ * @param roleIdentifiers {array} the application-specific role identifiers to check (usually role ids or role names). 
+ * @return {boolean} <code>true</code> if the <code>Subject</code> has all the roles, <code>false</code> otherwise.
+ * @public
+ */
+Subject.prototype.hasAllRoles = function(roles) {
+	return this.isAuthenticated() && this.authorizer.hasAllRoles(roles);
 };
