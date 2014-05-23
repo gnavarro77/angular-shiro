@@ -4,9 +4,9 @@
  * A Permission represents the ability to perform an action or access a
  * resource.
  * 
- * @param {string}
+ * @param wildcardString {string}
  *            wildcardString string representing the permission
- * @param {boolean}
+ * @param caseSensitive {boolean}
  *            flag indicating if the comparison is case sensitive
  * 
  * @see {@link http://shiro.apache.org/static/1.2.2/apidocs/org/apache/shiro/authz/Permission.html|Apache Shiro, org.apache.shiro.authz.Permission}
@@ -22,18 +22,22 @@ function Permission(wildcardString, caseSensitive) {
 
 /**
  * @private
+ * @static
  */
 Permission.WILDCARD_TOKEN = "*";
 /**
  * @private
+ * @static
  */
 Permission.PART_DIVIDER_TOKEN = ":";
 /**
  * @private
+ * @static
  */
 Permission.SUBPART_DIVIDER_TOKEN = ",";
 /**
  * @private
+ * @static
  */
 Permission.DEFAULT_CASE_SENSITIVE = false;
 
@@ -45,11 +49,13 @@ Permission.DEFAULT_CASE_SENSITIVE = false;
 Permission.prototype.parts = null;
 
 /**
- * @param {object}
- *            permission
- * @returns {boolean}
+ * @method implies
+ * @param permission {object}
+ *            
+ * @return {boolean}
  * @see {@link http://shiro.apache.org/static/1.2.2/apidocs|Apache Shiro, org.apache.shiro.authz.Permission#implies(Permission p)}
  * @see {@link http://shiro.apache.org/static/1.2.2/apidocs|Apache Shiro, org.apache.shiro.authz.permission.WildcardPermission#implies(Permission p)}
+ * @public
  */
 Permission.prototype.implies = function(permission) {
 	var implies = true;

@@ -1,0 +1,73 @@
+<html>
+<head>
+	<meta charset='utf-8' />
+	<meta name="description" content="Angular-shiro, authentication, authrorization" />
+
+	<link rel="stylesheet" href="http://yandex.st/highlightjs/8.0/styles/default.min.css">
+	<link rel="stylesheet" type="text/css" media="screen" href="demo/styles/stylesheet.css" />
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" />
+    <title>Angular-shiro</title>
+	
+	
+</head>
+
+  <body data-ng-app="demo" >
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/gnavarro77/angular-user-manager">View on GitHub</a>
+          <h1 id="project_title">Angular-shiro</h1>
+          <h2 id="project_tagline">Angular library to support authentication and authorization</h2>
+        </header>
+    </div>
+	
+	<div class="clearfix" style="margin-top:20px;"></div>
+	
+	<div class="container">
+		<div class="col-sm-12 text-center">
+			<div class="alert alert-warning" guest>
+				This message is only visible if the <strong>Subject</strong> IS NOT known to the system
+			</div>
+			<div class="alert alert-success" authenticated>
+				This message is only visible if the <strong>Subject</strong> is authenticated!
+			</div>
+			<div class="alert alert-danger" not-authenticated>
+				This message is only visible if the <strong>Subject</strong> is not authenticated!
+			</div>
+		</div>
+	</div>
+	
+	<div class="container" >
+        <div class="col-sm-6">
+			<div class="well text-center">
+				<a class="btn btn-primary btn-lg" role="button">Login as <strong>ADMIN</strong></a>
+			</div>
+			<div class="alert alert-info" has-role="'ADMIN'">
+				This message is only visible if the <strong>Suject</strong> has '<strong>ADMIN</strong>' role!
+			</div>
+			<div class="alert alert-info" lacks-role="'USER'">
+				This message is only visible if the <strong>Suject</strong> lacks '<strong>USER</strong>' role!
+			</div>
+			
+		</div>
+		<div class="col-sm-6">
+			<div class="well text-center">
+				<a class="btn btn-primary btn-lg" role="button">Login as <strong>USER</strong></a>
+			</div>
+		</div>
+    </div>
+
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Angular-shiro maintained by <a href="https://github.com/gnavarro77">gnavarro77</a></p>
+      </footer>
+    </div>
+	
+	<script src="http://yandex.st/highlightjs/8.0/highlight.min.js"></script>
+	<script type="text/javascript">
+		hljs.configure({classPrefix: ''});
+		hljs.initHighlightingOnLoad();
+	</script>
+	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.min.js"></script>
+	<script src="demo/app.js"></script>
+</body>
+</html>
