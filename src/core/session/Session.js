@@ -1,4 +1,12 @@
-var Session = function() {
+/**
+ * A <code>Session</code> is a stateful data context associated with a single
+ * Subject who interacts with a software system over a period of time
+ * 
+ * @class Session
+ * 
+ * @since 0.0.1
+ */
+function Session() {
 	this.startTimestamp = new Date();
 	this.lastAccessTime = this.startTimestamp;
 	this.expired = false;
@@ -17,11 +25,9 @@ Session.prototype.expired = null;
 Session.prototype.host = null;
 Session.prototype.attributes = {};
 
-
 Session.prototype.getAttribute = function(attributeName) {
 	return this.attributes[attributeName];
 };
-
 
 Session.prototype.getAttributes = function() {
 	return this.attributes;

@@ -1,5 +1,5 @@
 {
-  "name": "angular-security",
+  "name": "angular-shiro",
   "version": "0.1.0",
   "description": "0.1",
   "main": "karma.conf.js",
@@ -28,6 +28,7 @@
     "karma-firefox-launcher": "^0.1.3",
     "karma-junit-reporter": "^0.2.2",
     "grunt-ngdocs": "^0.2.2",
-    "grunt-contrib-yuidoc": "^0.5.2"
+    "grunt-contrib-yuidoc": "^0.5.2",
+    "connect": "~2.17.1"
   }
 }

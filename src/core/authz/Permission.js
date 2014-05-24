@@ -1,17 +1,16 @@
 'use strict'
 
 /**
- * A Permission represents the ability to perform an action or access a
- * resource.
+ * A Permission represents the ability to perform an action or access a resource
  * 
- * @param {string}
- *            wildcardString string representing the permission
- * @param {boolean}
- *            flag indicating if the comparison is case sensitive
- * 
- * @see {@link http://shiro.apache.org/static/1.2.2/apidocs/org/apache/shiro/authz/Permission.html|Apache Shiro, org.apache.shiro.authz.Permission}
- * @see {@link http://shiro.apache.org/static/1.2.2/apidocs/org/apache/shiro/authz/permission/WildcardPermission.html|Apache Shiro, org.apache.shiro.authz.permission.WildcardPermission}
+ * @class Permission
  * @constructor
+ * 
+ * @param wildcardString
+ *            {string} wildcardString string representing the permission
+ * @param caseSensitive
+ *            {boolean} flag indicating if the comparison is case sensitive
+ * @since 0.0.1
  */
 function Permission(wildcardString, caseSensitive) {
 	if (!caseSensitive) {
@@ -21,35 +20,66 @@ function Permission(wildcardString, caseSensitive) {
 };
 
 /**
+ * @static
+ * @property WILDCARD_TOKEN
+ * @type String
+ * @default "*"
  * @private
+ * @since 0.0.1
  */
 Permission.WILDCARD_TOKEN = "*";
 /**
+ * @static
+ * @property PART_DIVIDER_TOKEN
+ * @type String
+ * @default ":"
  * @private
+ * @since 0.0.1
  */
 Permission.PART_DIVIDER_TOKEN = ":";
 /**
+ * @static
+ * @property SUBPART_DIVIDER_TOKEN
+ * @type String
+ * @default ","
  * @private
+ * @since 0.0.1
  */
 Permission.SUBPART_DIVIDER_TOKEN = ",";
 /**
+ * @static
+ * @property DEFAULT_CASE_SENSITIVE
+ * @type String
+ * @default false
  * @private
+ * @since 0.0.1
  */
 Permission.DEFAULT_CASE_SENSITIVE = false;
 
 /**
  * Instance variable storing the different parts of the wildcardString
  * 
+ * @property parts
+ * @type Array
  * @private
+ * @since 0.0.1
  */
 Permission.prototype.parts = null;
 
 /**
- * @param {object}
- *            permission
- * @returns {boolean}
- * @see {@link http://shiro.apache.org/static/1.2.2/apidocs|Apache Shiro, org.apache.shiro.authz.Permission#implies(Permission p)}
- * @see {@link http://shiro.apache.org/static/1.2.2/apidocs|Apache Shiro, org.apache.shiro.authz.permission.WildcardPermission#implies(Permission p)}
+ * Returns <code>true</code> if this current instance implies all the
+ * functionality and/or resource access described by the specified
+ * <code>Permission</code> argument, <code>false</code> otherwise
+ * 
+ * @method implies
+ * @param permission
+ *            {Permission} the permission to check for behavior/functionality
+ *            comparison
+ * 
+ * @return {boolean} <code>true</code> if this current instance implies all
+ *         the functionality and/or resource access described by the specified
+ *         <code>Permission</code> argument, <code>false</code> otherwise
+ * @since 0.0.1
  */
 Permission.prototype.implies = function(permission) {
 	var implies = true;
@@ -78,16 +108,20 @@ Permission.prototype.implies = function(permission) {
 }
 
 /**
- * Returns <code>true</code> if all their parts are contained in our parts ,
+ * Returns <code>true</code> if all their parts are contained in our parts,
  * <code>false</code> otherwise.
  * 
- * @param {array}
- *            ourPart
- * @param {array}
- *            theirPart
+ * @method containsAll
+ * @param ourPart
+ *            {array}
+ * @param theirPart
+ *            {array}
  * 
- * @returns {boolean}
+ * 
+ * @return {boolean} <code>true</code> if all their parts are contained in our
+ *         parts, <code>false</code> otherwise
  * @private
+ * @since 0.0.1
  */
 Permission.prototype.containsAll = function(ourPart, theirPart) {
 	var contains = true;
@@ -104,24 +138,33 @@ Permission.prototype.containsAll = function(ourPart, theirPart) {
  * Returns <code>true</code> if the part contains the wildcard token,
  * <code>false</code> otherwise.
  * 
- * @retuns {boolean}
+ * @method containsWildCardToken
+ * @param part
+ *            {String} part of the token to be tested
+ * @return {boolean} <code>true</code> if the part contains the wildcard
+ *         token, <code>false</code> otherwise
  * @private
+ * @since 0.0.1
  */
 Permission.prototype.containsWildCardToken = function(part) {
 	return (part.indexOf(Permission.WILDCARD_TOKEN) > -1);
 }
 
 /**
- * @param {string}
- *            wildcardString string representing the permission
- * @param {boolean}
- *            caseSensitive flag indicating if the comparison is case sensitive
+ * Returns the parts composing the specified wildcard string
+ * 
+ * @method resolveParts
+ * @param wildcardString
+ *            {string} string representing the permission
+ * @param caseSensitive
+ *            {boolean} flag indicating if the comparison is case sensitive
+ * @return {array} the parts composinf the wildcard string
  * @private
+ * @since 0.0.1
  */
 Permission.prototype.resolveParts = function(wildcardString, caseSensitive) {
 	if (!wildcardString) {
-		throw new IllegalArgumentException(
-				'Wildcard string must not be null or empty');
+		throw new IllegalArgumentException('Wildcard string must defiend');
 	}
 	if (wildcardString.trim) {
 		wildcardString = wildcardString.trim();
@@ -136,20 +179,16 @@ Permission.prototype.resolveParts = function(wildcardString, caseSensitive) {
 };
 
 /**
- * <p>
  * Split a part of the overall wildcardString into its sub parts
- * </p>
- * <p>
- * Considering the following part <code>'view,create,edit'</code> the resolved
- * sub parts would be <code>[view,create,edit]</code>
- * </p>
  * 
- * @param {string}
- *            part a part of the overall wildcardString
- * @param {boolean}
- *            caseSensitive flag indicating if the comparison is case sensitive
- * @retuns {array} the subparts
+ * @method resolveSubParts
+ * @param part
+ *            {string} a part of the overall wildcardString
+ * @param caseSensitive
+ *            {boolean} flag indicating if the comparison is case sensitive
+ * @retun {array} the subparts
  * @private
+ * @since 0.0.1
  */
 Permission.prototype.resolveSubParts = function(part, caseSensitive) {
 	var subParts = new Array();
@@ -174,8 +213,10 @@ Permission.prototype.resolveSubParts = function(part, caseSensitive) {
 /**
  * Returns the wildcardString parts
  * 
- * @returns {array} )wildcardString parts
+ * @method getParts
+ * @return {array} )wildcard string parts
  * @protected
+ * @since 0.0.1
  */
 Permission.prototype.getParts = function() {
 	return this.parts;

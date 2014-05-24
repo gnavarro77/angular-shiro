@@ -11,21 +11,22 @@
  * <code>Authorizer</code> constructor.
  * </p>
  * 
- * @param {AuthorizationInfo}
- *            authorizationInfo - All informations regarding the Subject
+ * @class Authorizer
+ * @param authorizationInfo
+ *            {AuthorizationInfo} All informations regarding the Subject
  *            authorizations
  * @throws {IllegalArgumentException}
  *             An <code>IllegalArgumentException</code> is thrown in case of a
  *             null <code>authorizationInfo</code> attempt
  * @constructor
- * @see {@link http://shiro.apache.org/static/1.2.2/apidocs/org/apache/shiro/authz/Authorizer.html}
  * 
- * @requires angularjs
  * @since 0.1
  */
 function Authorizer(authorizationInfo) {
-	if (authorizationInfo == null || angular.isUndefined(authorizationInfo)) {
-		throw new IllegalArgumentException('authorizationInfo must not be null');
+	if (!authorizationInfo || authorizationInfo == null
+			|| !(authorizationInfo instanceof AuthorizationInfo)) {
+		throw new IllegalArgumentException(
+				'invalid value for authorizationInfo');
 	}
 	this.authorizationInfo = authorizationInfo;
 	this.permissions = this.getPermissions(authorizationInfo);
@@ -35,11 +36,11 @@ function Authorizer(authorizationInfo) {
  * Evaluate if the Subject is permitted to perform an action or access a
  * resource
  * 
- * @param {string |
- *            Permission} permission - the permission to evaluate
- * @returns {boolean} <code>true</code> for permitted Subject,
- *          <code>false</code> otherwise.
- * @see {@link http://shiro.apache.org/static/1.2.2/apidocs/org/apache/shiro/authz/Authorizer.html#isPermitted%28org.apache.shiro.subject.PrincipalCollection,%20java.lang.String%29}
+ * @method isPermitted
+ * @param permission
+ *            {string | Permission} a permission
+ * @return {boolean} <code>true</code> for permitted Subject,
+ *         <code>false</code> otherwise.
  * 
  */
 Authorizer.prototype.isPermitted = function(permission) {
@@ -50,17 +51,16 @@ Authorizer.prototype.isPermitted = function(permission) {
  * Evaluate if the Subject is permitted to perform all action or access all
  * resource implied by specified permissions
  * 
- * @param {array}
- *            permission - the permission(s) to check
- * @returns {boolean | Array} true for all permissions are permitted, false
- *          otherwise.
- * 
- * @see {@link http://shiro.apache.org/static/1.2.2/apidocs/org/apache/shiro/authz/Authorizer.html#isPermittedAll%28org.apache.shiro.subject.PrincipalCollection,%20java.lang.String...%29}
+ * @method isPermittedAll
+ * @param permission
+ *            {array} a list of permission
+ * @return {boolean | Array} true for all permissions are permitted, false
+ *         otherwise.
  */
 Authorizer.prototype.isPermittedAll = function(permissions) {
-	var permitted = angular.isArray(permissions) && (permissions.length > 0);
+	var permitted = (permissions && permissions.length);
 	if (permitted) {
-		for ( var i = 0; i < permissions.length && permitted; i++) {
+		for ( var i = 0, len = permissions.length; i < len && permitted; i++) {
 			permitted = this.isPermitted(permissions[i]);
 		}
 	}
@@ -70,11 +70,12 @@ Authorizer.prototype.isPermittedAll = function(permissions) {
 /**
  * Evaluate if the Subject has the specified role
  * 
- * @param {string}
- *            role - role to check
+ * @method hasRole
+ * @param role
+ *            {string} role to check
  * 
- * @returns {boolean} <code>true</code> if the Subject has the specified role,
- *          <code>false</code> otherwise
+ * @return {boolean} <code>true</code> if the Subject has the specified role,
+ *         <code>false</code> otherwise
  * 
  */
 Authorizer.prototype.hasRole = function(role) {
@@ -82,14 +83,15 @@ Authorizer.prototype.hasRole = function(role) {
 }
 
 /**
- * Checks a list of roles against the Subject's roles
+ * Checks a list of roles against the Subject's roles *
  * 
- * @param {Array}
- *            roles - the list of roles to check against the Subject's roles
- * @returns {Array} an array of booleans whose indices correspond to the index
- *          of the roles in the given identifiers. At a given index, a
- *          <code>true</code> value indicates that the user has the role, a
- *          <code>false</code> value indicates that does not have the role
+ * @method hasRoles
+ * @param roles
+ *            {Array} the list of roles to check against the Subject's roles
+ * @return {Array} an array of booleans whose indices correspond to the index of
+ *         the roles in the given identifiers. At a given index, a
+ *         <code>true</code> value indicates that the user has the role, a
+ *         <code>false</code> value indicates that does not have the role
  */
 Authorizer.prototype.hasRoles = function(roles) {
 	var result = new Array();
@@ -104,10 +106,11 @@ Authorizer.prototype.hasRoles = function(roles) {
 /**
  * Checks if the Subject has all of the specified roles
  * 
- * @param {Array}
- *            roles - the list of roles to check
- * @returns {boolean} <code>true</code> if the user has all the roles,
- *          <code>false</code> otherwise.
+ * @method hasAllRoles
+ * @param roles
+ *            {Array} the list of roles to check
+ * @return {boolean} <code>true</code> if the user has all the roles,
+ *         <code>false</code> otherwise.
  */
 Authorizer.prototype.hasAllRoles = function(roles) {
 	var hasAllRoles = this.hasRoles(roles);
@@ -118,11 +121,14 @@ Authorizer.prototype.hasAllRoles = function(roles) {
 }
 
 /**
- * Returns the permissions collected out of the AuthorizationInfo object
+ * Returns the permissions collected out of the <code>AuthorizationInfo</code>
+ * object
  * 
- * @param {AuthorizationInfo}
- *            authorizationInfo Subject/User authorization data
- * @returns {Array} permissions
+ * @method getPermissions
+ * @param authorizationInfo
+ *            {AuthorizationInfo} Subject/User authorization data
+ * @return {Array} the permissions collected out of the
+ *         <code>AuthorizationInfo</code> object
  * @private
  */
 Authorizer.prototype.getPermissions = function(authorizationInfo) {
@@ -137,10 +143,11 @@ Authorizer.prototype.getPermissions = function(authorizationInfo) {
 /**
  * Evaluate if the permission is granted to the Subject/User
  * 
- * @param {Permission}
- *            permission Permission object to evaluate
- * @retuns {boolean} <code>true</code> if the permission is granted,
- *         <code>false</code>otherwise
+ * @method isObjectPermissionPermitted
+ * @param permission {Permission}
+ *            Permission object to evaluate
+ * @retun {boolean} <code>true</code> if the permission is granted,
+ *        <code>false</code>otherwise
  * @private
  */
 Authorizer.prototype.isObjectPermissionPermitted = function(permission) {
@@ -153,14 +160,15 @@ Authorizer.prototype.isObjectPermissionPermitted = function(permission) {
 /**
  * Returns an object Permission
  * 
- * @param {string |
- *            Permission}
- * @retuns {Permission} a Permission object
+ * @method resolvePermission
+ * @param permission
+ *            {string | Permission} a permission
+ * @retun {Permission} a Permission object
  * @private
  */
 Authorizer.prototype.resolvePermission = function(permission) {
 	var p = permission;
-	if (angular.isString(permission)) {
+	if (toString.call(permission) == '[object String]') {
 		p = new Permission(permission);
 	}
 	return p;
