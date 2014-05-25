@@ -4,14 +4,23 @@ module.exports = function(config) {
 		frameworks : [ 'jasmine' ],
 		files : [ 'bower_components/angular/angular.min.js',
 				'bower_components/angular-mocks/angular-mocks.js',
-				'src/classes/*.js', 'src/services/*.js', 'src/directive/*.js',
+				'src/core/IllegalArgumentException.js.js',
+				'src/core/authz/AuthorizationException.js',
+				'src/core/authz/AuthorizationInfo.js',
+				'src/core/authz/Permission.js',
+				'src/core/authz/Authorizer.js',
+				'src/core/session/Session.js',
+				
+				'src/services/authenticate.js',
+				'src/services/subject.js',
+				
+				'src/directives/hasRole.js',
 				'src/angular-shiro.js',
-//				'test/unit/AuthorizationInfoLoaderSpec.js',
-				'test/directive/**/*.js'
-		// 'test/unit/**/*.js'
+				
+				'test/services/authenticateSpec.js',
+				'test/services/usernamePasswordTokenSpec.js'
 		],
 
-		// list of files to exclude
 		exclude : [
 
 		],

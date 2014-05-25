@@ -10,12 +10,8 @@ module.exports = function(grunt) {
 				separator : ';',
 			},
 			core : {
-				src : [ 'src/core/IllegalArgumentException.js.js',
-
-				'src/core/authc/AuthenticationInfo.js',
-						'src/core/authc/UsernamePasswordToken.js',
-						'src/core/authc/AuthenticationException',
-
+				src : [ 
+				        'src/core/IllegalArgumentException.js.js',
 						'src/core/authz/AuthorizationException.js',
 						'src/core/authz/AuthorizationInfo.js',
 						'src/core/authz/Permission.js',
