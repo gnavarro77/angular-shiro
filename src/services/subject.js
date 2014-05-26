@@ -17,7 +17,7 @@
  * 
  * @since 0.0.1
  */
-function Subject(authenticator) {
+function Subject(authenticator, authorizer) {
 
 	/**
 	 * @ngdoc property
@@ -32,7 +32,7 @@ function Subject(authenticator) {
 	/**
 	 * @private
 	 */
-	this.session = new Session();
+	// this.session = new Session();
 	/**
 	 * @private
 	 * @desc {Authenticator} authenticator - Authenticator instance in charge of
@@ -49,7 +49,7 @@ function Subject(authenticator) {
 	 *          authorization operations
 	 * 
 	 */
-	this.authorizer;
+	this.authorizer = authorizer;
 
 	/**
 	 * @ngdoc property
@@ -92,11 +92,11 @@ function Subject(authenticator) {
 		promise.then(function(data, status, headers, config) {
 			me.authenticated = true;
 			me.authenticationInfo = data['infos']['authc'];
-			me.authorizer = new Authorizer(data['info']['authz']);
+			me.authorizer.setAuthorizationInfo(data['info']['authz']);
 		}, function(data, status, headers, config) {
 			me.authenticated = false;
 			me.authenticationInfo = null;
-			me.authorizer = null;
+			// me.authorizer = null;
 		});
 		return promise;
 	};

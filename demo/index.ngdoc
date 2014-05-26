@@ -1,0 +1,33 @@
+@ngdoc overview
+@name Developer Guide
+@description
+
+# Guide to AngularJS Documentation
+
+
+<example module="spicyApp1">
+  <file name="index.html">
+    <div ng-controller="SpicyController">
+     <button ng-click="chiliSpicy()">Chili</button>
+     <button ng-click="jalapenoSpicy()">Jalapeño</button>
+     <p>The food is {{spice}} spicy!</p>
+    </div>
+  </file>
+  <file name="app.js">
+    var myApp = angular.module('spicyApp1', []);
+
+    myApp.controller('SpicyController', ['$scope', function($scope) {
+        $scope.spice = 'very';
+
+        $scope.chiliSpicy = function() {
+            $scope.spice = 'chili';
+        };
+
+        $scope.jalapenoSpicy = function() {
+            $scope.spice = 'jalapeño';
+        };
+    }]);
+  </file>
+</example>
+
+

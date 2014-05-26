@@ -2,26 +2,20 @@
 
 /**
  * @ngdoc directive
- * @name angularShiro.directives.hasRole
+ * @name angularShiro.directives.notAuthenticated
  * @restrict A
  * 
- * @description The `hasRole` directive removes or recreates a portion of the
- *              DOM tree based on the roles of the current Subject/User. If the
- *              current Subject/User hasn't the specified role then the element
- *              is removed from the DOM, otherwise a clone of the element is
- *              reinserted into the DOM.
+ * @description The <code>notAuthenticated</code> tag will display its wrapped content if the
+ *              current Subject has NOT yet successfully authenticated during
+ *              the current session.
  * 
  * 
  * @element ANY
  * @scope
  * @priority 600
- * @param {role}
- *            hasRole If the {@link Subject Subject/USer} does not have the
- *            specified role then the element is removed from the DOM tree,
- *            otherwise a copy of the compiled element is added to the DOM tree.
  * 
  */
-var hasRoleDirective = [ 'subject','$animate', function(subject, $animate) {
+var notAuthenticatedDirective = [ 'subject','$animate', function(subject, $animate) {
 	return {
 		transclude: 'element',
 		priority: 600,
@@ -30,11 +24,9 @@ var hasRoleDirective = [ 'subject','$animate', function(subject, $animate) {
 		$$tlb: true,
 		link: function ($scope, $element, $attr, ctrl, $transclude) {
 	        var block, childScope, previousElements;
-			$scope.$watch($attr.hasRole, function hasRoleWatchAction(role) {
-				
-				role = (angular.isUndefined(role)) ? $attr.hasRole : role;
-				
-				if (subject.hasRole(role)) {
+	        
+			$scope.$watch($attr.notAuthenticated, function () {
+				if (!subject.isAuthenticated()) {
 					if (!childScope) {
 					  childScope = $scope.$new();
 					  $transclude(childScope, function (clone) {

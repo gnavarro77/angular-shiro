@@ -4,21 +4,17 @@ module.exports = function(config) {
 		frameworks : [ 'jasmine' ],
 		files : [ 'bower_components/angular/angular.min.js',
 				'bower_components/angular-mocks/angular-mocks.js',
-				'src/core/IllegalArgumentException.js.js',
-				'src/core/authz/AuthorizationException.js',
-				'src/core/authz/AuthorizationInfo.js',
-				'src/core/authz/Permission.js',
-				'src/core/authz/Authorizer.js',
-				'src/core/session/Session.js',
-				
-				'src/services/authenticate.js',
+
+				'src/services/authenticate.js', 
+				'src/services/authorize.js',
 				'src/services/subject.js',
-				
-				'src/directives/hasRole.js',
+
+				'src/directives/*.js', 
 				'src/angular-shiro.js',
-				
-				'test/services/authenticateSpec.js',
-				'test/services/usernamePasswordTokenSpec.js'
+
+				//'test/services/*.js',
+				'test/directives/*.js'
+
 		],
 
 		exclude : [

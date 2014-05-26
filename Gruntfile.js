@@ -10,14 +10,10 @@ module.exports = function(grunt) {
 				separator : ';',
 			},
 			core : {
-				src : [ 
-				        'src/core/IllegalArgumentException.js.js',
-						'src/core/authz/AuthorizationException.js',
-						'src/core/authz/AuthorizationInfo.js',
-						'src/core/authz/Permission.js',
-						'src/core/authz/Authorizer.js',
-						'src/core/session/Session.js'],
-				dest : '<%= dist %>/<%= pkg.name %>-core.js',
+				src : [ 'src/services/authenticate.js',
+						'src/services/authorize.js', 'src/services/subject.js',
+						'src/angular-shiro' ],
+				dest : '<%= dist %>/<%= pkg.name %>.js',
 			},
 		},
 		karma : {
@@ -28,31 +24,25 @@ module.exports = function(grunt) {
 		},
 		ngdocs : {
 			options : {
-				dest : '<%= docs %>/angular',
+				dest : '<%= docs %>',
+				startPage : '/demo',
+				//scripts : [  ],
 				html5Mode : false
 			},
+			demo : {
+				src : [ 'demo/*.ngdoc' ],
+				title : 'Demo'
+			},
 			api : {
-				src : [ 'src/services/authenticate.js',
-				        'src/services/subject.js'
-				        //'src/services/*.js',
-				        //'src/directives/*.js',
-				        //'src/angular-shiro.js'
-				        ],
+				src : [ 'src/services/*.js',
+				        'src/directives/*.js'
+				// 'src/services/*.js',
+				// 'src/angular-shiro.js'
+				],
 				title : 'API Reference'
 			}
 		},
-		yuidoc : {
-			compile : {
-				name : '<%= pkg.name %>',
-				description : '<%= pkg.description %>',
-				version : '<%= pkg.version %>',
-				url : '<%= pkg.homepage %>',
-				options : {
-					paths : '<%= src %>/core',
-					outdir : '<%= docs %>/core'
-				}
-			}
-		},
+
 		connect : {
 			options : {
 				keepalive : true
@@ -67,7 +57,7 @@ module.exports = function(grunt) {
 
 	grunt.loadNpmTasks('grunt-contrib-clean');
 	grunt.loadNpmTasks('grunt-contrib-concat');
-
+	grunt.loadNpmTasks('grunt-contrib-copy');
 	grunt.loadNpmTasks('grunt-contrib-connect');
 	// grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-karma');
@@ -75,7 +65,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-ngdocs');
 	grunt.loadNpmTasks('grunt-contrib-yuidoc');
 
-	grunt.registerTask('doc', [ 'clean:docs', 'yuidoc', 'ngdocs', 'connect' ]);
+	grunt.registerTask('doc', [ 'clean:docs', 'ngdocs' ]);
 
 	grunt.registerTask('test', [ 'karma' ]);
 

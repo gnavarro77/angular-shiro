@@ -2,16 +2,21 @@
 
 angular.module('angularShiro.services', []).provider('authenticator',
 		authenticatorProvider).factory('subject',
-		[ 'authenticator', function(authenticator) {
-			return new Subject(authenticator);
+		[ 'authenticator', 'authorizer', function(authenticator, authorizer) {
+			return new Subject(authenticator, authorizer);
 		} ]).factory('usernamePasswordToken', function() {
 	return new UsernamePasswordToken();
-}).factory('authenticationInfo', function() {
-	return new AuthenticationInfo();
+}).factory('authorizer', function() {
+	return new Authorizer();
 });
 
 angular.module('angularShiro.directives', []).directive('hasRole',
-		hasRoleDirective);
+		hasRoleDirective).directive('notAuthenticated',
+		notAuthenticatedDirective).directive('authenticated',
+		authenticatedDirective).directive('lacksRole', lacksRoleDirective)
+		.directive('hasAnyRole', hasAnyRoleDirective).directive(
+				'hasPermission', hasPermissionDirective).directive(
+				'lacksPermission', lacksPermissionDirective);
 
 angular.module('angularShiro', [ 'angularShiro.services',
 		'angularShiro.directives' ]);
