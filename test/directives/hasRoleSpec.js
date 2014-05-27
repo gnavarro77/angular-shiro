@@ -4,6 +4,7 @@ describe(
 		'hasRole',
 		function() {
 			var $scope, $compile, element, subject;
+			
 			var ADMIN = 'ADMIN';
 			var GUEST = 'GUEST';
 
@@ -23,6 +24,12 @@ describe(
 				$scope.$apply();
 			}
 
+			function assignRole(role) {
+				subject.authenticated = true;
+				subject.authorizer.setAuthorizationInfo(new AuthorizationInfo(
+						[ ADMIN ], []));
+			}
+
 			it(
 					'should immediately remove element if Subject does not have the specified role',
 					function() {
@@ -32,13 +39,17 @@ describe(
 
 			it('should leave the element if Subject have the specified role',
 					function() {
-						subject.authenticated = true;
-						subject.authorizer
-								.setAuthorizationInfo(new AuthorizationInfo(
-										[ ADMIN ], []));
+						assignRole(ADMIN);
 						makeHasRole(ADMIN);
 						expect(element.children().length).toBe(1);
 					});
+
+			it('should evaluate role specified throught scope', function() {
+				$scope.role = GUEST;
+				assignRole(ADMIN);
+				makeHasRole('role');
+				expect(element.children().length).toBe(0);
+			});
 
 			// it(
 			// 'should not add the element twice if the role goes from a Subject

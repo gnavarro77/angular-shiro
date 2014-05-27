@@ -12,7 +12,7 @@ module.exports = function(config) {
 				'src/directives/*.js', 
 				'src/angular-shiro.js',
 
-				//'test/services/*.js',
+				'test/services/*.js',
 				'test/directives/*.js'
 
 		],

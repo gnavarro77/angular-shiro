@@ -24,7 +24,7 @@ var hasPermissionDirective = [ 'subject','$animate', function(subject, $animate)
 	        var block, childScope, previousElements;
 			$scope.$watch($attr.hasPermission, function (permission) {
 				permission = (angular.isUndefined(permission)) ? $attr.hasPermission : permission;
-				if (subject.hasPermission(permission)) {
+				if (subject.isPermitted(permission)) {
 					if (!childScope) {
 					  childScope = $scope.$new();
 					  $transclude(childScope, function (clone) {

@@ -4,7 +4,7 @@ describe(
 		'authorizer',
 		function() {
 
-			var authorizer, ADMIN = 'ADMIN', GUEST = 'GUEST', ANY_OTHER_ROLE = 'ANY', newsletter = 'newsletter:view,create,edit,delete';
+			var authorizer, ADMIN = 'ADMIN', GUEST = 'GUEST', ANY_OTHER_ROLE = 'ANY', newsletter = 'newsletter$view,create,edit,delete';
 
 			beforeEach(module('angularShiro'));
 
@@ -39,20 +39,20 @@ describe(
 				expect(authorizer.isPermitted(new Permission('any')))
 						.toBeFalsy();
 				expect(authorizer.isPermitted('newsletter')).toBeFalsy();
-				expect(authorizer.isPermitted('newsletter:view')).toBeTruthy();
+				expect(authorizer.isPermitted('newsletter$view')).toBeTruthy();
 				expect(
-						authorizer.isPermitted([ 'newsletter:delete', 'any',
-								'newsletter:edit' ])).toEqual(
+						authorizer.isPermitted([ 'newsletter$delete', 'any',
+								'newsletter$edit' ])).toEqual(
 						[ true, false, true ]);
 			});
 
 			it('should tell if is all permitted', function() {
 				expect(
-						authorizer.isPermittedAll([ 'newsletter:delete', 'any',
-								'newsletter:edit' ])).toBeFalsy();
+						authorizer.isPermittedAll([ 'newsletter$delete', 'any',
+								'newsletter$edit' ])).toBeFalsy();
 				expect(
-						authorizer.isPermittedAll([ 'newsletter:delete',
-								'newsletter:edit', 'newsletter:delete,edit' ]))
+						authorizer.isPermittedAll([ 'newsletter$delete',
+								'newsletter$edit', 'newsletter$delete,edit' ]))
 						.toBeTruthy();
 			});
 
