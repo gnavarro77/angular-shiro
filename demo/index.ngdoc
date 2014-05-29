@@ -1,16 +1,18 @@
 @ngdoc overview
-@name Developer Guide
+@name Demo
 @description
 
-# Guide to AngularJS Documentation
+We are going to built a very minimalist address book application. 
 
+The application will have two roles, 
+an `ADMIN` role that will be able to perform all the operations 
+and a `GUEST` role that will be limited to view features. 
 
 <example module="spicyApp1">
   <file name="index.html">
     <div ng-controller="SpicyController">
-     <button ng-click="chiliSpicy()">Chili</button>
-     <button ng-click="jalapenoSpicy()">Jalapeño</button>
-     <p>The food is {{spice}} spicy!</p>
+		<username-password-form>
+		</username-password-form>
     </div>
   </file>
   <file name="app.js">

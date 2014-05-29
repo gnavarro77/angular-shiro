@@ -27,7 +27,7 @@ describe(
 			function assignRole(role) {
 				subject.authenticated = true;
 				subject.authorizer.setAuthorizationInfo(new AuthorizationInfo(
-						[ ADMIN ], []));
+						[ role ], []));
 			}
 
 			it(

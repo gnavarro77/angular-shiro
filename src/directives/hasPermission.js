@@ -5,13 +5,15 @@
  * @name angularShiro.directives.hasPermission
  * @restrict A
  * 
- * @description Display its content only if the current `Subject` 'has' (implies) the specified permission.
+ * @description Display its content only if the current `Subject` 'has' (implies) the specified permission (for example, `newletter$edit`)
+ * 
+ * Angular `$parse` service does not support `:` character so we replaced it by the character `$`    
  * 
  * @element ANY
  * @scope
  * @priority 600
  * @param {string | expression}
- *            hasPermission the permission to check
+ *            hasPermission the permission to check (for example, `newletter$edit`)
  */
 var hasPermissionDirective = [ 'subject','$animate', function(subject, $animate) {
 	return {

@@ -203,7 +203,11 @@ function Subject(authenticator, authorizer) {
 	 *         not have the role at that index
 	 */
 	this.hasRoles = function(roles) {
-		return this.isAuthenticated() && this.authorizer.hasRoles(roles);
+		var result = new Array();
+		angular.forEach(roles, function(role) {
+			result.push(this.hasRole(role));
+		}, this);
+		return result;
 	};
 
 	/**

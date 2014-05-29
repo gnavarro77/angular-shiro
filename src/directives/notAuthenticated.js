@@ -5,7 +5,7 @@
  * @name angularShiro.directives.notAuthenticated
  * @restrict A
  * 
- * @description The <code>notAuthenticated</code> tag will display its wrapped content if the
+ * @description Display if the
  *              current Subject has NOT yet successfully authenticated during
  *              the current session.
  * 

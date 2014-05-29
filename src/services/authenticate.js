@@ -70,7 +70,7 @@ function authenticatorProvider() {
 					credentials : (token) ? token.getCredentials() : null,
 				};
 				$http.post(uri, {
-					data : data
+					token : data
 				}).success(function(data, status, headers, config) {
 					deferred.resolve(data);
 				}).error(function(data, status, headers, config) {

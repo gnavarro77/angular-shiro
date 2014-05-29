@@ -5,14 +5,14 @@
  * @name angularShiro.directives.lacksRole
  * @restrict A
  * 
- * @description Display its content only if the current Subject is **NOT**
- *              assigned the specified role
+ * @description Display if the current Subject is **NOT**
+ *              assigned the specified role (for example, `ADMIN`)
  * 
  * @element ANY
  * @scope
  * @priority 600
  * @param {string |
- *            expression} lacksRole the excluded role
+ *            expression} lacksRole the excluded role (for example, `ADMIN`)
  * 
  */
 var lacksRoleDirective = [ 'subject', '$animate', function(subject, $animate) {

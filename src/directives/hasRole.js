@@ -5,20 +5,14 @@
  * @name angularShiro.directives.hasRole
  * @restrict A
  * 
- * @description The `hasRole` directive removes or recreates a portion of the
- *              DOM tree based on the roles of the current Subject/User. If the
- *              current Subject/User hasn't the specified role then the element
- *              is removed from the DOM, otherwise a clone of the element is
- *              reinserted into the DOM.
+ * @description Display if the current Subject has the specified role (for example, `ADMIN`)
  * 
  * 
  * @element ANY
  * @scope
  * @priority 600
- * @param {role}
- *            hasRole If the {@link Subject Subject/USer} does not have the
- *            specified role then the element is removed from the DOM tree,
- *            otherwise a copy of the compiled element is added to the DOM tree.
+ * @param {string | expression}
+ *            hasRole the role to check (for example, `ADMIN`)
  * 
  */
 var hasRoleDirective = [ 'subject','$animate', function(subject, $animate) {

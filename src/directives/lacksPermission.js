@@ -5,13 +5,15 @@
  * @name angularShiro.directives.lacksPermission
  * @restrict A
  * 
- * @description Display its content only if the current `Subject` 'has' (implies) the specified permission.
+ * @description Display if the current `Subject` 'has' (implies) the specified permission (for example, `newletter$edit`)
+ * 
+ * Angular `$parse` service does not support `:` character so we replaced it by the character `$`
  * 
  * @element ANY
  * @scope
  * @priority 600
  * @param {string | expression}
- *            lacksPermission the permission to check
+ *            lacksPermission the permission to check (for example, `newletter$edit`)
  */
 var lacksPermissionDirective = [ 'subject','$animate', function(subject, $animate) {
 	return {
@@ -24,7 +26,7 @@ var lacksPermissionDirective = [ 'subject','$animate', function(subject, $animat
 	        var block, childScope, previousElements;
 			$scope.$watch($attr.lacksPermission, function (permission) {
 				permission = (angular.isUndefined(permission)) ? $attr.lacksPermission : permission;
-				if (!subject.hasPermission(permission)) {
+				if (!subject.isPermitted(permission)) {
 					if (!childScope) {
 					  childScope = $scope.$new();
 					  $transclude(childScope, function (clone) {
