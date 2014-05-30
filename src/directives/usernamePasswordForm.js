@@ -15,25 +15,49 @@
  * @priority 600
  * 
  */
-var usernamePasswordFormDirective = [ 'subject', 'usernamePasswordToken',
-		'$templateCache', function(subject, token, $templateCache) {
+var usernamePasswordFormDirective = [
+		'subject',
+		'usernamePasswordToken',
+		'$templateCache',
+		function(subject, token, $templateCache) {
 			var labels = {
 				'field.login.placeholder' : 'login',
 				'field.password.placeholder' : 'password',
-				'button.submit.label' : 'Connection'
+				'button.submit.label' : 'Connection',
+				'connection.denied.message' : 'Username and password do not match'
 			};
 			return {
 				restrict : 'E',
 				replace : true,
 				templateUrl : 'templates/usernamePasswordForm.html',
 				scope : {
-					labels : '&labels'
+					labels : '&',
+					onSuccess : '&'
+
 				},
 				link : function($scope, $element, $attr) {
+					$scope.error = false;
 					$scope.token = token;
 					$scope.labels = angular.extend($scope.labels, labels);
+
+					$scope.$watch('token.getPrincipal()', function(value) {
+						$scope.error = false;
+					});
+
+					$scope.$watch('token.getCredentials()', function(value) {
+						$scope.error = false;
+					});
+
 					$scope.submit = function() {
-						subject.login(token);
+						subject.login(token).then(function(data) {
+							if (angular.isDefined($scope.onSuccess)) {
+								$scope.onSuccess({
+									data : data
+								});
+							}
+						}, function(data) {
+							$scope.error = true;
+						});
 					}
 				}
 			};

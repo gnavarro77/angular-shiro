@@ -144,9 +144,17 @@ function UsernamePasswordToken() {
  * @description <code>AuthenticationInfo</code> represents the Subject's
  *              informations regarding the authentication process
  * 
+ * @param {string}
+ *            principal Subject's principal (ex : Subject's login, username,
+ *            ...)
+ * 
+ * @param {string}
+ *            credentials Subject's principal (ex : Subject's login, username,
+ *            ...)
+ * 
  * @since 0.0.1
  */
-function AuthenticationInfo() {
+function AuthenticationInfo(principal, credentials) {
 	/**
 	 * @ngdoc property
 	 * @name AuthenticationInfo#principal
@@ -160,7 +168,7 @@ function AuthenticationInfo() {
 	 * @name AuthenticationInfo#username
 	 * @propertyOf angularShiro.services.authenticationInfo
 	 * @description the Subject's credentials
-	 * @returns {string} the Subject's credentials
+	 * @returns {object} the Subject's credentials
 	 */
 	this.credentials = credentials;
 

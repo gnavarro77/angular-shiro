@@ -8,14 +8,72 @@
 
 
 <script src="http://localhost:8000/dist/docs/js/angular.min.js"></script>
+<script src="https://code.angularjs.org/1.2.16/angular-mocks.js"></script>
 <script src="http://localhost:8000/dist/angular-shiro.js"></script>
 <script src="app.js"></script>
 </head>
 <body>
 	<div ng-controller="DemoCtrl">
 		<div class="container">
-			<username-password-form />
+			<div not-authenticated>
+				<div class="alert alert-info">Please authenticate yourself to
+					access the application!</div>
+				<username-password-form on-success="success(data)">
+			</div>
+
+			<div authenticated>
+
+				<div class="navbar navbar-default" role="navigation">
+					<div class="container">
+						<div class="navbar-header">
+							<a class="navbar-brand" href="#">Address book</a>
+						</div>
+						<div class="navbar-collapse collapse">
+							<ul class="nav navbar-nav navbar-right">
+								<li><a href="../navbar/">logout</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+
+
+				<div class="alert alert-success">Welcome! You have
+					successfully authenticated yourself to the system!</div>
+
+				<div class="col-xs-6">
+					<div class="panel panel-default">
+						<div class="panel-heading">Addresses</div>
+						<div class="panel-body">
+							<div class="btn-group">
+								<button type="button" class="btn btn-default">
+									<span class="glyphicon glyphicon-plus"></span> New
+								</button>
+							</div>
+
+							<div class="btn-group pull-right">
+								<button type="button" class="btn btn-default">
+									<span class="glyphicon glyphicon-pencil"></span> Edit
+								</button>
+								<button type="button" class="btn btn-default">
+									<span class="glyphicon glyphicon-trash"></span> Delete
+								</button>
+							</div>
+						</div>
+						<div class="list-group">
+							<a href="#" class="list-group-item active"> Cras justo odio </a>
+							<a href="#" class="list-group-item">Dapibus ac facilisis in</a> <a
+								href="#" class="list-group-item">Morbi leo risus</a> <a href="#"
+								class="list-group-item">Porta ac consectetur ac</a> <a href="#"
+								class="list-group-item">Vestibulum at eros</a>
+						</div>
+
+					</div>
+				</div>
+				<div class="col-xs-6"></div>
+			</div>
+
 		</div>
+
 	</div>
 
 </body>

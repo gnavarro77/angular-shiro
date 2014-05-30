@@ -216,6 +216,9 @@ function Permission(wildcardString, caseSensitive) {
  * @description AuthorizationInfo represents a Subject's authorization
  *              informations (roles, permissions, etc) used for access control
  *              operations
+ *              
+ *              
+ *              
  * @since 0.0.1
  */
 function AuthorizationInfo(roles, permissions) {

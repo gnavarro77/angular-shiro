@@ -25,7 +25,7 @@ var notAuthenticatedDirective = [ 'subject','$animate', function(subject, $anima
 		link: function ($scope, $element, $attr, ctrl, $transclude) {
 	        var block, childScope, previousElements;
 	        
-			$scope.$watch($attr.notAuthenticated, function () {
+			$scope.$watch('subject.authenticated', function () {
 				if (!subject.isAuthenticated()) {
 					if (!childScope) {
 					  childScope = $scope.$new();

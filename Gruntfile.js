@@ -31,6 +31,10 @@ module.exports = function(grunt) {
 					}
 				},
 				html2js : {
+//					toto : {
+//						src : [ 'toto.html' ],
+//						dest : 'toto.js',
+//					},
 					main : {
 						options : {
 							base : 'src',
@@ -56,6 +60,7 @@ module.exports = function(grunt) {
 					options : {
 						dest : '<%= docs %>',
 						scripts : [ 'angular.js',
+						            'https://code.angularjs.org/1.2.16/angular-mocks.js',
 						            '../<%= pkg.name %>.js' ],
 						startPage : '/demo',
 						// scripts : [ ],
@@ -100,7 +105,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-connect');
 
 	grunt.registerTask('doc', [ 'clean:docs', 'ngdocs' ]);
-	grunt.registerTask('test', [ 'html2js:karma', 'karma' ]);
+	grunt.registerTask('test', [  'karma' ]);
 	grunt.registerTask('build', [ 'clean:dist', 'html2js', 'concat', 'uglify',
 			'clean:build' ]);
 

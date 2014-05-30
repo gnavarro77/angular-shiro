@@ -1,4 +1,103 @@
 /**
+ * @ngdoc object
+ * @name angularShiro.services.authenticationResponseParser
+ * 
+ * @description <code>AuthenticationResponseParser</code> represents the
+ *              Subject's informations regarding the authentication process
+ * 
+ * @since 0.0.1
+ */
+function AuthenticationResponseParser() {
+
+	this.parse = function(data) {
+		this.checkValidity(data);
+		return {
+			authc : this.parseAuthc(data['info']['authc']),
+			authz : this.parseAuthz(data['info']['authz']),
+		}
+	};
+
+	this.parseAuthc = function(authc) {
+		return new AuthenticationInfo(authc['principal'], authc['credentials']);
+	}
+
+	this.parseAuthz = function(authz) {
+		return new AuthorizationInfo(authz['roles'], authz['permissions']);
+	}
+
+	/**
+	 * 
+	 */
+	this.checkValidity = function(data) {
+		if (!angular.isDefined(data) || !angular.isDefined(data['info'])
+				|| !this.isAuthcValid(data['info'])
+				|| !this.isAuthzValid(data['info'])) {
+			var msg = 'Authentication response must comply with the following structure\n\n';
+			msg += this.responseStructureDescription();
+			throw {
+				'name' : 'ParseException',
+				'message' : msg
+			}
+		}
+	}
+
+	this.isAuthcValid = function(info) {
+		var valid = angular.isDefined(info['authc']);
+		if (valid) {
+			var authc = info['authc'];
+			valid = angular.isDefined(authc['principal'])
+					&& angular.isDefined(authc['credentials']);
+		}
+		return valid;
+	}
+
+	this.isAuthzValid = function(info) {
+		var valid = angular.isDefined(info['authz']);
+		if (valid) {
+			var authz = info['authz'];
+			valid = angular.isDefined(authz['roles'])
+					&& angular.isDefined(authz['permissions']);
+		}
+		return valid;
+	}
+
+	/**
+	 * 
+	 */
+	this.responseStructureDescription = function() {
+		var text = "{\n"
+				+ "  \"info\": {\n"
+				+ "    \"authc\": {\n"
+				+ "      \"principal\": \"Subject\'s principal\",\n"
+				+ "      \"credentials\": {\n"
+				+ "        Object which properties are Subject\'s credentials\n"
+				+ "      },\n"
+				+ "    \"authz\": {\n"
+				+ "        \"roles\" : Array of the Suject's roles,\n"
+				+ "        \"permissions\" : Array of the Subject's permissions\n"
+				+ "    }\n" + "  }\n" + "}";
+		text += "\n\n Following is an example of an authentication response \n\n"
+		text += "{\n"
+				+ "  \"info\": {\n"
+				+ "    \"authc\": {\n"
+				+ "      \"principal\": \"edegas\",\n"
+				+ "      \"credentials\": {\n"
+				+ "        \"name\": \"Edgar Degas\",\n"
+				+ "        \"login\": \"edegas\",\n"
+				+ "        \"email\": \"edegas@mail.com\"\n"
+				+ "      }\n"
+				+ "    },\n"
+				+ "    \"authz\": {\n"
+				+ "        \"roles\" : [\"ADMIN\", \"DEVELOPPER\"],\n"
+				+ "        \"permissions\" : [\"address$*\", \"book$view\", ...]\n"
+				+ "    }\n" + "  }\n" + "}";
+		return text;
+
+	};
+
+}
+
+/**
  * 
  * @ngdoc service
  * @name angularShiro.services.subject
@@ -17,7 +116,7 @@
  * 
  * @since 0.0.1
  */
-function Subject(authenticator, authorizer) {
+function Subject(authenticator, authorizer, authenticationResponseParser) {
 
 	/**
 	 * @ngdoc property
@@ -90,9 +189,10 @@ function Subject(authenticator, authorizer) {
 		var promise = authenticator.authenticate(token);
 		var me = this;
 		promise.then(function(data, status, headers, config) {
+			var infos = authenticationResponseParser.parse(data);
+			me.authenticationInfo = infos['authc'];
+			me.authorizer.setAuthorizationInfo(infos['authz']);
 			me.authenticated = true;
-			me.authenticationInfo = data['infos']['authc'];
-			me.authorizer.setAuthorizationInfo(data['info']['authz']);
 		}, function(data, status, headers, config) {
 			me.authenticated = false;
 			me.authenticationInfo = null;
