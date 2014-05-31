@@ -14,7 +14,7 @@ module.exports = function(config) {
 			moduleName : 'angularShiro.templates'
 		},
 
-		files : [ 'bower_components/jquery/dist/jquery.min.js',
+		files : [ 
 				'bower_components/angular/angular.min.js',
 				'bower_components/angular-mocks/angular-mocks.js',
 
