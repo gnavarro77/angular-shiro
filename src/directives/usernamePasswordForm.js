@@ -32,8 +32,8 @@ var usernamePasswordFormDirective = [
 				templateUrl : 'templates/usernamePasswordForm.html',
 				scope : {
 					labels : '&',
-					onSuccess : '&'
-
+					onSuccess : '&',
+					onError : '&'
 				},
 				link : function($scope, $element, $attr) {
 					$scope.error = false;
@@ -55,8 +55,14 @@ var usernamePasswordFormDirective = [
 									data : data
 								});
 							}
+							token.username = token.password = null;
 						}, function(data) {
 							$scope.error = true;
+							if (angular.isDefined($scope.onError)) {
+								$scope.onError({
+									data : data
+								});
+							}
 						});
 					}
 				}

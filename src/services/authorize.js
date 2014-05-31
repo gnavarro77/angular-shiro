@@ -354,6 +354,10 @@ function Authorizer() {
 		this.authorizationInfo = authorizationInfo;
 		this.permissions = this.getPermissions(authorizationInfo);
 	}
+	
+	this.clear = function() {
+		this.authorizationInfo = this.permissions = null;
+	}
 
 	/**
 	 * @ngdoc method

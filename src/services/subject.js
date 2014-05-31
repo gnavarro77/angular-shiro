@@ -133,12 +133,6 @@ function Subject(authenticator, authorizer, authenticationResponseParser) {
 	 */
 	// this.session = new Session();
 	/**
-	 * @private
-	 * @desc {Authenticator} authenticator - Authenticator instance in charge of
-	 *       the authentication of the Subject
-	 */
-	// this.authenticator = authenticator;
-	/**
 	 * @ngdoc property
 	 * @name Subject#authorizer
 	 * @propertyOf angularShiro.services.subject
@@ -196,7 +190,7 @@ function Subject(authenticator, authorizer, authenticationResponseParser) {
 		}, function(data, status, headers, config) {
 			me.authenticated = false;
 			me.authenticationInfo = null;
-			// me.authorizer = null;
+			this.authorizer.clear();
 		});
 		return promise;
 	};
@@ -216,9 +210,9 @@ function Subject(authenticator, authorizer, authenticationResponseParser) {
 	 * @public
 	 */
 	this.logout = function() {
-		me.authenticated = false;
-		me.authenticationInfo = null;
-		me.authorizer = null;
+		this.authenticated = false;
+		this.authenticationInfo = null;
+		this.authorizer.clear();
 	}
 
 	/**
