@@ -2,7 +2,6 @@ module.exports = function(config) {
 	config.set({
 		basePath : '',
 		frameworks : [ 'jasmine' ],
-		
 
 		preprocessors : {
 			'src/directives/usernamePasswordForm.html' : [ 'ng-html2js' ]
@@ -12,25 +11,21 @@ module.exports = function(config) {
 			moduleName : 'templates',
 			stripPrefix : 'src/directives',
 			prependPrefix : 'templates',
-			moduleName : 'angularShiro.directives.templates'
+			moduleName : 'angularShiro.templates'
 		},
 
-		files : [ 'bower_components/angular/angular.min.js',
+		files : [ 'bower_components/jquery/dist/jquery.min.js',
+				'bower_components/angular/angular.min.js',
 				'bower_components/angular-mocks/angular-mocks.js',
 
-				'src/services/authenticate.js',
-				'src/services/authorize.js', 'src/services/subject.js',
+				'src/services/authenticate.js', 'src/services/authorize.js',
+				'src/services/subject.js',
 
-				'src/directives/*.html', 
-				'src/directives/*.js',
+				'src/directives/*.html', 'src/directives/*.js',
 				'src/directives/usernamePasswordForm.html',
 				'src/angular-shiro.js',
-				
-				'test/services/*.js', 
-				'test/directives/*.js'
-				//'test/directives/usernamePasswordFormSpec.js'
 
-		],
+				'test/services/*.js', 'test/directives/*.js' ],
 
 		reporters : [ 'progress', 'junit', 'dots' ],
 		junitReporter : {
@@ -42,7 +37,7 @@ module.exports = function(config) {
 		colors : true,
 		logLevel : config.LOG_INFO,
 		autoWatch : true,
-		
+
 		captureTimeout : 60000,
 		singleRun : false
 	});

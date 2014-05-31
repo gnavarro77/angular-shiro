@@ -18,8 +18,7 @@
 var usernamePasswordFormDirective = [
 		'subject',
 		'usernamePasswordToken',
-		'$templateCache',
-		function(subject, token, $templateCache) {
+		function(subject, token) {
 			var labels = {
 				'field.login.placeholder' : 'login',
 				'field.password.placeholder' : 'password',
