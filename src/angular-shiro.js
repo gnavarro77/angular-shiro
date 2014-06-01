@@ -26,6 +26,7 @@ angular.module('angularShiro.directives', []).directive('hasRole',
 		.directive('hasAnyRole', hasAnyRoleDirective).directive(
 				'hasPermission', hasPermissionDirective).directive(
 				'lacksPermission', lacksPermissionDirective).directive(
+				'principal', principalDirective).directive(
 				'usernamePasswordForm', usernamePasswordFormDirective);
 
 angular.module('angularShiro', [ 'angularShiro.services',

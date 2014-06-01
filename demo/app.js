@@ -1,9 +1,23 @@
 'use strict';
 
 var demo = angular
-		.module('demo', [ 'angularShiro', 'ngMockE2E' ])
+		.module('demo', [ 'angularShiro', 'ngRoute', 'ngMockE2E' ])
+		.config([ '$routeProvider', function($routeProvider) {
+
+			$routeProvider.when('/welcome', {
+				templateUrl : 'partials/welcome.html'
+			}).when('/app', {
+				templateUrl : 'partials/app.html'
+			}).otherwise({
+				redirectTo : '/welcome'
+			});
+
+		} ])
 		.run(
 				function($httpBackend, $rootScope, subject) {
+
+					$httpBackend.whenGET('partials/welcome.html').passThrough();
+					$httpBackend.whenGET('partials/app.html').passThrough();
 
 					$rootScope.subject = subject;
 
@@ -54,7 +68,18 @@ demo
 						'$rootScope',
 						'$timeout',
 						'subject',
-						function($scope, $rootScope, $timeout, subject) {
+						'usernamePasswordToken',
+						'$location',
+						function($scope, $rootScope, $timeout, subject,
+								usernamePasswordToken, $location) {
+
+							$scope.token = usernamePasswordToken;
+
+							$scope.logIn = function() {
+								subject.login($scope.token).then(function() {
+									$location.path('/app');
+								});
+							}
 
 							$scope.entries = [ {
 								id : 0,

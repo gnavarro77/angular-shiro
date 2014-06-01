@@ -2,13 +2,32 @@
  * @ngdoc object
  * @name angularShiro.services.authenticationResponseParser
  * 
- * @description <code>AuthenticationResponseParser</code> represents the
- *              Subject's informations regarding the authentication process
+ * @description <code>AuthenticationResponseParser</code> is response of
+ *              validating then parsing the response received from the backend
+ *              authentication service
  * 
  * @since 0.0.1
  */
 function AuthenticationResponseParser() {
 
+	/**
+	 * 
+	 * @ngdoc method
+	 * @function
+	 * @name AuthenticationResponseParser#parse
+	 * @methodOf angularShiro.services.authenticationResponseParser
+	 * 
+	 * @description Validates then parse the data received from the backend
+	 *              authentication service
+	 * 
+	 * @param {Object}
+	 *            data the token encapsulating the subject's principals and
+	 *            credentials to be passed to the Authentication subsystem for
+	 *            verification.
+	 * 
+	 * @returns {object} the parsed data
+	 * 
+	 */
 	this.parse = function(data) {
 		this.checkValidity(data);
 		return {

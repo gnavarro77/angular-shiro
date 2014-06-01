@@ -31,10 +31,10 @@ module.exports = function(grunt) {
 					}
 				},
 				html2js : {
-//					toto : {
-//						src : [ 'toto.html' ],
-//						dest : 'toto.js',
-//					},
+					// toto : {
+					// src : [ 'toto.html' ],
+					// dest : 'toto.js',
+					// },
 					main : {
 						options : {
 							base : 'src',
@@ -59,17 +59,22 @@ module.exports = function(grunt) {
 				ngdocs : {
 					options : {
 						dest : '<%= docs %>',
-						scripts : [ 'angular.js',
-						            'https://code.angularjs.org/1.2.16/angular-mocks.js',
-						            '../<%= pkg.name %>.js' ],
+						scripts : [
+								'angular.js',
+								'https://code.angularjs.org/1.2.16/angular-mocks.js',
+								'../<%= pkg.name %>.js',
+								'demo/app.js'],
+						// styles :
+						// ['http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css'],
+						title : "<%= pkg.description %>",
 						startPage : '/demo',
 						// scripts : [ ],
 						html5Mode : false
 					},
-					demo : {
-						src : [ 'demo/*.ngdoc' ],
-						title : 'Demo'
-					},
+//					demo : {
+//						src : [ 'demo/index.ngdoc' ],
+//						title : 'Demo'
+//					},
 					api : {
 						src : [ 'src/services/*.js', 'src/directives/*.js'
 						// 'src/services/*.js',
@@ -78,7 +83,17 @@ module.exports = function(grunt) {
 						title : 'API Reference'
 					}
 				},
-
+//				includes : {
+//					files : {
+//						src : [ 'demo/index.html', 'demo/index.ngdoc' ],
+//						dest : 'build/demo',
+//						flatten : true,
+//						cwd : '.',
+//						options : {
+//							silent : false
+//						}
+//					}
+//				},
 				connect : {
 					options : {
 						keepalive : true
@@ -102,10 +117,11 @@ module.exports = function(grunt) {
 
 	grunt.loadNpmTasks('grunt-ngdocs');
 
+	grunt.loadNpmTasks('grunt-includes');
 	grunt.loadNpmTasks('grunt-contrib-connect');
 
 	grunt.registerTask('doc', [ 'clean:docs', 'ngdocs' ]);
-	grunt.registerTask('test', [  'karma' ]);
+	grunt.registerTask('test', [ 'karma' ]);
 	grunt.registerTask('build', [ 'clean:dist', 'html2js', 'concat', 'uglify',
 			'clean:build' ]);
 
