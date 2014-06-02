@@ -13,13 +13,19 @@
  * 
  * 
  * <span class=" alert-danger">This service is not intended to be accessed
- * directly; It's meant to be used internally by the `subject` service.</span> #
- * Configuration
+ * directly; It's meant to be used internally by the `subject` service.</span>
+ * 
+ * 
+ * # Configuration
  * 
  * In case that the default behavior of the `authenticator` service does not fit
  * your needs you can - specify our own uri (if that the point of contention)
- * ```js app.config(['authenticatorProvider', function (authenticatorProvider) {
- * authenticatorProvider.setUri('path/to/my/authentication/service'); }]); ```
+ * 
+ * <pre>
+ * app.config([ 'authenticatorProvider', function(authenticatorProvider) {
+ * 	authenticatorProvider.setUri('path/to/my/authentication/service');
+ * } ]);
+ * </pre>
  * 
  */
 
@@ -30,7 +36,7 @@
 // application
 // * authenticates users
 // */
-function authenticatorProvider() {
+function AuthenticatorProvider() {
 
 	var uri = "/api/authenticate";
 
