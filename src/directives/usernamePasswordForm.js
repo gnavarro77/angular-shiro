@@ -33,10 +33,10 @@
  * @param {object=}
  *            labels custom labels
  * @param {expression=}
- *            onSuccess {@link guide/expression Expression} to evaluate upon
+ *            onSuccess Expression to evaluate upon
  *            successful authentication
  * @param {expression=}
- *            onError {@link guide/expression Expression} to evaluate upon
+ *            onError Expression to evaluate upon
  *            authentication failure
  *            
  * @example
