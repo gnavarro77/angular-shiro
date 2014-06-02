@@ -3,17 +3,65 @@
 /**
  * @ngdoc directive
  * @name angularShiro.directives.usernamePasswordForm
- * @restrict A
+ * @restrict E
  * 
- * @description The <code>notAuthenticated</code> tag will display its wrapped
- *              content if the current Subject has NOT yet successfully
- *              authenticated during the current session.
+ * @description The <code>usernamePasswordForm</code> directive will display a
+ *              simple <code>username / password</code> form with built-in
+ *              integration with `angular-shiro` authentication mechanism.
+ *  #Style
+ *  
+ *  Form markup is based on latest {@link http://getbootstrap.com/css/#forms Bootstrap form documentation}
+ *               
+ *               
+ *  # Default labels
+ * 
+ * <pre>
+ * {
+ * 	'field.login.placeholder' : 'login',
+ * 	'field.password.placeholder' : 'password',
+ * 	'button.submit.label' : 'Connection',
+ * 	'connection.denied.message' : 'Username and password do not match'
+ * }
+ * </pre>
+ * 
  * 
  * 
  * @element ANY
  * @scope
  * @priority 600
  * 
+ * @param {object=}
+ *            labels custom labels
+ * @param {expression=}
+ *            onSuccess {@link guide/expression Expression} to evaluate upon
+ *            successful authentication
+ * @param {expression=}
+ *            onError {@link guide/expression Expression} to evaluate upon
+ *            authentication failure
+ *            
+ * @example
+<example module="angularShiro"> 
+	<file name="index.html"> 
+		<div ng-controller="Ctrl">
+			<username-password-form
+			 	labels="{{myLabels}}"
+				on-error="error()">
+		</div> 
+	</file>
+	<file name="app.js">
+	function Ctrl($scope) {
+		
+		$scope.myLabels = {
+			'field.login.placeholder' : 'email',
+			'button.submit.label' : 'Login'
+		};
+	
+		$scope.error = function() {
+			alert('An error occured!');
+		}
+	}
+	</file>
+</example>	
  */
 var usernamePasswordFormDirective = [
 		'subject',
@@ -30,14 +78,18 @@ var usernamePasswordFormDirective = [
 				replace : true,
 				templateUrl : 'templates/usernamePasswordForm.html',
 				scope : {
-					labels : '&',
 					onSuccess : '&',
 					onError : '&'
 				},
 				link : function($scope, $element, $attr) {
 					$scope.error = false;
 					$scope.token = token;
-					$scope.labels = angular.extend($scope.labels, labels);
+					
+					if (angular.isDefined($attr.labels)) {
+						$scope.labels = angular.extend(labels, angular.fromJson($attr.labels));
+					} else {
+						$scope.labels = labels;
+					}
 
 					$scope.$watch('token.getPrincipal()', function(value) {
 						$scope.error = false;

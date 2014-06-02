@@ -67,8 +67,6 @@ module.exports = function(grunt) {
 						// styles :
 						// ['http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css'],
 						title : "<%= pkg.description %>",
-						startPage : '/demo',
-						// scripts : [ ],
 						html5Mode : false
 					},
 //					demo : {
@@ -83,17 +81,6 @@ module.exports = function(grunt) {
 						title : 'API Reference'
 					}
 				},
-//				includes : {
-//					files : {
-//						src : [ 'demo/index.html', 'demo/index.ngdoc' ],
-//						dest : 'build/demo',
-//						flatten : true,
-//						cwd : '.',
-//						options : {
-//							silent : false
-//						}
-//					}
-//				},
 				connect : {
 					options : {
 						keepalive : true
@@ -117,7 +104,6 @@ module.exports = function(grunt) {
 
 	grunt.loadNpmTasks('grunt-ngdocs');
 
-	grunt.loadNpmTasks('grunt-includes');
 	grunt.loadNpmTasks('grunt-contrib-connect');
 
 	grunt.registerTask('doc', [ 'clean:docs', 'ngdocs' ]);

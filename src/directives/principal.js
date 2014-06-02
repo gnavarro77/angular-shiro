@@ -18,7 +18,6 @@
  * @param {string=}
  *            property a property name of the `principal` object
  * 
- * @example
  * @example 
 <example module="angularShiro"> 
 	<file name="index.html"> 

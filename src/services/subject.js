@@ -209,7 +209,7 @@ function Subject(authenticator, authorizer, authenticationResponseParser) {
 		}, function(data, status, headers, config) {
 			me.authenticated = false;
 			me.authenticationInfo = null;
-			this.authorizer.clear();
+			me.authorizer.clear();
 		});
 		return promise;
 	};
