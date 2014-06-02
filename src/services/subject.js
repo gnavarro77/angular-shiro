@@ -133,6 +133,9 @@ function AuthenticationResponseParser() {
  *            Authenticator instance in charge of the authentication of the
  *            Subject
  * 
+ * @param {AngularShiroConfig}
+ *            configuration
+ * 
  * @since 0.0.1
  */
 function Subject(authenticator, authorizer, authenticationResponseParser) {
@@ -206,10 +209,10 @@ function Subject(authenticator, authorizer, authenticationResponseParser) {
 			me.authenticationInfo = infos['authc'];
 			me.authorizer.setAuthorizationInfo(infos['authz']);
 			me.authenticated = true;
+			token.username = null;
+			token.password = null;
 		}, function(data, status, headers, config) {
-			me.authenticated = false;
-			me.authenticationInfo = null;
-			me.authorizer.clear();
+			this.clear();
 		});
 		return promise;
 	};
@@ -229,6 +232,13 @@ function Subject(authenticator, authorizer, authenticationResponseParser) {
 	 * @public
 	 */
 	this.logout = function() {
+		this.clear();
+	}
+
+	/**
+	 * 
+	 */
+	this.clear = function() {
 		this.authenticated = false;
 		this.authenticationInfo = null;
 		this.authorizer.clear();
@@ -258,7 +268,12 @@ function Subject(authenticator, authorizer, authenticationResponseParser) {
 	 * @return {*} this Subject's application-specific unique identity
 	 */
 	this.getPrincipal = function() {
-		return this.authenticationInfo.getPrincipal();
+		var principal = '';
+		if (angular.isDefined(this.authenticationInfo)
+				&& angular.isObject(this.authenticationInfo)) {
+			principal = this.authenticationInfo.getPrincipal();
+		}
+		return principal;
 	};
 
 	/**

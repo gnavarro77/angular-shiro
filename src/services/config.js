@@ -2,7 +2,10 @@
  * @ngdoc service
  * @name angularShiro.services.angularShiroConfig
  * 
- * @description Angular Shiro Configuration # Default configuration
+ * @description Angular Shiro Configuration 
+ * 
+ * 
+ * # Default configuration
  * 
  * <pre>
  * options = {
@@ -11,7 +14,9 @@
  * 		path : 'logout',
  * 	}
  * }
- * </pre> # Custom configuration
+ * </pre> 
+ * 
+ * # Custom configuration
  * 
  * <pre>
  *  app.config([ 'angularShiroConfigProvider', function(config) {
@@ -31,7 +36,7 @@ function AngularShiroConfigProvider() {
 			path : 'logout',
 		}
 	}
-
+	
 	this.$get = [ function() {
 		return this.options;
 	} ];

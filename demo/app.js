@@ -24,7 +24,11 @@ var demo = angular
 					var admin = "{\n"
 							+ "  \"info\": {\n"
 							+ "    \"authc\": {\n"
-							+ "      \"principal\": \"edegas\",\n"
+							+ "      \"principal\": {\n"
+							+ "        \"name\": \"Edgar Degas\",\n"
+							+ "        \"login\": \"edegas\",\n"
+							+ "        \"email\": \"edegas@mail.com\"\n"
+							+ "      },\n"
 							+ "      \"credentials\": {\n"
 							+ "        \"name\": \"Edgar Degas\",\n"
 							+ "        \"login\": \"edegas\",\n"
@@ -41,13 +45,18 @@ var demo = angular
 									'{"token":{"principal":"admin","credentials":"admin"}}')
 							.respond(admin);
 
-					var guest = "{\n" + "  \"info\": {\n"
+					var guest = "{\n"
+							+ "  \"info\": {\n"
 							+ "    \"authc\": {\n"
-							+ "      \"principal\": \"edegas\",\n"
+							+ "      \"principal\": {\n"
+							+ "        \"name\": \"Henri de Toulouse-Lautrec\",\n"
+							+ "        \"login\": \"hlautrec\",\n"
+							+ "        \"email\": \"hlautrec@mail.com\"\n"
+							+ "      },\n"
 							+ "      \"credentials\": {\n"
-							+ "        \"name\": \"Edgar Degas\",\n"
-							+ "        \"login\": \"edegas\",\n"
-							+ "        \"email\": \"edegas@mail.com\"\n"
+							+ "        \"name\": \"Henri de Toulouse-Lautrec\",\n"
+							+ "        \"login\": \"hlautrec\",\n"
+							+ "        \"email\": \"hlautrec@mail.com\"\n"
 							+ "      }\n" + "    },\n" + "    \"authz\": {\n"
 							+ "        \"roles\" : [\"GUEST\"],\n"
 							+ "        \"permissions\" : [\"address$view\"]\n"
@@ -79,6 +88,11 @@ demo
 								subject.login($scope.token).then(function() {
 									$location.path('/app');
 								});
+							}
+
+							$scope.logout = function() {
+								subject.logout();
+								$location.path('/welcome');
 							}
 
 							$scope.entries = [ {
@@ -133,18 +147,6 @@ demo
 									$scope.entries.push($scope.entry);
 								}
 								$scope.entry = null;
-							}
-
-							$scope.success = function(data) {
-								// get informed of successful log in
-							}
-
-							$scope.error = function(data) {
-								// get informed of unsuccessful log in
-							}
-
-							$scope.logout = function() {
-								subject.logout();
 							}
 
 						} ]);

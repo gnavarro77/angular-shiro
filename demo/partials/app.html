@@ -1,17 +1,35 @@
-<!-- <div class="navbar navbar-default" role="navigation"> -->
-<!-- 	<div class="container"> -->
-<!-- 		<div class="navbar-header"> -->
-<!-- 			<a class="navbar-brand" href="#">Address book</a> -->
-<!-- 		</div> -->
-<!-- 		<div class="navbar-collapse collapse"> -->
-<!-- 			<ul class="nav navbar-nav navbar-right"> -->
-<!-- 				<li><a ng-href ng-click="logout()"> <span -->
-<!-- 						class="glyphicon glyphicon-log-out"></span> logout -->
-<!-- 				</a></li> -->
-<!-- 			</ul> -->
-<!-- 		</div> -->
-<!-- 	</div> -->
-<!-- </div> -->
+
+<div class="col-xs-12">
+	<h1>
+		Welcome
+		<principal property="name" />
+		!
+	</h1>
+</div>
+
+<div class="col-xs-12">
+
+	<div class="alert alert-success" has-role="'ADMIN'">
+		<h1>
+			<strong>Congratulation!</strong>
+		</h1>
+		<h4>
+			As <strong>ADMIN</strong> you are able to <strong>create</strong>, <strong>edit</strong>
+			and <strong>delete</strong> the addresses
+		</h4>
+	</div>
+
+	<div class="alert alert-warning" has-role="'GUEST'">
+		<h1>
+			<strong>Well!</strong>
+		</h1>
+		<h4>
+			As <strong>GUEST</strong> you are able to <strong>view</strong> the
+			addresses
+		</h4>
+	</div>
+
+</div>
 
 <div class="col-xs-6">
 	<div class="panel panel-default">

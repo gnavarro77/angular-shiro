@@ -14,22 +14,18 @@ module.exports = function(config) {
 			moduleName : 'angularShiro.templates'
 		},
 
-		files : [ 
+		files : [ 'bower_components/jquery/dist/jquery.min.js',
 				'bower_components/angular/angular.min.js',
 				'bower_components/angular-mocks/angular-mocks.js',
 
-				'src/services/config.js',
-				'src/services/authenticate.js', 
-				'src/services/authorize.js',
-				'src/services/subject.js',
+				'src/services/config.js', 'src/services/authenticate.js',
+				'src/services/authorize.js', 'src/services/subject.js',
 
 				'src/directives/*.html', 'src/directives/*.js',
 				'src/directives/usernamePasswordForm.html',
 				'src/angular-shiro.js',
 
-				'test/services/*Spec.js', 
-				'test/directives/*Spec.js' 
-				],
+				'test/services/*Spec.js', 'test/directives/*Spec.js' ],
 
 		reporters : [ 'progress', 'junit', 'dots' ],
 		junitReporter : {

@@ -20,15 +20,24 @@ angular.module('angularShiro.services', []).provider('authenticator',
 	return new AuthenticationResponseParser();
 });
 
-angular.module('angularShiro.directives', []).directive('hasRole',
-		hasRoleDirective).directive('notAuthenticated',
-		notAuthenticatedDirective).directive('authenticated',
-		authenticatedDirective).directive('lacksRole', lacksRoleDirective)
-		.directive('hasAnyRole', hasAnyRoleDirective).directive(
-				'hasPermission', hasPermissionDirective).directive(
-				'lacksPermission', lacksPermissionDirective).directive(
-				'principal', principalDirective).directive(
-				'usernamePasswordForm', usernamePasswordFormDirective);
+var directives = {
+	'hasRole' : hasRoleDirective,
+	'notAuthenticated' : notAuthenticatedDirective,
+	'authenticated' : authenticatedDirective,
+	'lacksRole' : lacksRoleDirective,
+	'hasAnyRole' : hasAnyRoleDirective,
+	'hasPermission' : hasPermissionDirective,
+	'lacksPermission' : lacksPermissionDirective,
+	'principal' : principalDirective,
+	'usernamePasswordForm' : usernamePasswordFormDirective
+}
+
+var moduleDirectives = angular.module('angularShiro.directives', []);
+
+for (var name in directives) {
+	moduleDirectives.directive(name, directives[name]);
+}
+
 
 angular.module('angularShiro', [ 'angularShiro.services',
 		'angularShiro.directives', 'angularShiro.templates' ]);
