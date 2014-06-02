@@ -18,14 +18,18 @@ module.exports = function(config) {
 				'bower_components/angular/angular.min.js',
 				'bower_components/angular-mocks/angular-mocks.js',
 
-				'src/services/authenticate.js', 'src/services/authorize.js',
+				'src/services/config.js',
+				'src/services/authenticate.js', 
+				'src/services/authorize.js',
 				'src/services/subject.js',
 
 				'src/directives/*.html', 'src/directives/*.js',
 				'src/directives/usernamePasswordForm.html',
 				'src/angular-shiro.js',
 
-				'test/services/*.js', 'test/directives/*.js' ],
+				'test/services/*Spec.js', 
+				'test/directives/*Spec.js' 
+				],
 
 		reporters : [ 'progress', 'junit', 'dots' ],
 		junitReporter : {

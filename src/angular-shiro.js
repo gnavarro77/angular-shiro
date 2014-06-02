@@ -1,7 +1,8 @@
 'use strict';
 
 angular.module('angularShiro.services', []).provider('authenticator',
-		authenticatorProvider).factory(
+		AuthenticatorProvider).provider('angularShiroConfig',
+		AngularShiroConfigProvider).factory(
 		'subject',
 		[
 				'authenticator',

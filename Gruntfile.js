@@ -12,7 +12,8 @@ module.exports = function(grunt) {
 						separator : ';',
 					},
 					main : {
-						src : [ 'src/services/authenticate.js',
+						src : [ 'src/services/config.js',
+						        'src/services/authenticate.js',
 								'src/services/authorize.js',
 								'src/services/subject.js',
 								'<%= build %>/<%= pkg.name %>.templates.js',
