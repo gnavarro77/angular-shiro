@@ -17,7 +17,7 @@
  * 
  * <pre>
  * {
- * 	'field.login.placeholder' : 'login',
+ * 	'field.username.placeholder' : 'username',
  * 	'field.password.placeholder' : 'password',
  * 	'button.submit.label' : 'Connection',
  * 	'connection.denied.message' : 'Username and password do not match'
@@ -52,7 +52,7 @@
 	function Ctrl($scope) {
 		
 		$scope.myLabels = {
-			'field.login.placeholder' : 'email',
+			'field.username.placeholder' : 'Email',
 			'button.submit.label' : 'Login'
 		};
 	
@@ -68,8 +68,8 @@ var usernamePasswordFormDirective = [
 		'usernamePasswordToken',
 		function(subject, token) {
 			var labels = {
-				'field.login.placeholder' : 'login',
-				'field.password.placeholder' : 'password',
+				'field.username.placeholder' : 'Username',
+				'field.password.placeholder' : 'Password',
 				'button.submit.label' : 'Connection',
 				'connection.denied.message' : 'Username and password do not match'
 			};
