@@ -174,7 +174,6 @@ NG_DOCS={
   "scripts": [
     "angular.min.js",
     "angular-mocks.js",
-    "angular-shiro.js",
-    "app.js"
+    "angular-shiro.min.js"
   ]
 };

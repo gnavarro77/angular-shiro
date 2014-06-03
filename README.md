@@ -10,6 +10,3 @@ Demo application
 Documentation
 ---------
 [Angular shiro documentation](http://gnavarro77.github.io/angular-shiro/docs)
-
-
-
