@@ -4,6 +4,12 @@ angular-shiro
 
 Demo application
 ---------
-[address book demo application](gnavarro77.github.io/angular-shiro)
+[Address book demo application](http://gnavarro77.github.io/angular-shiro)
+
+
+Documentation
+---------
+[Angular shiro documentation](http://gnavarro77.github.io/angular-shiro/docs)
+
 
 
