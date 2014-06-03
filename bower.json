@@ -1,8 +1,15 @@
 {
+  "author": "Gilles Navarro",	
   "name": "angular-shiro",
   "version": "0.0.1",
+  "homepage": "https://github.com/gnavarro77/angular-shiro",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gnavarro77/angular-shiro.git"
+  },
+  "main": "",
   "dependencies": {
-    "angular": "~1.2.6"
+    "angular": "^1.2"
   },
   "devDependencies": {
     "jasmine": "~2.0.0",
