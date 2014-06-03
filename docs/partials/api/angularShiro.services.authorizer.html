@@ -1,0 +1,70 @@
+<h1><code ng:non-bindable="">authorizer</code>
+<div><span class="hint">service in module <code ng:non-bindable="">angularShiro.services</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="angularshiro-services-authorizer-page"><p>An <code>Authorizer</code> performs authorization (access
+control) operations for any given Subject</p>
+<p>All the authorization operations are based upon the instance of
+<code>AuthorizationInfo</code> that is injected through the
+<code>Authorizer</code> constructor.</p>
+</div></div>
+<h2 id="usage">Usage</h2>
+<div class="usage"><pre class="prettyprint linenums">authorizer(authorizationInfo);</pre>
+<h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>authorizationInfo</td><td><a href="" class="label type-hint type-hint-authorizationinfo">AuthorizationInfo</a></td><td><div class="angularshiro-services-authorizer-page"><p>All informations regarding the Subject
+authorizations</p>
+</div></td></tr></tbody></table></div>
+<div class="member method"><h2 id="methods">Methods</h2>
+<ul class="methods"><li><h3 id="methods_hasallroles">hasAllRoles(roles)</h3>
+<div class="hasallroles"><div class="authorizer-hasallroles-page"><p>Checks if the Subject has all of the specified roles</p>
+</div><h5 id="methods_hasallroles_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>roles</td><td><a href="" class="label type-hint type-hint-array">array</a></td><td><div class="authorizer-hasallroles-page"><p>the list of roles to check</p>
+</div></td></tr></tbody></table><h5 id="methods_hasallroles_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-boolean">boolean</a></td><td><div class="authorizer-hasallroles-page"><p><code>true</code> if the user has all the roles,
+<code>false</code> otherwise.</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_hasrole">hasRole(role)</h3>
+<div class="hasrole"><div class="authorizer-hasrole-page"><p>Evaluate if the Subject has the specified role</p>
+</div><h5 id="methods_hasrole_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>role</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="authorizer-hasrole-page"><p>role to check</p>
+</div></td></tr></tbody></table><h5 id="methods_hasrole_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-boolean">boolean</a></td><td><div class="authorizer-hasrole-page"><p><code>true</code> if the Subject has the specified
+role, <code>false</code> otherwise</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_hasroles">hasRoles(roles)</h3>
+<div class="hasroles"><div class="authorizer-hasroles-page"><p>Checks a list of roles against the Subject&#39;s roles</p>
+</div><h5 id="methods_hasroles_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>roles</td><td><a href="" class="label type-hint type-hint-array">array</a></td><td><div class="authorizer-hasroles-page"><p>the list of roles to check against the Subject&#39;s roles</p>
+</div></td></tr></tbody></table><h5 id="methods_hasroles_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-array">array</a></td><td><div class="authorizer-hasroles-page"><p>an array of booleans whose indices correspond to the
+index of the roles in the given identifiers. At a given index, a
+<code>true</code> value indicates that the user has the role, a
+<code>false</code> value indicates that does not have the role</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_ispermitted">isPermitted(permission)</h3>
+<div class="ispermitted"><div class="authorizer-ispermitted-page"><p>Evaluate if the Subject is permitted to perform an action or
+access a resource</p>
+</div><h5 id="methods_ispermitted_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>permission</td><td><a href="" class="label type-hint type-hint-string">string </a><a href="" class="label type-hint type-hint-object">
+Permission </a><a href="" class="label type-hint type-hint-object"> array</a></td><td><div class="authorizer-ispermitted-page"><p>a permission</p>
+</div></td></tr></tbody></table><h5 id="methods_ispermitted_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-boolean">boolean | array</a></td><td><div class="authorizer-ispermitted-page"><p><code>true</code> for permitted Subject,
+<code>false</code> otherwise.</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_ispermittedall">isPermittedAll(permission)</h3>
+<div class="ispermittedall"><div class="authorizer-ispermittedall-page"><p>Evaluate if the Subject is permitted to perform all action
+or access all resource implied by specified permissions</p>
+</div><h5 id="methods_ispermittedall_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>permission</td><td><a href="" class="label type-hint type-hint-array">array</a></td><td><div class="authorizer-ispermittedall-page"><p>a list of permission</p>
+</div></td></tr></tbody></table><h5 id="methods_ispermittedall_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-boolean">boolean | Array</a></td><td><div class="authorizer-ispermittedall-page"><p><code>true</code> for all permissions are
+permitted, <code>false</code> otherwise.</p>
+</div></td></tr></table></div>
+</li>
+</ul>
+</div>
+<div class="member property"><h2 id="properties">Properties</h2>
+<ul class="properties"><li><h3 id="properties_permissions">permissions</h3>
+<div class="permissions"><div class="authorizer-permissions-page"><p>list of the permission objects assigned to the corresponding
+Subject</p>
+</div><h5 id="properties_permissions_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-array">array</a></td><td><div class="authorizer-permissions-page"><p>the Subject&#39;s permissions</p>
+</div></td></tr></table></div>
+</li>
+</ul>
+</div>
+</div>
