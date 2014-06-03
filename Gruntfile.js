@@ -7,13 +7,14 @@ module.exports = function(grunt) {
 				build : 'build',
 				src : 'src',
 				docs : '<%= dist %>/docs',
+				pages : '../angular-shiro-gh-pages/angular-shiro',
 				concat : {
 					options : {
 						separator : ';',
 					},
 					main : {
 						src : [ 'src/services/config.js',
-						        'src/services/authenticate.js',
+								'src/services/authenticate.js',
 								'src/services/authorize.js',
 								'src/services/subject.js',
 								'<%= build %>/<%= pkg.name %>.templates.js',
@@ -32,10 +33,6 @@ module.exports = function(grunt) {
 					}
 				},
 				html2js : {
-					// toto : {
-					// src : [ 'toto.html' ],
-					// dest : 'toto.js',
-					// },
 					main : {
 						options : {
 							base : 'src',
@@ -63,35 +60,49 @@ module.exports = function(grunt) {
 						scripts : [
 								'angular.js',
 								'https://code.angularjs.org/1.2.16/angular-mocks.js',
-								'../<%= pkg.name %>.js',
-								'demo/app.js'],
-						// styles :
-						// ['http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css'],
+								'../<%= pkg.name %>.min.js' ],
 						title : "<%= pkg.description %>",
 						html5Mode : false
 					},
-//					demo : {
-//						src : [ 'demo/index.ngdoc' ],
-//						title : 'Demo'
-//					},
 					api : {
-						src : [ 'src/services/*.js', 'src/directives/*.js'
-						// 'src/services/*.js',
-						// 'src/angular-shiro.js'
-						],
+						src : [ 'src/services/*.js', 'src/directives/*.js' ],
 						title : 'API Reference'
 					}
+				},
+				copy : {
+					pages : {
+						files : [ {
+							expand : true,
+							cwd : 'demo/',
+							src : [ '**' ],
+							dest : '<%= pages %>'
+						}, {
+							expand : true,
+							cwd : '<%= dist %>',
+							src : [ '<%= pkg.name %>.min.js' ],
+							dest : '<%= pages %>'
+						}, {
+							expand : true,
+							cwd : '<%= dist %>',
+							src : [ 'docs/**/*' ],
+							dest : '<%= pages %>'
+						} ]
+					}
+				},
+				clean : {
+					options : {
+						force : true
+					},
+					build : [ '<%= build %>' ],
+					dist : [ '<%= dist %>' ],
+					docs : [ '<%= docs %>' ],
+					pages : [ '<%= pages %>/**/*' ]
 				},
 				connect : {
 					options : {
 						keepalive : true
 					},
 					server : {}
-				},
-				clean : {
-					build : [ '<%= build %>' ],
-					dist : [ '<%= dist %>' ],
-					docs : [ '<%= docs %>' ]
 				}
 			});
 
@@ -111,5 +122,9 @@ module.exports = function(grunt) {
 	grunt.registerTask('test', [ 'karma' ]);
 	grunt.registerTask('build', [ 'clean:dist', 'html2js', 'concat', 'uglify',
 			'clean:build' ]);
+
+	grunt
+			.registerTask('pages', [  'build','doc', 'clean:pages',
+					'copy:pages' ]);
 
 };
