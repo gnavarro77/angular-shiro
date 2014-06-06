@@ -34,7 +34,7 @@ The default behaviour is to send a `POST` request to `/api/authenticate` with th
 
 ## Authorization
 
-The authorization support is based on the same [elements of Authorization](http://shiro.apache.org/authorization.html#Authorization-ElementsofAuthorization) of [Apache Shiro](http://shiro.apache.org/).
+The authorization support is based on the same [elements of Authorization](http://shiro.apache.org/authorization.html#Authorization-ElementsofAuthorization) as [Apache Shiro](http://shiro.apache.org/).
 
 You can perform authorization can be done in 2 ways :
 
