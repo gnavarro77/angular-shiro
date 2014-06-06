@@ -17,7 +17,7 @@ As [Apache Shiro](http://shiro.apache.org/) was all about those issues (and more
 
 ## Demo
 
-As a demo is worth a thousand words check out [**angular-shiro demo application**](gnavarro77.github.io/angular-shiro)
+As a demo is worth a thousand words, check out [**angular-shiro address book demo application**](gnavarro77.github.io/angular-shiro)
 
 ## Authentication
 
