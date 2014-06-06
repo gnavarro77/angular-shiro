@@ -1,6 +1,6 @@
 {
   "name": "angular-shiro",
-  "version": "0.1.0",
+  "version": "0.0.1",
   "description": "Angular Shiro",
   "main": "karma.conf.js",
   "directories": {
@@ -11,11 +11,12 @@
   },
   "keywords": [
     "angularjs",
+    "shiro",
     "security",
     "authentication",
     "authorization"
   ],
-  "author": "gilles navarro",
+  "author": "Gilles Navarro",
   "license": "MIT",
   "devDependencies": {
     "grunt": "^0.4.5",
