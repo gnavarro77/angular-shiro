@@ -4,3 +4,6 @@ build
 dist
 
 .project
+
+demo/angular-shiro.js
+demo/angular-shiro.min.js
