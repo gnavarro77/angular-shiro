@@ -52,7 +52,11 @@ module.exports = function(grunt) {
 					unit : {
 						configFile : 'karma.conf.js'
 					},
-					tasks : [ 'karma:unit:run' ]
+					travis : {
+						configFile : 'karma.conf.js',
+						singleRun : true,
+						browsers : [ 'PhantomJS' ]
+					}
 				},
 				ngdocs : {
 					options : {
@@ -86,6 +90,14 @@ module.exports = function(grunt) {
 							cwd : '<%= dist %>',
 							src : [ 'docs/**/*' ],
 							dest : '<%= pages %>'
+						} ]
+					},
+					demo : {
+						files : [ {
+							expand : true,
+							cwd : '<%= dist %>',
+							src : [ '<%= pkg.name %>.js' ],
+							dest : 'demo'
 						} ]
 					}
 				},
@@ -124,7 +136,7 @@ module.exports = function(grunt) {
 			'clean:build' ]);
 
 	grunt
-			.registerTask('pages', [  'build','doc', 'clean:pages',
+			.registerTask('pages', [ 'build', 'doc', 'clean:pages',
 					'copy:pages' ]);
 
 };
