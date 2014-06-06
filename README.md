@@ -15,6 +15,10 @@ or
 
 As [Apache Shiro](http://shiro.apache.org/) was all about those issues (and more), instead of reinventing the wheel, `angular-shiro` is strongly inspired, if not more, from its JAVA mentor.
 
+## Demo
+
+As a demo is worth a thousand words check out [**angular-shiro demo application**](gnavarro77.github.io/angular-shiro)
+
 ## Authentication
 
 Authentication is `Subject` based. The `Subject` is availbale for injection under the name `subject`.
