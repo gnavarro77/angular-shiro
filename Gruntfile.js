@@ -151,7 +151,8 @@ module.exports = function(grunt) {
 						files : [ {
 							expand : true,
 							cwd : '<%= dist %>',
-							src : [ '<%= pkg.name %>.js' ],
+							src : [ '<%= pkg.name %>.js',
+									'<%= pkg.name %>.min.js' ],
 							dest : 'demo'
 						} ]
 					}
