@@ -5,50 +5,108 @@
 		style="position: absolute; top: 0; right: 0; border: 0;">
 	</a>
 	<div class="container">
-		<h1>Angular Shiro,</h1>
-		<h2>Address book demo application</h2>
-		<p>
-			This demo application is aimed at illustrating the capabilities of
-			<code>angular-shiro</code>
-		</p>
-		<p>
-			<a class="btn btn-primary btn-lg" role="button"
-				ng-href="https://github.com/gnavarro77/angular-shiro/tree/master/demo">View
-				source code &raquo;</a>
-		</p>
+		<div class="col-md-6">
+			<h1>Angular Shiro,</h1>
+			<h2>Address book demo application</h2>
+			<p>
+				<a class="btn btn-primary btn-lg" role="button"
+					ng-href="https://github.com/gnavarro77/angular-shiro/tree/master/demo">View
+					source code &raquo;</a>
+			</p>
+		</div>
+		<div class="col-md-6">
+			<div class="well">
+				<h4>ADMIN</h4>
+				<h5>
+					Log in as
+					<code>ADMIN</code>
+					with the following credentials :
+				</h5>
+				<ul>
+					<li><span><code>username</code> : admin</span></li>
+					<li><span><code>password</code> : admin</span></li>
+				</ul>
+				<h5>and enjoy all the features of the application without
+					limitation</h5>
+			</div>
+			<div>
+				<div class="well">
+					<h4>GUEST</h4>
+					<h5>
+						Log in as
+						<code>GUEST</code>
+						with the following credentials :
+					</h5>
+					<ul>
+						<li><span><code>username</code> : guest</span></li>
+						<li><span><code>password</code> : guest</span></li>
+					</ul>
+					<h5>and enjoy a strict limitation of the available features</h5>
+				</div>
+			</div>
+		</div>
 	</div>
 </div>
 
 <div class="container">
-	<!-- Example row of columns -->
+
 	<div class="row">
+
 		<div class="col-md-6">
-			<h2>ADMIN</h2>
-			<p>
-				Log in as
-				<code>ADMIN</code>
-				with the following credentials :
-			<ul>
-				<li><span><code>username</code> : admin</span></li>
-				<li><span><code>password</code> : admin</span></li>
-			</ul>
-			</p>
-			<p>and enjoy all the features of the application without
-				limitation</p>
+			<div class="well">
+				<p>Open a web console, refresh the page and check the logs.</p>
+				<p>
+					Filter
+					<code>anon</code>
+					is applied to the path
+					<code>/login</code>
+					in accordance with
+					<code>angular-shiro</code>
+					default configuration.
+				</p>
+				<pre>
+urls : {
+	'/' : 'anon',
+	'/index' : 'anon',
+	'/login' : 'anon',
+	'/signin' : 'anon',
+	'/logout' : 'logout',
+	'/signout' : 'logout'
+}				
+				</pre>
+			</div>
 		</div>
 		<div class="col-md-6">
-			<h2>GUEST</h2>
-			<p>
-				Log in as
-				<code>GUEST</code>
-				with the following credentials :
-			<ul>
-				<li><span><code>username</code> : guest</span></li>
-				<li><span><code>password</code> : guest</span></li>
-			</ul>
-			</p>
-			<p>and enjoy a strict limitation of the available features</p>
+			<div class="well">
+				<p>
+					Try to type in the following path
+					<code>/#/app</code>
+					in your browser navigation bar.
+				</p>
+				<p>
+					In the logs you will notice that the
+					<code>authc</code>
+					filter is applied and as the current
+					<code>Subject</code>
+					is not autenticated he is redirected to the configured
+					<code>loginUrl</code>
+					which is by default
+					<code>/login</code>
+					.
+				</p>
+				<p>To get such a behavior we had to had the following
+					declaration :
+				<pre>
+angular.module('demo', [ 'angularShiro'])
+	.config(['angularShiroConfigProvider', function(config){
+		// Subject must be authenticated to access any path
+		config.options.urls['/**/*'] = 'authc';
+	}]);
+</pre>
+				</p>
+			</div>
 		</div>
 	</div>
+
 
 </div>

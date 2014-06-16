@@ -8,8 +8,18 @@
 <link
 	href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"
 	rel="stylesheet" />
+
+<style>
+.ng-cloak {
+	display: none;
+}
+
+.has-error .form-control {
+	background-color: #f2dede;
+}
+</style>
 </head>
-<body ng-controller="DemoCtrl" ng-cloak>
+<body ng-controller="DemoCtrl">
 
 
 	<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -33,11 +43,11 @@
 			<div class="navbar-collapse collapse">
 				<form name="loginForm" class="navbar-form navbar-right" role="form"
 					novalidate ng-submit="logIn()" not-authenticated>
-					<div class="form-group">
+					<div class="form-group" ng-class="{'has-error' : errauthc}">
 						<input type="text" placeholder="Username" class="form-control"
-							ng-model="token.username" required>
+							ng-model="token.username"  required>
 					</div>
-					<div class="form-group">
+					<div class="form-group" ng-class="{'has-error' : errauthc}">
 						<input type="password" placeholder="Password" class="form-control"
 							ng-model="token.password" required>
 					</div>
@@ -48,7 +58,7 @@
 				</form>
 				<a ng-href="#/logout">
 					<button type="submit" class="btn btn-default navbar-btn pull-right"
-						authenticated>
+						authenticated ng-cloak>
 						<span class="glyphicon glyphicon-log-out"></span> Log out
 					</button>
 				</a>

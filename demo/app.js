@@ -6,9 +6,8 @@ var demo = angular
 				[ '$routeProvider', 'angularShiroConfigProvider',
 						function($routeProvider, config) {
 
-							// Subject/User must be authenticated to access any
-							// page
-							config.options.urls['/**/*'] = 'authc'
+							// Subject must be authenticated to access any path
+							config.options.urls['/**/*'] = 'authc';
 
 							$routeProvider.when('/login', {
 								templateUrl : 'partials/welcome.html'
@@ -73,6 +72,9 @@ var demo = angular
 									'{"token":{"principal":"guest","credentials":"guest"}}')
 							.respond(guest);
 
+					$httpBackend.whenPOST('/api/authenticate').respond(401,
+							null);
+
 				});
 
 demo
@@ -88,11 +90,16 @@ demo
 						function($scope, $rootScope, $timeout, subject,
 								usernamePasswordToken, $location) {
 
+							$scope.errauthc = false;
+
 							$scope.token = usernamePasswordToken;
 
 							$scope.logIn = function() {
 								subject.login($scope.token).then(function() {
+									$scope.errauthc = false;
 									$location.path('/app');
+								}, function(data) {
+									$scope.errauthc = true;
 								});
 							}
 
