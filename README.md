@@ -22,7 +22,7 @@ Authentication is `Subject` based.
 
 The `Subject` is availbale for injection under the name `subject`.
 
-You can make a login attempt for a Subject/user through the use of `subject` method [login(token)](http://gnavarro77.github.io/angular-shiro/docs/#/api/angularShiro.services.subject) method
+You can make a login attempt for a Subject/user through the use of `subject` method [login(token)](http://gnavarro77.github.io/angular-shiro/docs/#/api/angularShiro.services.subject)
 
         var token = new UsernamePasswordToken('username','password');
         subject.login(token);
@@ -119,8 +119,9 @@ _URL_Ant_Path_Expression_ = _Path_Specific_Filter_Chain_
 _URL_Ant_Path_Expression_ is an Ant-style path expression. 
 
 For example, 
-
+	
     '/admin/**' = 'authc, roles["ADMIN"]'
+    '/newsletter/* = 'perms["newsletter$read", "newsletter$edit"]'
 
 declares that "any path of `/admin` or any of it's sub paths (`/admin/user`,`/admin/user/profile`) will trigger the 'authc, roles["ADMIN"]' filter chain.
 
@@ -132,6 +133,6 @@ The default _Filter_ instances available automatically for configuration are :
 | ------------- |-------------
 | anon      | Filter that allows access to a path immeidately without performing security checks of any kind
 | authc     | The Subject must be authenticated for the request to continue, otherwise forces the user to login by redirecting to the configured `loginUrl`
-| logout    | Simple Filter that, upon location change, will immediately log-out the currently executing `subject` and then redirect them to a configured `redirectUrl`
+| logout    | Simple Filter that, upon location change, will immediately log-out the currently executing `subject` and then redirect them to a configured `logout.redirectUrl`
 | perms     | Filter that allows access if the current user has the permissions specified by the mapped value, or denies access if the user does not have all of the permissions specified
 | roles     | Filter that allows access if the current user has the roles specified by the mapped value, or denies access if the user does not have all of the roles specified
