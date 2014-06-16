@@ -458,7 +458,9 @@ var permsFilter = [
 			}
 		} ];
 /**
- * 
+ * Filter that allows access if the current user has the roles specified by the
+ * mapped value, or denies access if the user does not have all of the roles
+ * specified
  */
 var rolesFilter = [
 		'subject',

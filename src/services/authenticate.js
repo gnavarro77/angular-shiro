@@ -23,7 +23,7 @@
  * 
  * <pre>
  * app.config([ 'authenticatorProvider', function(authenticatorProvider) {
- * 	authenticatorProvider.setUri('path/to/my/authentication/service');
+ *    authenticatorProvider.setUri('path/to/my/authentication/service');
  * } ]);
  * </pre>
  * 

@@ -2,9 +2,42 @@
  * @ngdoc object
  * @name angularShiro.services.authenticationResponseParser
  * 
- * @description <code>AuthenticationResponseParser</code> is response of
- *              validating then parsing the response received from the backend
- *              authentication service
+ * @description `AuthenticationResponseParser` is responsible of validating then
+ *              parsing the response received from the authentication
+ *              service backend
+ * 
+ * # Response
+ * 
+ * The response returned from the backend have to be a `json` object that comply to the following structure :
+<pre>
+	{
+		info : {
+			authc : {
+				principal : {
+					// the Suject/User principal, for example
+					"login":"edegas",
+					"apiKey":"*******"
+				},
+				credentials : {
+					// the Subject/User credentials, for example
+					"name" : "Edgar Degas",
+					"email":"degas@mail.com"
+				}
+			},
+			authz : {
+				roles:[ 
+					// list of the Subject/User roles, for example
+					"GUEST" 
+				],
+				permissions:[ 
+					// list of the Subject/User permissions, for example
+					"newsletter$read",
+					"book$*",
+				]
+			}
+		}
+	}
+</pre>
  * 
  * @since 0.0.1
  */

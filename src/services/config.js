@@ -15,7 +15,7 @@
  * 
  * <pre>
  *  app.config([ 'angularShiroConfigProvider', function(config) {
- *  config.options.
+ *  	// Customize the configuration
  *  } ]);
  * </pre>
  */
