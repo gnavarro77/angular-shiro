@@ -2,17 +2,22 @@
 
 var demo = angular
 		.module('demo', [ 'angularShiro', 'ngRoute', 'ngMockE2E' ])
-		.config([ '$routeProvider', function($routeProvider) {
+		.config(
+				[ '$routeProvider', 'angularShiroConfigProvider',
+						function($routeProvider, config) {
 
-			$routeProvider.when('/welcome', {
-				templateUrl : 'partials/welcome.html'
-			}).when('/app', {
-				templateUrl : 'partials/app.html'
-			}).otherwise({
-				redirectTo : '/welcome'
-			});
+							// Subject must be authenticated to access any path
+							config.options.urls['/**/*'] = 'authc';
 
-		} ])
+							$routeProvider.when('/login', {
+								templateUrl : 'partials/welcome.html'
+							}).when('/app', {
+								templateUrl : 'partials/app.html'
+							}).otherwise({
+								redirectTo : '/login'
+							});
+
+						} ])
 		.run(
 				function($httpBackend, $rootScope, subject) {
 
@@ -67,6 +72,9 @@ var demo = angular
 									'{"token":{"principal":"guest","credentials":"guest"}}')
 							.respond(guest);
 
+					$httpBackend.whenPOST('/api/authenticate').respond(401,
+							null);
+
 				});
 
 demo
@@ -82,11 +90,16 @@ demo
 						function($scope, $rootScope, $timeout, subject,
 								usernamePasswordToken, $location) {
 
+							$scope.errauthc = false;
+
 							$scope.token = usernamePasswordToken;
 
 							$scope.logIn = function() {
 								subject.login($scope.token).then(function() {
+									$scope.errauthc = false;
 									$location.path('/app');
+								}, function(data) {
+									$scope.errauthc = true;
 								});
 							}
 

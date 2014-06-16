@@ -90,8 +90,8 @@ NG_DOCS={
       "shortName": "angularShiro.services.angularShiroConfig",
       "type": "service",
       "moduleName": "angularShiro.services",
-      "shortDescription": "Angular Shiro Configuration",
-      "keywords": "angular angularshiro angularshiroconfig angularshiroconfigprovider api app config configuration custom default function logout options path service services shiro uri"
+      "shortDescription": "Angular Shiro Configuration # Default configuration",
+      "keywords": "angular angularshiro angularshiroconfig angularshiroconfigprovider api app config configuration custom customize default function logout options path service services shiro uri"
     },
     {
       "section": "api",
@@ -108,8 +108,8 @@ NG_DOCS={
       "shortName": "angularShiro.services.authenticationResponseParser",
       "type": "object",
       "moduleName": "angularShiro.services",
-      "shortDescription": "AuthenticationResponseParser is response of",
-      "keywords": "angularshiro api authentication authenticationresponseparser backend credentials data encapsulating method object parse parsed parsing passed principals received response service services subject subsystem token validates validating verification"
+      "shortDescription": "AuthenticationResponseParser is responsible of validating then",
+      "keywords": "angularshiro api authc authentication authenticationresponseparser authz backend comply credentials data degas encapsulating example info json list method object parse parsed parsing passed permissions principal principals received response responsible returned roles service services structure subject subsystem suject token validates validating verification"
     },
     {
       "section": "api",
