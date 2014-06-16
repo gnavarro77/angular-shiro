@@ -21,7 +21,7 @@ function Permission(wildcardString, caseSensitive) {
 	 * @description the token representing wildcard
 	 * @returns {string} the token representing wildcard
 	 */
-	this.WILDCARD_TOKEN = "*";
+	this.WILDCARD_TOKEN = '*';
 	/**
 	 * @ngdoc property
 	 * @name Permission#PART_DIVIDER_TOKEN
@@ -30,7 +30,7 @@ function Permission(wildcardString, caseSensitive) {
 	 * @returns {string} the string used to separate the different parts of a
 	 *          token
 	 */
-	this.PART_DIVIDER_TOKEN = "$";
+	this.PART_DIVIDER_TOKEN = '$';
 	/**
 	 * @ngdoc property
 	 * @name Permission#SUBPART_DIVIDER_TOKEN
@@ -38,7 +38,7 @@ function Permission(wildcardString, caseSensitive) {
 	 * @description the string used to separate multiple tokens
 	 * @returns {string} the string used to separate multiple tokens
 	 */
-	this.SUBPART_DIVIDER_TOKEN = ",";
+	this.SUBPART_DIVIDER_TOKEN = ',';
 	/**
 	 * @ngdoc property
 	 * @name Permission#caseSensitive
@@ -47,7 +47,7 @@ function Permission(wildcardString, caseSensitive) {
 	 * @returns {string} flag indicating if the comparisons are case sensitive
 	 *          or not
 	 */
-	this.caseSensitive = caseSensitive | false;
+	this.caseSensitive = (caseSensitive) ? caseSensitive : false;
 
 	/**
 	 * @ngdoc property
@@ -104,7 +104,7 @@ function Permission(wildcardString, caseSensitive) {
 			}
 		}
 		return implies;
-	}
+	};
 
 	/**
 	 * Returns <code>true</code> if all their parts are contained in our
@@ -122,13 +122,13 @@ function Permission(wildcardString, caseSensitive) {
 	this.containsAll = function(ourPart, theirPart) {
 		var contains = true;
 		for ( var i = 0; i < theirPart.length; i++) {
-			if (ourPart.indexOf(theirPart[i]) == -1) {
+			if (ourPart.indexOf(theirPart[i]) === -1) {
 				contains = false;
 				break;
 			}
 		}
 		return contains;
-	}
+	};
 
 	/**
 	 * Returns <code>true</code> if the part contains the wildcard token,
@@ -142,7 +142,7 @@ function Permission(wildcardString, caseSensitive) {
 	 */
 	this.containsWildCardToken = function(part) {
 		return part.indexOf(this.WILDCARD_TOKEN) > -1;
-	}
+	};
 
 	/**
 	 * Returns the parts composing the specified wildcard string
@@ -156,7 +156,7 @@ function Permission(wildcardString, caseSensitive) {
 	 * @private
 	 */
 	this.resolveParts = function(wildcardString, caseSensitive) {
-		var parts = new Array();
+		var parts = [];
 		if (angular.isDefined(wildcardString)
 				&& angular.isString(wildcardString)) {
 			wildcardString = (wildcardString.trim) ? wildcardString.trim()
@@ -164,7 +164,7 @@ function Permission(wildcardString, caseSensitive) {
 			var tokens = wildcardString.split(this.PART_DIVIDER_TOKEN);
 			angular.forEach(tokens, function(token) {
 				parts.push(this.resolveSubParts(token, caseSensitive));
-			}, this)
+			}, this);
 		}
 		return parts;
 	};
@@ -181,18 +181,17 @@ function Permission(wildcardString, caseSensitive) {
 	 * @private
 	 */
 	this.resolveSubParts = function(part, caseSensitive) {
-		var subParts = new Array();
+		var subParts = [];
 		var tokens = part.split(this.SUBPART_DIVIDER_TOKEN);
 		var idx = 0;
-		angular.forEach(tokens,
-				function(token) {
-					token = (token.trim) ? token.trim() : token;
-					token = (caseSensitive == false) ? angular.lowercase(token)
-							: token;
-					subParts[idx++] = token;
-				});
+		angular.forEach(tokens, function(token) {
+			token = (token.trim) ? token.trim() : token;
+			token = (caseSensitive === false) ? angular.lowercase(token)
+					: token;
+			subParts[idx++] = token;
+		});
 		return subParts;
-	}
+	};
 
 	/**
 	 * Returns the wildcardString parts
@@ -202,11 +201,11 @@ function Permission(wildcardString, caseSensitive) {
 	 */
 	this.getParts = function() {
 		return this.parts;
-	}
+	};
 
 	// initialize
 	this.parts = this.resolveParts(wildcardString, caseSensitive);
-};
+}
 
 /**
  * @ngdoc object
@@ -216,9 +215,9 @@ function Permission(wildcardString, caseSensitive) {
  * @description AuthorizationInfo represents a Subject's authorization
  *              informations (roles, permissions, etc) used for access control
  *              operations
- *              
- *              
- *              
+ * 
+ * 
+ * 
  * @since 0.0.1
  */
 function AuthorizationInfo(roles, permissions) {
@@ -230,7 +229,7 @@ function AuthorizationInfo(roles, permissions) {
 	 * @description names of all roles assigned to a corresponding Subject
 	 * @returns {array} the Subject's roles
 	 */
-	this.roles = angular.isArray(roles) ? roles : new Array();
+	this.roles = angular.isArray(roles) ? roles : [];
 
 	/**
 	 * @ngdoc property
@@ -240,7 +239,7 @@ function AuthorizationInfo(roles, permissions) {
 	 *              Subject
 	 * @returns {array} the Subject's permissions
 	 */
-	this.permissions = angular.isArray(permissions) ? permissions : new Array();
+	this.permissions = angular.isArray(permissions) ? permissions : [];
 
 	/**
 	 * @ngdoc method
@@ -254,7 +253,7 @@ function AuthorizationInfo(roles, permissions) {
 	 */
 	this.getRoles = function() {
 		return this.roles;
-	}
+	};
 
 	/**
 	 * @ngdoc method
@@ -267,7 +266,7 @@ function AuthorizationInfo(roles, permissions) {
 	 */
 	this.getPermissions = function() {
 		return this.permissions;
-	}
+	};
 
 	/**
 	 * Returns all string-based permissions assigned to the corresponding
@@ -280,7 +279,7 @@ function AuthorizationInfo(roles, permissions) {
 	 * 
 	 */
 	this.getStringPermissions = function() {
-		var permissions = new Array();
+		var permissions = [];
 		for ( var i = 0, len = this.permissions.length; i < len; i++) {
 			var p = this.permissions[i];
 			if (angular.isString(p)) {
@@ -288,7 +287,7 @@ function AuthorizationInfo(roles, permissions) {
 			}
 		}
 		return permissions;
-	}
+	};
 	/**
 	 * Returns all <code>Permission</code>s assigned to the corresponding
 	 * Subject.
@@ -299,7 +298,7 @@ function AuthorizationInfo(roles, permissions) {
 	 * @since 0.0.1
 	 */
 	this.getObjectPermissions = function() {
-		var permissions = new Array();
+		var permissions = [];
 		for ( var i = 0, len = this.permissions.length; i < len; i++) {
 			var p = this.permissions[i];
 			if (p instanceof Permission) {
@@ -307,8 +306,8 @@ function AuthorizationInfo(roles, permissions) {
 			}
 		}
 		return permissions;
-	}
-};
+	};
+}
 
 /**
  * @ngdoc object
@@ -345,19 +344,19 @@ function Authorizer() {
 	 * 
 	 */
 	this.setAuthorizationInfo = function(authorizationInfo) {
-		if (!authorizationInfo || authorizationInfo == null
+		if (!authorizationInfo || authorizationInfo === null
 				|| !(authorizationInfo instanceof AuthorizationInfo)) {
 			throw {
-				'illegalArgumùentException' : 'invalid value for authorizationInfo'
+				'illegalArgumentException' : 'invalid value for authorizationInfo'
 			};
 		}
 		this.authorizationInfo = authorizationInfo;
 		this.permissions = this.getPermissions(authorizationInfo);
-	}
-	
+	};
+
 	this.clear = function() {
 		this.authorizationInfo = this.permissions = null;
-	}
+	};
 
 	/**
 	 * @ngdoc method
@@ -376,7 +375,7 @@ function Authorizer() {
 	this.isPermitted = function(permission) {
 		var result;
 		if (angular.isArray(permission)) {
-			result = new Array();
+			result = [];
 			angular.forEach(permission, function(p) {
 				result.push(this.isObjectPermissionPermitted(this
 						.resolvePermission(p)));
@@ -386,7 +385,7 @@ function Authorizer() {
 					.resolvePermission(permission));
 		}
 		return result;
-	}
+	};
 
 	/**
 	 * @ngdoc method
@@ -402,8 +401,8 @@ function Authorizer() {
 	 *         permitted, <code>false</code> otherwise.
 	 */
 	this.isPermittedAll = function(permissions) {
-		return (this.isPermitted(permissions).indexOf(false) == -1);
-	}
+		return (this.isPermitted(permissions).indexOf(false) === -1);
+	};
 
 	/**
 	 * @ngdoc method
@@ -424,7 +423,7 @@ function Authorizer() {
 			hasRole = (this.authorizationInfo.getRoles().indexOf(role) > -1);
 		}
 		return hasRole;
-	}
+	};
 
 	/**
 	 * @ngdoc method
@@ -441,14 +440,14 @@ function Authorizer() {
 	 *         <code>false</code> value indicates that does not have the role
 	 */
 	this.hasRoles = function(roles) {
-		var result = new Array();
+		var result = [];
 		if (roles && angular.isArray(roles)) {
 			angular.forEach(roles, function(role) {
 				result.push(this.hasRole(role));
 			}, this);
 		}
 		return result;
-	}
+	};
 
 	/**
 	 * @ngdoc method
@@ -463,8 +462,8 @@ function Authorizer() {
 	 *         <code>false</code> otherwise.
 	 */
 	this.hasAllRoles = function(roles) {
-		return (this.hasRoles(roles).indexOf(false) == -1);
-	}
+		return (this.hasRoles(roles).indexOf(false) === -1);
+	};
 
 	/**
 	 * Returns the permission objects collected out of the
@@ -514,6 +513,6 @@ function Authorizer() {
 	this.resolvePermission = function(permission) {
 		return angular.isString(permission) ? new Permission(permission)
 				: permission;
-	}
+	};
 
 }

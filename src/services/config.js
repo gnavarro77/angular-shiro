@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * @ngdoc service
  * @name angularShiro.services.angularShiroConfig
@@ -38,9 +40,9 @@ function AngularShiroConfigProvider() {
 		logout : {
 			uri : '/api/logout',
 			path : 'logout',
-			redirectUrl : '/',
+			redirectUrl : '/'
 		}
-	}
+	};
 
 	this.$get = [ function() {
 		return this.options;

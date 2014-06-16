@@ -15,15 +15,14 @@
  * <span class=" alert-danger">This service is not intended to be accessed
  * directly; It's meant to be used internally by the `subject` service.</span>
  * 
- * 
- * # Configuration
+ *  # Configuration
  * 
  * In case that the default behavior of the `authenticator` service does not fit
  * your needs you can - specify our own uri (if that the point of contention)
  * 
  * <pre>
  * app.config([ 'authenticatorProvider', function(authenticatorProvider) {
- *    authenticatorProvider.setUri('path/to/my/authentication/service');
+ * 	authenticatorProvider.setUri('path/to/my/authentication/service');
  * } ]);
  * </pre>
  * 
@@ -38,7 +37,7 @@
 // */
 function AuthenticatorProvider() {
 
-	var uri = "/api/authenticate";
+	var uri = '/api/authenticate';
 
 	// /**
 	// * @ngdoc property
@@ -57,7 +56,7 @@ function AuthenticatorProvider() {
 	this.setDelegate = function(delegate) {
 		this.delegate = delegate;
 		return this;
-	}
+	};
 
 	this.$get = [ '$q', '$http', '$timeout', function($q, $http, $timeout) {
 		return {
@@ -85,7 +84,7 @@ function AuthenticatorProvider() {
 				return deferred.promise;
 			}
 
-		}
+		};
 	} ];
 
 }
@@ -190,7 +189,7 @@ function AuthenticationInfo(principal, credentials) {
 	 */
 	this.getPrincipal = function() {
 		return this.principal;
-	}
+	};
 
 	/**
 	 * @ngdoc method

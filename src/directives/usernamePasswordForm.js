@@ -8,11 +8,11 @@
  * @description The <code>usernamePasswordForm</code> directive will display a
  *              simple <code>username / password</code> form with built-in
  *              integration with `angular-shiro` authentication mechanism.
- *  #Style
- *  
- *  Form markup is based on latest {@link http://getbootstrap.com/css/#forms Bootstrap form documentation}
- *               
- *               
+ *              #Style
+ * 
+ * Form markup is based on latest
+ * {@link http://getbootstrap.com/css/#forms Bootstrap form documentation}
+ * 
  *  # Default labels
  * 
  * <pre>
@@ -33,35 +33,20 @@
  * @param {object=}
  *            labels custom labels
  * @param {expression=}
- *            onSuccess Expression to evaluate upon
- *            successful authentication
+ *            onSuccess Expression to evaluate upon successful authentication
  * @param {expression=}
- *            onError Expression to evaluate upon
- *            authentication failure
- *            
- * @example
-<example module="angularShiro"> 
-	<file name="index.html"> 
-		<div ng-controller="Ctrl">
-			<username-password-form
-			 	labels="{{myLabels}}"
-				on-error="error()">
-		</div> 
-	</file>
-	<file name="app.js">
-	function Ctrl($scope) {
-		
-		$scope.myLabels = {
-			'field.username.placeholder' : 'Email',
-			'button.submit.label' : 'Login'
-		};
-	
-		$scope.error = function() {
-			alert('An error occured!');
-		}
-	}
-	</file>
-</example>	
+ *            onError Expression to evaluate upon authentication failure
+ * 
+ * @example <example module="angularShiro"> <file name="index.html"> <div
+ *          ng-controller="Ctrl"> <username-password-form labels="{{myLabels}}"
+ *          on-error="error()"> </div> </file> <file name="app.js"> function
+ *          Ctrl($scope) {
+ * 
+ * $scope.myLabels = { 'field.username.placeholder' : 'Email',
+ * 'button.submit.label' : 'Login' };
+ * 
+ * $scope.error = function() { alert('An error occured!'); } } </file>
+ * </example>
  */
 var usernamePasswordFormDirective = [
 		'subject',
@@ -84,9 +69,10 @@ var usernamePasswordFormDirective = [
 				link : function($scope, $element, $attr) {
 					$scope.error = false;
 					$scope.token = token;
-					
+
 					if (angular.isDefined($attr.labels)) {
-						$scope.labels = angular.extend(labels, angular.fromJson($attr.labels));
+						$scope.labels = angular.extend(labels, angular
+								.fromJson($attr.labels));
 					} else {
 						$scope.labels = labels;
 					}
@@ -115,7 +101,7 @@ var usernamePasswordFormDirective = [
 								});
 							}
 						});
-					}
+					};
 				}
 			};
 		} ];

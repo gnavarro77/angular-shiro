@@ -1,43 +1,42 @@
+'use strict';
+
 /**
  * @ngdoc object
  * @name angularShiro.services.authenticationResponseParser
  * 
  * @description `AuthenticationResponseParser` is responsible of validating then
- *              parsing the response received from the authentication
- *              service backend
+ *              parsing the response received from the authentication service
+ *              backend # Response
  * 
- * # Response
+ * The response returned from the backend have to be a `json` object that comply
+ * to the following structure :
  * 
- * The response returned from the backend have to be a `json` object that comply to the following structure :
-<pre>
-	{
-		info : {
-			authc : {
-				principal : {
-					// the Suject/User principal, for example
-					"login":"edegas",
-					"apiKey":"*******"
-				},
-				credentials : {
-					// the Subject/User credentials, for example
-					"name" : "Edgar Degas",
-					"email":"degas@mail.com"
-				}
-			},
-			authz : {
-				roles:[ 
-					// list of the Subject/User roles, for example
-					"GUEST" 
-				],
-				permissions:[ 
-					// list of the Subject/User permissions, for example
-					"newsletter$read",
-					"book$*",
-				]
-			}
-		}
-	}
-</pre>
+ * <pre>
+ * {
+ * 	info : {
+ * 		authc : {
+ * 			principal : {
+ * 				// the Suject/User principal, for example
+ * 				&quot;login&quot; : &quot;edegas&quot;,
+ * 				&quot;apiKey&quot; : &quot;*******&quot;
+ * 			},
+ * 			credentials : {
+ * 				// the Subject/User credentials, for example
+ * 				&quot;name&quot; : &quot;Edgar Degas&quot;,
+ * 				&quot;email&quot; : &quot;degas@mail.com&quot;
+ * 			}
+ * 		},
+ * 		authz : {
+ * 			roles : [
+ * 			// list of the Subject/User roles, for example
+ * 			&quot;GUEST&quot; ],
+ * 			permissions : [
+ * 			// list of the Subject/User permissions, for example
+ * 			&quot;newsletter$read&quot;, &quot;book$*&quot;, ]
+ * 		}
+ * 	}
+ * }
+ * </pre>
  * 
  * @since 0.0.1
  */
@@ -64,89 +63,53 @@ function AuthenticationResponseParser() {
 	this.parse = function(data) {
 		this.checkValidity(data);
 		return {
-			authc : this.parseAuthc(data['info']['authc']),
-			authz : this.parseAuthz(data['info']['authz']),
-		}
+			authc : this.parseAuthc(data.info.authc),
+			authz : this.parseAuthz(data.info.authz)
+		};
 	};
 
 	this.parseAuthc = function(authc) {
-		return new AuthenticationInfo(authc['principal'], authc['credentials']);
-	}
+		return new AuthenticationInfo(authc.principal, authc.credentials);
+	};
 
 	this.parseAuthz = function(authz) {
-		return new AuthorizationInfo(authz['roles'], authz['permissions']);
-	}
+		return new AuthorizationInfo(authz.roles, authz.permissions);
+	};
 
 	/**
 	 * 
 	 */
 	this.checkValidity = function(data) {
-		if (!angular.isDefined(data) || !angular.isDefined(data['info'])
-				|| !this.isAuthcValid(data['info'])
-				|| !this.isAuthzValid(data['info'])) {
-			var msg = 'Authentication response must comply with the following structure\n\n';
-			msg += this.responseStructureDescription();
+		if (!angular.isDefined(data) || !angular.isDefined(data.info)
+				|| !this.isAuthcValid(data.info)
+				|| !this.isAuthzValid(data.info)) {
+			var msg = 'Response does not match expected structure.';
 			throw {
 				'name' : 'ParseException',
 				'message' : msg
-			}
+			};
 		}
-	}
-
-	this.isAuthcValid = function(info) {
-		var valid = angular.isDefined(info['authc']);
-		if (valid) {
-			var authc = info['authc'];
-			valid = angular.isDefined(authc['principal'])
-					&& angular.isDefined(authc['credentials']);
-		}
-		return valid;
-	}
-
-	this.isAuthzValid = function(info) {
-		var valid = angular.isDefined(info['authz']);
-		if (valid) {
-			var authz = info['authz'];
-			valid = angular.isDefined(authz['roles'])
-					&& angular.isDefined(authz['permissions']);
-		}
-		return valid;
-	}
-
-	/**
-	 * 
-	 */
-	this.responseStructureDescription = function() {
-		var text = "{\n"
-				+ "  \"info\": {\n"
-				+ "    \"authc\": {\n"
-				+ "      \"principal\": \"Subject\'s principal\",\n"
-				+ "      \"credentials\": {\n"
-				+ "        Object which properties are Subject\'s credentials\n"
-				+ "      },\n"
-				+ "    \"authz\": {\n"
-				+ "        \"roles\" : Array of the Suject's roles,\n"
-				+ "        \"permissions\" : Array of the Subject's permissions\n"
-				+ "    }\n" + "  }\n" + "}";
-		text += "\n\n Following is an example of an authentication response \n\n"
-		text += "{\n"
-				+ "  \"info\": {\n"
-				+ "    \"authc\": {\n"
-				+ "      \"principal\": \"edegas\",\n"
-				+ "      \"credentials\": {\n"
-				+ "        \"name\": \"Edgar Degas\",\n"
-				+ "        \"login\": \"edegas\",\n"
-				+ "        \"email\": \"edegas@mail.com\"\n"
-				+ "      }\n"
-				+ "    },\n"
-				+ "    \"authz\": {\n"
-				+ "        \"roles\" : [\"ADMIN\", \"DEVELOPPER\"],\n"
-				+ "        \"permissions\" : [\"address$*\", \"book$view\", ...]\n"
-				+ "    }\n" + "  }\n" + "}";
-		return text;
-
 	};
 
+	this.isAuthcValid = function(info) {
+		var valid = angular.isDefined(info.authc);
+		if (valid) {
+			var authc = info.authc;
+			valid = angular.isDefined(authc.principal)
+					&& angular.isDefined(authc.credentials);
+		}
+		return valid;
+	};
+
+	this.isAuthzValid = function(info) {
+		var valid = angular.isDefined(info.authz);
+		if (valid) {
+			var authz = info.authz;
+			valid = angular.isDefined(authz.roles)
+					&& angular.isDefined(authz.permissions);
+		}
+		return valid;
+	};
 }
 
 /**
@@ -239,8 +202,8 @@ function Subject(authenticator, authorizer, authenticationResponseParser) {
 		var me = this;
 		promise.then(function(data, status, headers, config) {
 			var infos = authenticationResponseParser.parse(data);
-			me.authenticationInfo = infos['authc'];
-			me.authorizer.setAuthorizationInfo(infos['authz']);
+			me.authenticationInfo = infos.authc;
+			me.authorizer.setAuthorizationInfo(infos.authz);
 			me.authenticated = true;
 			token.username = null;
 			token.password = null;
@@ -266,7 +229,7 @@ function Subject(authenticator, authorizer, authenticationResponseParser) {
 	 */
 	this.logout = function() {
 		this.clear();
-	}
+	};
 
 	/**
 	 * 
@@ -275,7 +238,7 @@ function Subject(authenticator, authorizer, authenticationResponseParser) {
 		this.authenticated = false;
 		this.authenticationInfo = null;
 		this.authorizer.clear();
-	}
+	};
 
 	/**
 	 * Returns the application <code>Session</code> associated with this
@@ -364,7 +327,7 @@ function Subject(authenticator, authorizer, authenticationResponseParser) {
 	 *         not have the role at that index
 	 */
 	this.hasRoles = function(roles) {
-		var result = new Array();
+		var result = [];
 		angular.forEach(roles, function(role) {
 			result.push(this.hasRole(role));
 		}, this);
@@ -420,5 +383,5 @@ function Subject(authenticator, authorizer, authenticationResponseParser) {
 	this.isPermittedAll = function(permissions) {
 		return this.isAuthenticated()
 				&& this.authorizer.isPermittedAll(permissions);
-	}
-};
+	};
+}

@@ -80,7 +80,7 @@ var principalDirective = [ 'subject', function(subject) {
 					}
 				}
 				return text;
-			}
+			};
 		}
 	};
 } ];
