@@ -381,7 +381,7 @@ var anonymousFilter = [ 'subject', '$log',
 		function AnonymousFilter(subject, $log) {
 			return {
 				execute : function() {
-					$log.debug('anonymousFilter::execute');
+					$log.debug('anon::execute');
 					return true;
 				}
 			}
@@ -402,22 +402,20 @@ var formAuthenticationFilter = [
 				$location, $timeout, $log) {
 			return {
 				execute : function() {
-					$log.debug('formAuthenticationFilter::execute');
+					$log.debug('authc::execute');
 					return this.isAccessAllowed() || this.onAccessDenied();
 				},
 				isAccessAllowed : function() {
 					var accessAllowed = subject.isAuthenticated();
-					$log.debug('formAuthenticationFilter::isAccessAllowed => '
-							+ accessAllowed);
+					$log.debug('authc::isAccessAllowed => ' + accessAllowed);
 					return accessAllowed;
 				},
 				onAccessDenied : function() {
 					if (config.loginUrl) {
 						$timeout(function() {
 							$location.path(config.loginUrl);
-							$log
-									.debug('formAuthenticationFilter::redirecting to => '
-											+ config.loginUrl);
+							$log.debug('authc::redirecting to => '
+									+ config.loginUrl);
 
 						});
 					}
@@ -444,7 +442,7 @@ var logoutFilter = [
 					subject.logout();
 					if (config.logout && config.logout.redirectUrl) {
 						$location.path(config.logout.redirectUrl);
-						$log.debug('logoutFilter::redirecting to => '
+						$log.debug('logout::redirecting to => '
 								+ config.logout.redirectUrl);
 					}
 					return true;
@@ -465,21 +463,20 @@ var permsFilter = [
 		function PermsFilter(subject, config, $location, $timeout, $log) {
 			return {
 				execute : function(permissions) {
-					$log.debug('PermsFilter::execute');
+					$log.debug('perms::execute');
 					return this.isAccessAllowed(permissions)
 							|| this.onAccessDenied();
 				},
 				isAccessAllowed : function(permissions) {
 					var accessAllowed = subject.isPermittedAll(permissions);
-					$log.debug('PermsFilter::isAccessAllowed => '
-							+ accessAllowed);
+					$log.debug('perms::isAccessAllowed => ' + accessAllowed);
 					return accessAllowed;
 				},
 				onAccessDenied : function() {
 					if (config.loginUrl) {
 						$timeout(function() {
 							$location.path(config.loginUrl);
-							$log.debug('PermsFilter::redirecting to => '
+							$log.debug('perms::redirecting to => '
 									+ config.loginUrl);
 
 						});
@@ -502,20 +499,19 @@ var rolesFilter = [
 		function RolesFilter(subject, config, $location, $timeout, $log) {
 			return {
 				execute : function(roles) {
-					$log.debug('RolesFilter::execute');
+					$log.debug('roles::execute');
 					return this.isAccessAllowed(roles) || this.onAccessDenied();
 				},
 				isAccessAllowed : function(roles) {
 					var accessAllowed = subject.hasAllRoles(roles);
-					$log.debug('RolesFilter::isAccessAllowed => '
-							+ accessAllowed);
+					$log.debug('roles::isAccessAllowed => ' + accessAllowed);
 					return accessAllowed;
 				},
 				onAccessDenied : function() {
 					if (config.loginUrl) {
 						$timeout(function() {
 							$location.path(config.loginUrl);
-							$log.debug('RolesFilter::redirecting to => '
+							$log.debug('roles::redirecting to => '
 									+ config.loginUrl);
 
 						});
