@@ -2,17 +2,23 @@
 
 var demo = angular
 		.module('demo', [ 'angularShiro', 'ngRoute', 'ngMockE2E' ])
-		.config([ '$routeProvider', function($routeProvider) {
+		.config(
+				[ '$routeProvider', 'angularShiroConfigProvider',
+						function($routeProvider, config) {
 
-			$routeProvider.when('/welcome', {
-				templateUrl : 'partials/welcome.html'
-			}).when('/app', {
-				templateUrl : 'partials/app.html'
-			}).otherwise({
-				redirectTo : '/welcome'
-			});
+							// Subject/User must be authenticated to access any
+							// page
+							config.options.urls['/**/*'] = 'authc'
 
-		} ])
+							$routeProvider.when('/login', {
+								templateUrl : 'partials/welcome.html'
+							}).when('/app', {
+								templateUrl : 'partials/app.html'
+							}).otherwise({
+								redirectTo : '/login'
+							});
+
+						} ])
 		.run(
 				function($httpBackend, $rootScope, subject) {
 
