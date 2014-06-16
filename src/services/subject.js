@@ -208,7 +208,7 @@ function Subject(authenticator, authorizer, authenticationResponseParser) {
 			token.username = null;
 			token.password = null;
 		}, function(data, status, headers, config) {
-			this.clear();
+			me.clear();
 		});
 		return promise;
 	};
