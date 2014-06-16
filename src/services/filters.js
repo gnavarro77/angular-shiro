@@ -1,17 +1,14 @@
-'use strict'
+'use strict';
 
-/**
- * 
- */
 function PathMatcher() {
 
-	this.DEFAULT_PATH_SEPARATOR = "/";
+	this.DEFAULT_PATH_SEPARATOR = '/';
 
 	this.pathSeparator = this.DEFAULT_PATH_SEPARATOR;
 
 	this.setPathSeparator = function(pathSeparator) {
-		this.pathSeparator = (pathSeparator != null ? pathSeparator
-				: DEFAULT_PATH_SEPARATOR);
+		this.pathSeparator = (pathSeparator !== null ? pathSeparator
+				: this.DEFAULT_PATH_SEPARATOR);
 	};
 
 	this.match = function(pattern, path) {
@@ -19,7 +16,7 @@ function PathMatcher() {
 	};
 
 	this.doMatch = function(pattern, path, fullMatch) {
-		if (path.startsWith(this.pathSeparator) != pattern
+		if (path.startsWith(this.pathSeparator) !== pattern
 				.startsWith(this.pathSeparator)) {
 			return false;
 		}
@@ -33,7 +30,7 @@ function PathMatcher() {
 		// Match all elements up to the first **
 		while (pattIdxStart <= pattIdxEnd && pathIdxStart <= pathIdxEnd) {
 			var patDir = pattDirs[pattIdxStart];
-			if ("**" == patDir) {
+			if ('**' === patDir) {
 				break;
 			}
 			if (!this.matchStrings(patDir, pathDirs[pathIdxStart])) {
@@ -53,12 +50,12 @@ function PathMatcher() {
 			if (!fullMatch) {
 				return true;
 			}
-			if (pattIdxStart == pattIdxEnd && pattDirs[pattIdxStart] == "*"
+			if (pattIdxStart === pattIdxEnd && pattDirs[pattIdxStart] === '*'
 					&& path.endsWith(this.pathSeparator)) {
 				return true;
 			}
 			for ( var i = pattIdxStart; i <= pattIdxEnd; i++) {
-				if (!pattDirs[i] == "**") {
+				if (pattDirs[i] !== '**') {
 					return false;
 				}
 			}
@@ -66,15 +63,15 @@ function PathMatcher() {
 		} else if (pattIdxStart > pattIdxEnd) {
 			// String not exhausted, but pattern is. Failure.
 			return false;
-		} else if (!fullMatch && "**" == pattDirs[pattIdxStart]) {
-			// Path start definitely matches due to "**" part in pattern.
+		} else if (!fullMatch && '**' === pattDirs[pattIdxStart]) {
+			// Path start definitely matches due to '**' part in pattern.
 			return true;
 		}
 
 		// up to last '**'
 		while (pattIdxStart <= pattIdxEnd && pathIdxStart <= pathIdxEnd) {
 			var patDir = pattDirs[pattIdxEnd];
-			if (patDir == "**") {
+			if (patDir === '**') {
 				break;
 			}
 			if (!this.matchStrings(patDir, pathDirs[pathIdxEnd])) {
@@ -86,22 +83,22 @@ function PathMatcher() {
 		if (pathIdxStart > pathIdxEnd) {
 			// String is exhausted
 			for ( var i = pattIdxStart; i <= pattIdxEnd; i++) {
-				if (!(pattDirs[i] == "**")) {
+				if (pattDirs[i] !== '**') {
 					return false;
 				}
 			}
 			return true;
 		}
 
-		while (pattIdxStart != pattIdxEnd && pathIdxStart <= pathIdxEnd) {
+		while (pattIdxStart !== pattIdxEnd && pathIdxStart <= pathIdxEnd) {
 			var patIdxTmp = -1;
 			for ( var i = pattIdxStart + 1; i <= pattIdxEnd; i++) {
-				if (pattDirs[i] == "**") {
+				if (pattDirs[i] === '**') {
 					patIdxTmp = i;
 					break;
 				}
 			}
-			if (patIdxTmp == pattIdxStart + 1) {
+			if (patIdxTmp === pattIdxStart + 1) {
 				// '**/**' situation, so skip one
 				pattIdxStart++;
 				continue;
@@ -112,23 +109,19 @@ function PathMatcher() {
 			var strLength = (pathIdxEnd - pathIdxStart + 1);
 			var foundIdx = -1;
 
-			strLoop: for ( var i = 0; i <= strLength - patLength; i++) {
+			for ( var i = 0; i <= strLength - patLength; i++) {
 				for ( var j = 0; j < patLength; j++) {
-					String
-					subPat = (String)
-					pattDirs[pattIdxStart + j + 1];
-					String
-					subStr = (String)
-					pathDirs[pathIdxStart + i + j];
-					if (!matchStrings(subPat, subStr)) {
-						continue strLoop;
+					var subPat = pattDirs[pattIdxStart + j + 1];
+					var subStr = pathDirs[pathIdxStart + i + j];
+					if (!this.matchStrings(subPat, subStr)) {
+
 					}
 				}
 				foundIdx = pathIdxStart + i;
 				break;
 			}
 
-			if (foundIdx == -1) {
+			if (foundIdx === -1) {
 				return false;
 			}
 
@@ -137,7 +130,7 @@ function PathMatcher() {
 		}
 
 		for ( var i = pattIdxStart; i <= pattIdxEnd; i++) {
-			if (!(pattDirs[i] == "**")) {
+			if (!(pattDirs[i] === '**')) {
 				return false;
 			}
 		}
@@ -160,29 +153,29 @@ function PathMatcher() {
 
 		if (!containsStar) {
 			// No '*'s, so we make a shortcut
-			if (patIdxEnd != strIdxEnd) {
+			if (patIdxEnd !== strIdxEnd) {
 				return false; // Pattern and string do not have the
 				// same size
 			}
 			for ( var i = 0; i <= patIdxEnd; i++) {
 				ch = patArr[i];
-				if (ch != '?') {
-					if (ch != strArr[i]) {
+				if (ch !== '?') {
+					if (ch !== strArr[i]) {
 						return false;// Character mismatch
 					}
 				}
 			}
 			return true; // String matches against pattern
 		}
-		if (patIdxEnd == 0) {
+		if (patIdxEnd === 0) {
 			return true; // Pattern contains only '*', which matches
 			// anything
 		}
 
 		// Process characters before first star
-		while ((ch = patArr[patIdxStart]) != '*' && strIdxStart <= strIdxEnd) {
-			if (ch != '?') {
-				if (ch != strArr[strIdxStart]) {
+		while ((ch = patArr[patIdxStart]) !== '*' && strIdxStart <= strIdxEnd) {
+			if (ch !== '?') {
+				if (ch !== strArr[strIdxStart]) {
 					return false;// Character mismatch
 				}
 			}
@@ -195,7 +188,7 @@ function PathMatcher() {
 			// left in the pattern. If so, we succeeded. Otherwise
 			// failure.
 			for ( var i = patIdxStart; i <= patIdxEnd; i++) {
-				if (patArr[i] != '*') {
+				if (patArr[i] !== '*') {
 					return false;
 				}
 			}
@@ -203,9 +196,9 @@ function PathMatcher() {
 		}
 
 		// Process characters after last star
-		while ((ch = patArr[patIdxEnd]) != '*' && strIdxStart <= strIdxEnd) {
-			if (ch != '?') {
-				if (ch != strArr[strIdxEnd]) {
+		while ((ch = patArr[patIdxEnd]) !== '*' && strIdxStart <= strIdxEnd) {
+			if (ch !== '?') {
+				if (ch !== strArr[strIdxEnd]) {
 					return false;// Character mismatch
 				}
 			}
@@ -218,7 +211,7 @@ function PathMatcher() {
 			// left in the pattern. If so, we succeeded. Otherwise
 			// failure.
 			for ( var i = patIdxStart; i <= patIdxEnd; i++) {
-				if (patArr[i] != '*') {
+				if (patArr[i] !== '*') {
 					return false;
 				}
 			}
@@ -228,15 +221,15 @@ function PathMatcher() {
 		// process pattern between stars. padIdxStart and patIdxEnd
 		// point
 		// always to a '*'.
-		while (patIdxStart != patIdxEnd && strIdxStart <= strIdxEnd) {
+		while (patIdxStart !== patIdxEnd && strIdxStart <= strIdxEnd) {
 			var patIdxTmp = -1;
 			for ( var i = patIdxStart + 1; i <= patIdxEnd; i++) {
-				if (patArr[i] == '*') {
+				if (patArr[i] === '*') {
 					patIdxTmp = i;
 					break;
 				}
 			}
-			if (patIdxTmp == patIdxStart + 1) {
+			if (patIdxTmp === patIdxStart + 1) {
 				// Two stars next to each other, skip the first one.
 				patIdxStart++;
 				continue;
@@ -250,8 +243,8 @@ function PathMatcher() {
 			strLoop: for ( var i = 0; i <= strLength - patLength; i++) {
 				for ( var j = 0; j < patLength; j++) {
 					ch = patArr[patIdxStart + j + 1];
-					if (ch != '?') {
-						if (ch != strArr[strIdxStart + i + j]) {
+					if (ch !== '?') {
+						if (ch !== strArr[strIdxStart + i + j]) {
 							continue strLoop;
 						}
 					}
@@ -261,7 +254,7 @@ function PathMatcher() {
 				break;
 			}
 
-			if (foundIdx == -1) {
+			if (foundIdx === -1) {
 				return false;
 			}
 
@@ -273,7 +266,7 @@ function PathMatcher() {
 		// left
 		// in the pattern. If so, we succeeded. Otherwise failure.
 		for ( var i = patIdxStart; i <= patIdxEnd; i++) {
-			if (patArr[i] != '*') {
+			if (patArr[i] !== '*') {
 				return false;
 			}
 		}
@@ -282,9 +275,9 @@ function PathMatcher() {
 
 	this.containsStar = function(str) {
 		var containsStar = false;
-		if (str && str != null) {
+		if (str && str !== null) {
 			for ( var i = 0; i < str.length; i++) {
-				if (str.charAt(i) == '*') {
+				if (str.charAt(i) === '*') {
 					containsStar = true;
 					break;
 				}
@@ -319,7 +312,7 @@ var filtersResolver = [
 						var tokens = str.split(',');
 						for ( var i = 0; i < tokens.length; i++) {
 							var filter = this.resolveFilter(tokens[i]);
-							if (filter != null) {
+							if (filter !== null) {
 								filters.push(filter);
 							}
 						}
@@ -384,30 +377,49 @@ var filtersResolver = [
  * 
  * @returns
  */
-var anonymousFilter = [ 'subject', function AnonymousFilter(subject) {
-	return {
-		execute : function() {
-			return true;
-		}
-	}
-} ];
+var anonymousFilter = [ 'subject', '$log',
+		function AnonymousFilter(subject, $log) {
+			return {
+				execute : function() {
+					$log.debug('anonymousFilter::execute');
+					return true;
+				}
+			}
+		} ];
 
 /**
  * The Subject must be authenticated for the request to continue, otherwise
  * forces the user to login by redirecting to the configured loginUrl
  */
-var formAuthenticationFilter = [ 'subject', 'angularShiroConfig', '$location',
-		function FormAuthenticationFilter(subject, config, $location) {
+var formAuthenticationFilter = [
+		'$rootScope',
+		'subject',
+		'angularShiroConfig',
+		'$location',
+		'$timeout',
+		'$log',
+		function FormAuthenticationFilter($rootScope, subject, config,
+				$location, $timeout, $log) {
 			return {
 				execute : function() {
+					$log.debug('formAuthenticationFilter::execute');
 					return this.isAccessAllowed() || this.onAccessDenied();
 				},
 				isAccessAllowed : function() {
-					return subject.isAuthenticated();
+					var accessAllowed = subject.isAuthenticated();
+					$log.debug('formAuthenticationFilter::isAccessAllowed => '
+							+ accessAllowed);
+					return accessAllowed;
 				},
 				onAccessDenied : function() {
 					if (config.loginUrl) {
-						$location.path(config.loginUrl);
+						$timeout(function() {
+							$location.path(config.loginUrl);
+							$log
+									.debug('formAuthenticationFilter::redirecting to => '
+											+ config.loginUrl);
+
+						});
 					}
 					return false;
 				}
@@ -419,13 +431,21 @@ var formAuthenticationFilter = [ 'subject', 'angularShiroConfig', '$location',
  * currently executing <code>subject</code> and then redirect them to a
  * configured <code>redirectUrl</code>
  */
-var logoutFilter = [ 'subject', 'angularShiroConfig', '$location',
-		function LogoutFilter(subject, config, $location) {
+var logoutFilter = [
+		'subject',
+		'angularShiroConfig',
+		'$location',
+		'$timeout',
+		'$log',
+		function LogoutFilter(subject, config, $location, $timeout, $log) {
 			return {
 				execute : function() {
+					$log.debug('logoutFilter::execute');
 					subject.logout();
 					if (config.logout && config.logout.redirectUrl) {
 						$location.path(config.logout.redirectUrl);
+						$log.debug('logoutFilter::redirecting to => '
+								+ config.logout.redirectUrl);
 					}
 					return true;
 				}
@@ -440,18 +460,29 @@ var permsFilter = [
 		'subject',
 		'angularShiroConfig',
 		'$location',
-		function PermsFilter(subject, config, $location) {
+		'$timeout',
+		'$log',
+		function PermsFilter(subject, config, $location, $timeout, $log) {
 			return {
 				execute : function(permissions) {
+					$log.debug('PermsFilter::execute');
 					return this.isAccessAllowed(permissions)
 							|| this.onAccessDenied();
 				},
 				isAccessAllowed : function(permissions) {
-					return subject.isPermittedAll(permissions);
+					var accessAllowed = subject.isPermittedAll(permissions);
+					$log.debug('PermsFilter::isAccessAllowed => '
+							+ accessAllowed);
+					return accessAllowed;
 				},
 				onAccessDenied : function() {
 					if (config.loginUrl) {
-						$location.path(config.loginUrl);
+						$timeout(function() {
+							$location.path(config.loginUrl);
+							$log.debug('PermsFilter::redirecting to => '
+									+ config.loginUrl);
+
+						});
 					}
 					return false;
 				}
@@ -466,17 +497,28 @@ var rolesFilter = [
 		'subject',
 		'angularShiroConfig',
 		'$location',
-		function PermsFilter(subject, config, $location) {
+		'$timeout',
+		'$log',
+		function RolesFilter(subject, config, $location, $timeout, $log) {
 			return {
 				execute : function(roles) {
+					$log.debug('RolesFilter::execute');
 					return this.isAccessAllowed(roles) || this.onAccessDenied();
 				},
 				isAccessAllowed : function(roles) {
-					return subject.hasAllRoles(roles);
+					var accessAllowed = subject.hasAllRoles(roles);
+					$log.debug('RolesFilter::isAccessAllowed => '
+							+ accessAllowed);
+					return accessAllowed;
 				},
 				onAccessDenied : function() {
 					if (config.loginUrl) {
-						$location.path(config.loginUrl);
+						$timeout(function() {
+							$location.path(config.loginUrl);
+							$log.debug('RolesFilter::redirecting to => '
+									+ config.loginUrl);
+
+						});
 					}
 					return false;
 				}
