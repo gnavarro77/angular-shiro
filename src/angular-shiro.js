@@ -26,7 +26,7 @@ var filters = {
 	'logout' : logoutFilter,
 	'perms' : permsFilter,
 	'roles' : rolesFilter
-}
+};
 
 for ( var filterName in filters) {
 	angularShiroServicesModule.factory(filterName, filters[filterName]);
@@ -43,7 +43,7 @@ var directives = {
 	'lacksPermission' : lacksPermissionDirective,
 	'principal' : principalDirective,
 	'usernamePasswordForm' : usernamePasswordFormDirective
-}
+};
 
 var moduleDirectives = angular.module('angularShiro.directives', []);
 
@@ -56,10 +56,11 @@ angular.module(
 		[ 'angularShiro.services', 'angularShiro.directives',
 				'angularShiro.templates' ]).run(
 		function($rootScope, $location, subject, angularShiroConfig,
-				filtersResolver) {
+				filtersResolver, $log) {
 
-			$rootScope.$on("$locationChangeStart", function(event, next,
+			$rootScope.$on('$locationChangeStart', function(event, next,
 					current) {
+				$log.debug('locationChangeStart => ' + next);
 				var filters = filtersResolver.resolve($location.path());
 				for ( var i = 0; i < filters.length; i++) {
 					var filter = filters[i];
