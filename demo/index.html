@@ -29,7 +29,7 @@
 						class="fa fa-github"></i> GitHub
 				</a></li>
 			</ul>
-			
+
 			<div class="navbar-collapse collapse">
 				<form name="loginForm" class="navbar-form navbar-right" role="form"
 					novalidate ng-submit="logIn()" not-authenticated>
@@ -46,26 +46,22 @@
 						<span class="glyphicon glyphicon-log-in"></span> Log in
 					</button>
 				</form>
-
-				<button type="submit" class="btn btn-default navbar-btn pull-right"
-					ng-click="logout()" authenticated>
-					<span class="glyphicon glyphicon-log-out"></span> Log out </a>
+				<a ng-href="#/logout">
+					<button type="submit" class="btn btn-default navbar-btn pull-right"
+						authenticated>
+						<span class="glyphicon glyphicon-log-out"></span> Log out
+					</button>
+				</a>
 			</div>
 		</div>
 	</div>
 
 	<div class="container" style="position: relative; top: 80px;" ng-view></div>
 
-	<!-- 	<hr> -->
-
-	<!-- 	<footer> -->
-	<!-- 		<p>&copy; Company 2014</p> -->
-	<!-- 	</footer> -->
-
 	<script src="https://code.angularjs.org/1.2.16/angular.min.js"></script>
 	<script src="https://code.angularjs.org/1.2.16/angular-route.min.js"></script>
 	<script src="https://code.angularjs.org/1.2.16/angular-mocks.js"></script>
-	<script src="angular-shiro.min.js"></script>
+	<script src="angular-shiro.js"></script>
 	<script src="app.js"></script>
 
 </body>
