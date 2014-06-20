@@ -31,7 +31,8 @@
     "test",
     "demo",
     "src",
-    "karma.conf.js"
+    "karma.conf.js",
+    ".travis.yml",
     "bower.json",
     "Gruntfile.js",
     "package.json",
