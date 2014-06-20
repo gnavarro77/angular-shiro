@@ -37,7 +37,8 @@
     "Gruntfile.js",
     "package.json",
     "README.md",
-    "LICENSE"
+    "LICENSE",
+    ".jshintrc"
   ],
   "dependencies": {
     "angular": "~1.2.16"
