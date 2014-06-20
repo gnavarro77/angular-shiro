@@ -105,14 +105,15 @@ module.exports = function(grunt) {
 						reporter : require('jshint-stylish')
 					},
 					all : [ 'Gruntfile.js', '<%= src %>/{,*/}*.js' ],
-				// test : {
-				// options : {
-				// jshintrc : 'test/.jshintrc'
-				// },
-				// src : [ 'test/spec/{,*/}*.js' ]
-				// }
 				},
-
+				bump : {
+					options : {
+						files : ['package.json', 'bower.json' ],
+						commit : true,
+						commitFiles : [ '-a' ],
+						push : true
+					}
+				},
 				ngdocs : {
 					options : {
 						dest : '<%= docs %>',
@@ -180,20 +181,16 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-contrib-jshint');
 	grunt.loadNpmTasks('grunt-ngmin');
-
 	grunt.loadNpmTasks('grunt-karma');
 	grunt.loadNpmTasks('grunt-html2js');
-
 	grunt.loadNpmTasks('grunt-ngdocs');
-
+	grunt.loadNpmTasks('grunt-bump');
 	grunt.loadNpmTasks('grunt-contrib-connect');
 
 	grunt.registerTask('doc', [ 'clean:docs', 'ngdocs' ]);
 	grunt.registerTask('test', [ 'karma' ]);
-
 	grunt.registerTask('build', [ 'clean:dist', 'html2js', 'concat:dist',
 			'ngmin:dist', 'uglify:dist', 'concat:banner', 'clean:build' ]);
-
 	grunt
 			.registerTask('pages', [ 'build', 'doc', 'clean:pages',
 					'copy:pages' ]);
