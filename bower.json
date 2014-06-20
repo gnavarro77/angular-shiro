@@ -29,7 +29,14 @@
   ],
   "ignore": [
     "test",
-    "demo"
+    "demo",
+    "src",
+    "karma.conf.js"
+    "bower.json",
+    "Gruntfile.js",
+    "package.json",
+    "README.md",
+    "LICENSE"
   ],
   "dependencies": {
     "angular": "~1.2.16"
