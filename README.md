@@ -181,3 +181,8 @@ The default _Filter_ instances available automatically for configuration are :
 | logout    | Simple Filter that, upon location change, will immediately log-out the currently executing `subject` and then redirect them to a configured `logout.redirectUrl`
 | perms     | Filter that allows access if the current user has the permissions specified by the mapped value, or denies access if the user does not have all of the permissions specified
 | roles     | Filter that allows access if the current user has the roles specified by the mapped value, or denies access if the user does not have all of the roles specified
+
+
+## API
+
+[API documentation](http://gnavarro77.github.io/angular-shiro/docs/#/api)
