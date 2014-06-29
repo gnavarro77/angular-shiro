@@ -31,6 +31,7 @@ or by downloading project as zip
 
 ```javascript
 <script type="text/javascript" src="path_to_angular_shiro/angular-shiro.min.js"></script>```
+
    - Add `angular-shiro` module to your application dependencies
 
 ```javascript
