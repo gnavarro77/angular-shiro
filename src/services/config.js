@@ -27,18 +27,18 @@ function AngularShiroConfigProvider() {
 		loginUrl : '/login',
 		urls : {
 			'/' : 'anon',
-			'/index' : 'anon',
-			'/login' : 'anon',
-			'/signin' : 'anon',
-			'/logout' : 'logout',
-			'/signout' : 'logout'
+			'index' : 'anon',
+			'login' : 'anon',
+			'signin' : 'anon',
+			'logout' : 'logout',
+			'signout' : 'logout'
 		},
 		login : {
-			uri : '/api/authenticate',
+			uri : 'api/authenticate',
 			path : 'index'
 		},
 		logout : {
-			uri : '/api/logout',
+			uri : 'api/logout',
 			path : 'logout',
 			redirectUrl : '/'
 		}
