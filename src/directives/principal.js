@@ -69,7 +69,6 @@ var principalDirective = [ 'subject', function(subject) {
 		scope : {},
 		template : '<span class="principal" ng-bind="getPrincipal()"></span>',
 		link : function(scope, element, attr) {
-			
 			scope.getPrincipal = function() {
 				var text = subject.getPrincipal();
 				if (angular.isObject(text)) {

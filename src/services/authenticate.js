@@ -37,28 +37,7 @@
 // */
 function AuthenticatorProvider() {
 
-	var uri = '/api/authenticate';
-
-	// /**
-	// * @ngdoc property
-	// * @name authenticatorProvider#setUri
-	// * @methodOf angularShiro.authenticatorProvider0
-	// * @description
-	// * @param {string=}
-	// * uri associated to the authentication process
-	// * @returns {*} itself (chaining)
-	// */
-	this.setUri = function(value) {
-		uri = value;
-		return this;
-	};
-
-	this.setDelegate = function(delegate) {
-		this.delegate = delegate;
-		return this;
-	};
-
-	this.$get = [ '$q', '$http', '$timeout', function($q, $http, $timeout) {
+	this.$get = [ '$q', '$http', '$timeout', 'angularShiroConfig', function($q, $http, $timeout, config) {
 		return {
 			/**
 			 * @ngdoc method
@@ -74,7 +53,7 @@ function AuthenticatorProvider() {
 					principal : (token) ? token.getPrincipal() : null,
 					credentials : (token) ? token.getCredentials() : null,
 				};
-				$http.post(uri, {
+				$http.post(config.login.uri, {
 					token : data
 				}).success(function(data, status, headers, config) {
 					deferred.resolve(data);
