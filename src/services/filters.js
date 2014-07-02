@@ -54,7 +54,7 @@ function PathMatcher() {
 					&& path.endsWith(this.pathSeparator)) {
 				return true;
 			}
-			for ( var i = pattIdxStart; i <= pattIdxEnd; i++) {
+			for (var i = pattIdxStart; i <= pattIdxEnd; i++) {
 				if (pattDirs[i] !== '**') {
 					return false;
 				}
@@ -82,7 +82,7 @@ function PathMatcher() {
 		}
 		if (pathIdxStart > pathIdxEnd) {
 			// String is exhausted
-			for ( var i = pattIdxStart; i <= pattIdxEnd; i++) {
+			for (var i = pattIdxStart; i <= pattIdxEnd; i++) {
 				if (pattDirs[i] !== '**') {
 					return false;
 				}
@@ -92,7 +92,7 @@ function PathMatcher() {
 
 		while (pattIdxStart !== pattIdxEnd && pathIdxStart <= pathIdxEnd) {
 			var patIdxTmp = -1;
-			for ( var i = pattIdxStart + 1; i <= pattIdxEnd; i++) {
+			for (var i = pattIdxStart + 1; i <= pattIdxEnd; i++) {
 				if (pattDirs[i] === '**') {
 					patIdxTmp = i;
 					break;
@@ -109,8 +109,8 @@ function PathMatcher() {
 			var strLength = (pathIdxEnd - pathIdxStart + 1);
 			var foundIdx = -1;
 
-			for ( var i = 0; i <= strLength - patLength; i++) {
-				for ( var j = 0; j < patLength; j++) {
+			for (var i = 0; i <= strLength - patLength; i++) {
+				for (var j = 0; j < patLength; j++) {
 					var subPat = pattDirs[pattIdxStart + j + 1];
 					var subStr = pathDirs[pathIdxStart + i + j];
 					if (!this.matchStrings(subPat, subStr)) {
@@ -129,7 +129,7 @@ function PathMatcher() {
 			pathIdxStart = foundIdx + patLength;
 		}
 
-		for ( var i = pattIdxStart; i <= pattIdxEnd; i++) {
+		for (var i = pattIdxStart; i <= pattIdxEnd; i++) {
 			if (!(pattDirs[i] === '**')) {
 				return false;
 			}
@@ -157,7 +157,7 @@ function PathMatcher() {
 				return false; // Pattern and string do not have the
 				// same size
 			}
-			for ( var i = 0; i <= patIdxEnd; i++) {
+			for (var i = 0; i <= patIdxEnd; i++) {
 				ch = patArr[i];
 				if (ch !== '?') {
 					if (ch !== strArr[i]) {
@@ -187,7 +187,7 @@ function PathMatcher() {
 			// are
 			// left in the pattern. If so, we succeeded. Otherwise
 			// failure.
-			for ( var i = patIdxStart; i <= patIdxEnd; i++) {
+			for (var i = patIdxStart; i <= patIdxEnd; i++) {
 				if (patArr[i] !== '*') {
 					return false;
 				}
@@ -210,7 +210,7 @@ function PathMatcher() {
 			// are
 			// left in the pattern. If so, we succeeded. Otherwise
 			// failure.
-			for ( var i = patIdxStart; i <= patIdxEnd; i++) {
+			for (var i = patIdxStart; i <= patIdxEnd; i++) {
 				if (patArr[i] !== '*') {
 					return false;
 				}
@@ -223,7 +223,7 @@ function PathMatcher() {
 		// always to a '*'.
 		while (patIdxStart !== patIdxEnd && strIdxStart <= strIdxEnd) {
 			var patIdxTmp = -1;
-			for ( var i = patIdxStart + 1; i <= patIdxEnd; i++) {
+			for (var i = patIdxStart + 1; i <= patIdxEnd; i++) {
 				if (patArr[i] === '*') {
 					patIdxTmp = i;
 					break;
@@ -240,8 +240,8 @@ function PathMatcher() {
 			var patLength = (patIdxTmp - patIdxStart - 1);
 			var strLength = (strIdxEnd - strIdxStart + 1);
 			var foundIdx = -1;
-			strLoop: for ( var i = 0; i <= strLength - patLength; i++) {
-				for ( var j = 0; j < patLength; j++) {
+			strLoop: for (var i = 0; i <= strLength - patLength; i++) {
+				for (var j = 0; j < patLength; j++) {
 					ch = patArr[patIdxStart + j + 1];
 					if (ch !== '?') {
 						if (ch !== strArr[strIdxStart + i + j]) {
@@ -265,7 +265,7 @@ function PathMatcher() {
 		// All characters in the string are used. Check if only '*'s are
 		// left
 		// in the pattern. If so, we succeeded. Otherwise failure.
-		for ( var i = patIdxStart; i <= patIdxEnd; i++) {
+		for (var i = patIdxStart; i <= patIdxEnd; i++) {
 			if (patArr[i] !== '*') {
 				return false;
 			}
@@ -276,7 +276,7 @@ function PathMatcher() {
 	this.containsStar = function(str) {
 		var containsStar = false;
 		if (str && str !== null) {
-			for ( var i = 0; i < str.length; i++) {
+			for (var i = 0; i < str.length; i++) {
 				if (str.charAt(i) === '*') {
 					containsStar = true;
 					break;
@@ -310,7 +310,7 @@ var filtersResolver = [
 					var filters = [];
 					if (str) {
 						var tokens = str.split(',');
-						for ( var i = 0; i < tokens.length; i++) {
+						for (var i = 0; i < tokens.length; i++) {
 							var filter = this.resolveFilter(tokens[i]);
 							if (filter !== null) {
 								filters.push(filter);
@@ -354,9 +354,12 @@ var filtersResolver = [
 				},
 				resolveStringFilters : function(path) {
 					var stringFilters = null;
-					for ( var pattern in urls) {
+					for (var i = 0; i < urls.length; i++) {
+						var url = urls[i];
+						var pattern = Object.keys(url)[0];
+						var stringFilterChain = url[pattern];
 						if (matcher.match(pattern, path)) {
-							stringFilters = urls[pattern];
+							stringFilters = stringFilterChain;
 							break;
 						}
 					}
@@ -411,12 +414,11 @@ var formAuthenticationFilter = [
 					return accessAllowed;
 				},
 				onAccessDenied : function() {
-					if (config.loginUrl) {
-						$timeout(function() {
+					if (angular.isDefined(config.loginUrl)) {
+						$rootScope.$apply(function() {
 							$location.path(config.loginUrl);
 							$log.debug('authc::redirecting to => '
 									+ config.loginUrl);
-
 						});
 					}
 					return false;
@@ -430,20 +432,24 @@ var formAuthenticationFilter = [
  * configured <code>redirectUrl</code>
  */
 var logoutFilter = [
+		'$rootScope',
 		'subject',
 		'angularShiroConfig',
 		'$location',
 		'$timeout',
 		'$log',
-		function LogoutFilter(subject, config, $location, $timeout, $log) {
+		function LogoutFilter($rootScope, subject, config, $location, $timeout,
+				$log) {
 			return {
 				execute : function() {
 					$log.debug('logoutFilter::execute');
 					subject.logout();
 					if (config.logout && config.logout.redirectUrl) {
-						$location.path(config.logout.redirectUrl);
-						$log.debug('logout::redirecting to => '
-								+ config.logout.redirectUrl);
+						$rootScope.$apply(function() {
+							$location.path(config.logout.redirectUrl);
+							$log.debug('logout::redirecting to => '
+									+ config.logout.redirectUrl);
+						});
 					}
 					return true;
 				}
@@ -455,12 +461,14 @@ var logoutFilter = [
  * permissions specified.
  */
 var permsFilter = [
+		'$rootScope',
 		'subject',
 		'angularShiroConfig',
 		'$location',
 		'$timeout',
 		'$log',
-		function PermsFilter(subject, config, $location, $timeout, $log) {
+		function PermsFilter($rootScope, subject, config, $location, $timeout,
+				$log) {
 			return {
 				execute : function(permissions) {
 					$log.debug('perms::execute');
@@ -474,7 +482,7 @@ var permsFilter = [
 				},
 				onAccessDenied : function() {
 					if (config.loginUrl) {
-						$timeout(function() {
+						$rootScope.$apply(function() {
 							$location.path(config.loginUrl);
 							$log.debug('perms::redirecting to => '
 									+ config.loginUrl);
@@ -491,12 +499,14 @@ var permsFilter = [
  * specified
  */
 var rolesFilter = [
+		'$rootScope',
 		'subject',
 		'angularShiroConfig',
 		'$location',
 		'$timeout',
 		'$log',
-		function RolesFilter(subject, config, $location, $timeout, $log) {
+		function RolesFilter($rootScope, subject, config, $location, $timeout,
+				$log) {
 			return {
 				execute : function(roles) {
 					$log.debug('roles::execute');
@@ -509,7 +519,7 @@ var rolesFilter = [
 				},
 				onAccessDenied : function() {
 					if (config.loginUrl) {
-						$timeout(function() {
+						$rootScope.$apply(function() {
 							$location.path(config.loginUrl);
 							$log.debug('roles::redirecting to => '
 									+ config.loginUrl);

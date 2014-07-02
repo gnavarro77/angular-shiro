@@ -1,41 +1,41 @@
 'use strict'
 
-describe('pathMatcher', function() {
-
-	var matcher;
-
-	beforeEach(function() {
-		matcher = new PathMatcher();
-	});
-
-	it('should match', function() {
-		var pattern = 'com/t?st.jsp';
-		expect(matcher.match(pattern, 'com/test.jsp')).toBeTruthy();
-		expect(matcher.match(pattern, 'com/tast.jsp')).toBeTruthy();
-		expect(matcher.match(pattern, 'com/txst.jsp')).toBeTruthy();
-
-		pattern = 'com/*.jsp';
-		expect(matcher.match(pattern, 'com/test.jsp')).toBeTruthy();
-
-		pattern = 'com/**/test.jsp';
-		expect(matcher.match(pattern, 'com/test.jsp')).toBeTruthy();
-		expect(matcher.match(pattern, 'com/subdir/test.jsp')).toBeTruthy();
-
-		pattern = 'com/**/*.txt';
-		expect(matcher.match(pattern, 'com/test.txt')).toBeTruthy();
-		expect(matcher.match(pattern, 'com/subdir/test.txt')).toBeTruthy();
-
-		pattern = 'org/**/servlet/bla.jsp';
-		expect(matcher.match(pattern, 'org/springframework/servlet/bla.jsp'))
-				.toBeTruthy();
-		expect(
-				matcher.match(pattern,
-						'org/springframework/testing/servlet/bla.jsp'))
-				.toBeTruthy();
-		expect(matcher.match(pattern, 'org/servlet/bla.jsp')).toBeTruthy();
-	});
-
-});
+// describe('pathMatcher', function() {
+//
+// var matcher;
+//
+// beforeEach(function() {
+// matcher = new PathMatcher();
+// });
+//
+// it('should match', function() {
+// var pattern = 'com/t?st.jsp';
+// expect(matcher.match(pattern, 'com/test.jsp')).toBeTruthy();
+// expect(matcher.match(pattern, 'com/tast.jsp')).toBeTruthy();
+// expect(matcher.match(pattern, 'com/txst.jsp')).toBeTruthy();
+//
+// pattern = 'com/*.jsp';
+// expect(matcher.match(pattern, 'com/test.jsp')).toBeTruthy();
+//
+// pattern = 'com/**/test.jsp';
+// expect(matcher.match(pattern, 'com/test.jsp')).toBeTruthy();
+// expect(matcher.match(pattern, 'com/subdir/test.jsp')).toBeTruthy();
+//
+// pattern = 'com/**/*.txt';
+// expect(matcher.match(pattern, 'com/test.txt')).toBeTruthy();
+// expect(matcher.match(pattern, 'com/subdir/test.txt')).toBeTruthy();
+//
+// pattern = 'org/**/servlet/bla.jsp';
+// expect(matcher.match(pattern, 'org/springframework/servlet/bla.jsp'))
+// .toBeTruthy();
+// expect(
+// matcher.match(pattern,
+// 'org/springframework/testing/servlet/bla.jsp'))
+// .toBeTruthy();
+// expect(matcher.match(pattern, 'org/servlet/bla.jsp')).toBeTruthy();
+// });
+//
+// });
 
 describe(
 		'FiltersResolver',
@@ -46,9 +46,12 @@ describe(
 			beforeEach(module('angularShiro', function(
 					angularShiroConfigProvider) {
 				var urls = angularShiroConfigProvider.options.urls;
-				urls['/chain'] = 'anon, authc';
-				urls['/perms'] = 'perms["newsletter:edit"]';
-				urls['/roles'] = 'roles["ADMIN"]';
+				angularShiroConfigProvider.registerPathFilter('/chain',
+						'anon, authc');
+				angularShiroConfigProvider.registerPathFilter('/perms',
+						'perms["newsletter:edit"]');
+				angularShiroConfigProvider.registerPathFilter('/roles',
+						'roles["ADMIN"]');
 			}));
 
 			beforeEach(inject(function(_filtersResolver_) {
@@ -213,26 +216,3 @@ describe('rolesFilter', function() {
 	});
 
 });
-
-describe('$location',
-		function() {
-
-			var $location, config, $rootScope;
-
-			beforeEach(module('angularShiro'));
-
-			beforeEach(inject(function(_$rootScope_, _angularShiroConfig_,
-					_$location_) {
-				$rootScope = _$rootScope_;
-				config = _angularShiroConfig_;
-				$location = _$location_;
-			}));
-
-			it('should be redirected on logout', function() {
-				console.log($rootScope.$$listenerCount);
-				$rootScope.$apply(function() {
-					$location.path("/logout");
-				});
-				expect($location.path()).toEqual("/");
-			});
-		});
