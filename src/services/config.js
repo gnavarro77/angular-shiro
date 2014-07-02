@@ -16,23 +16,28 @@
  * </pre> # Custom configuration
  * 
  * <pre>
- *  app.config([ 'angularShiroConfigProvider', function(config) {
- *  	// Customize the configuration
- *  } ]);
+ * app.config([ 'angularShiroConfigProvider', function(config) {
+ * 	// Customize the configuration
+ * 	} ]);
  * </pre>
  */
 function AngularShiroConfigProvider() {
 
 	this.options = {
 		loginUrl : '/login',
-		urls : {
-			'/' : 'anon',
-			'index' : 'anon',
-			'login' : 'anon',
-			'signin' : 'anon',
-			'logout' : 'logout',
-			'signout' : 'logout'
-		},
+		urls : [ {
+			'/' : 'anon'
+		}, {
+			'/index' : 'anon'
+		}, {
+			'/login' : 'anon'
+		}, {
+			'/signin' : 'anon'
+		}, {
+			'/logout' : 'logout'
+		}, {
+			'/signout' : 'logout'
+		} ],
 		login : {
 			uri : 'api/authenticate',
 			path : 'index'
@@ -44,6 +49,34 @@ function AngularShiroConfigProvider() {
 		}
 	};
 
+	/**
+	 * 
+	 */
+	this.registerPathFilter = function(path, filterChain) {
+		var obj = {};
+		obj[path] = filterChain;
+		var replaced = false;
+		var urls = this.options.urls;
+		var tmp = [];
+		for (var i = 0; i < urls.length; i++) {
+			var url = urls[i];
+			var p = Object.keys(url)[0];
+			if (p === path) {
+				tmp.push(obj);
+				replaced = true;
+			} else {
+				tmp.push(url);
+			}
+		}
+		if (!replaced) {
+			tmp.push(obj);
+		}
+		this.options.urls = tmp;
+	};
+
+	/**
+	 * 
+	 */
 	this.$get = [ function() {
 		return this.options;
 	} ];
