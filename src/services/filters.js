@@ -395,14 +395,13 @@ var anonymousFilter = [ 'subject', '$log',
  * forces the user to login by redirecting to the configured loginUrl
  */
 var formAuthenticationFilter = [
-		'$rootScope',
 		'subject',
 		'angularShiroConfig',
 		'$location',
 		'$timeout',
 		'$log',
-		function FormAuthenticationFilter($rootScope, subject, config,
-				$location, $timeout, $log) {
+		function FormAuthenticationFilter(subject, config, $location, $timeout,
+				$log) {
 			return {
 				execute : function() {
 					$log.debug('authc::execute');
@@ -415,7 +414,8 @@ var formAuthenticationFilter = [
 				},
 				onAccessDenied : function() {
 					if (angular.isDefined(config.loginUrl)) {
-						$rootScope.$apply(function() {
+
+						$timeout(function() {
 							$location.path(config.loginUrl);
 							$log.debug('authc::redirecting to => '
 									+ config.loginUrl);
@@ -432,20 +432,18 @@ var formAuthenticationFilter = [
  * configured <code>redirectUrl</code>
  */
 var logoutFilter = [
-		'$rootScope',
 		'subject',
 		'angularShiroConfig',
 		'$location',
 		'$timeout',
 		'$log',
-		function LogoutFilter($rootScope, subject, config, $location, $timeout,
-				$log) {
+		function LogoutFilter(subject, config, $location, $timeout, $log) {
 			return {
 				execute : function() {
 					$log.debug('logoutFilter::execute');
 					subject.logout();
 					if (config.logout && config.logout.redirectUrl) {
-						$rootScope.$apply(function() {
+						$timeout(function() {
 							$location.path(config.logout.redirectUrl);
 							$log.debug('logout::redirecting to => '
 									+ config.logout.redirectUrl);
@@ -461,14 +459,12 @@ var logoutFilter = [
  * permissions specified.
  */
 var permsFilter = [
-		'$rootScope',
 		'subject',
 		'angularShiroConfig',
 		'$location',
 		'$timeout',
 		'$log',
-		function PermsFilter($rootScope, subject, config, $location, $timeout,
-				$log) {
+		function PermsFilter(subject, config, $location, $timeout, $log) {
 			return {
 				execute : function(permissions) {
 					$log.debug('perms::execute');
@@ -482,7 +478,7 @@ var permsFilter = [
 				},
 				onAccessDenied : function() {
 					if (config.loginUrl) {
-						$rootScope.$apply(function() {
+						$timeout(function() {
 							$location.path(config.loginUrl);
 							$log.debug('perms::redirecting to => '
 									+ config.loginUrl);
@@ -499,14 +495,12 @@ var permsFilter = [
  * specified
  */
 var rolesFilter = [
-		'$rootScope',
 		'subject',
 		'angularShiroConfig',
 		'$location',
 		'$timeout',
 		'$log',
-		function RolesFilter($rootScope, subject, config, $location, $timeout,
-				$log) {
+		function RolesFilter(subject, config, $location, $timeout, $log) {
 			return {
 				execute : function(roles) {
 					$log.debug('roles::execute');
@@ -519,7 +513,7 @@ var rolesFilter = [
 				},
 				onAccessDenied : function() {
 					if (config.loginUrl) {
-						$rootScope.$apply(function() {
+						$timeout(function() {
 							$location.path(config.loginUrl);
 							$log.debug('roles::redirecting to => '
 									+ config.loginUrl);

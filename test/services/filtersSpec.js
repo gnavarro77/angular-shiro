@@ -117,14 +117,16 @@ describe(
 
 describe('formAuthenticationFilter', function() {
 
-	var authc, config, $location;
+	var authc, config, $location, $timeout;
 
 	beforeEach(module('angularShiro'));
 
-	beforeEach(inject(function(_authc_, _angularShiroConfig_, _$location_) {
+	beforeEach(inject(function(_authc_, _angularShiroConfig_, _$location_,
+			_$timeout_) {
 		authc = _authc_;
 		config = _angularShiroConfig_;
 		$location = _$location_;
+		$timeout = _$timeout_;
 	}));
 
 	it('should allow access to authenticated Subject',
@@ -137,6 +139,7 @@ describe('formAuthenticationFilter', function() {
 
 	it('should deny access to unauthenticated Subject', function() {
 		var out = authc.execute();
+		$timeout.flush();
 		expect(out).toBeFalsy();
 		expect($location.path()).toEqual(config.loginUrl);
 	});
@@ -147,61 +150,68 @@ describe('logoutFilter', function() {
 	beforeEach(module('angularShiro'));
 
 	it('should be unauthenticated after execution', inject(function(subject,
-			logout, $location) {
+			logout, $location, $timeout) {
 		subject.authenticated = true;
 		logout.execute('/logout');
+		$timeout.flush();
 		expect(subject.isAuthenticated()).toBeFalsy();
 		expect($location.path()).toEqual('/');
 	}));
 
 });
 
-describe('permsFilter', function() {
+describe(
+		'permsFilter',
+		function() {
 
-	var subject, config, perms, $location, permission = 'newsletter$edit';
+			var subject, config, perms, $location, $timeout, permission = 'newsletter$edit';
 
-	beforeEach(module('angularShiro'));
+			beforeEach(module('angularShiro'));
 
-	beforeEach(inject(function(_subject_, _angularShiroConfig_, _perms_,
-			_$location_) {
-		perms = _perms_;
-		subject = _subject_;
-		$location = _$location_;
-		config = _angularShiroConfig_;
-	}));
+			beforeEach(inject(function(_subject_, _angularShiroConfig_,
+					_perms_, _$location_, _$timeout_) {
+				perms = _perms_;
+				subject = _subject_;
+				$location = _$location_;
+				config = _angularShiroConfig_;
+				$timeout = _$timeout_;
+			}));
 
-	it('should deny access if not permitted', function() {
-		var out = perms.execute([ permission ]);
-		expect(out).toBeFalsy();
-		expect($location.path()).toEqual(config.loginUrl);
-	});
+			it('should deny access if not permitted', function() {
+				var out = perms.execute([ permission ]);
+				$timeout.flush();
+				expect(out).toBeFalsy();
+				expect($location.path()).toEqual(config.loginUrl);
+			});
 
-	it('should allow access if permitted', function() {
-		subject.authenticated = true;
-		subject.authorizer.setAuthorizationInfo(new AuthorizationInfo([],
-				[ permission ]));
-		var out = perms.execute([ permission ]);
-		expect(out).toBeTruthy();
-		expect($location.path()).toEqual('');
-	});
+			it('should allow access if permitted', function() {
+				subject.authenticated = true;
+				subject.authorizer.setAuthorizationInfo(new AuthorizationInfo(
+						[], [ permission ]));
+				var out = perms.execute([ permission ]);
+				expect(out).toBeTruthy();
+				expect($location.path()).toEqual('');
+			});
 
-});
+		});
 
 describe('rolesFilter', function() {
-	var subject, config, roles, $location, role = 'ADMIN';
+	var subject, config, roles, $location, $timeout, role = 'ADMIN';
 
 	beforeEach(module('angularShiro'));
 
 	beforeEach(inject(function(_subject_, _angularShiroConfig_, _roles_,
-			_$location_) {
+			_$location_, _$timeout_) {
 		roles = _roles_;
 		subject = _subject_;
 		$location = _$location_;
 		config = _angularShiroConfig_;
+		$timeout = _$timeout_;
 	}));
 
 	it('should deny access if does not have role', function() {
 		var out = roles.execute([ role ]);
+		$timeout.flush();
 		expect(out).toBeFalsy();
 		expect($location.path()).toEqual(config.loginUrl);
 	});
