@@ -18,7 +18,7 @@ describe('angularShiroConfig', function() {
     }));
 
     it('should be able to inject custom values', function(angularShiroConfig) {
-	expect(config.login.path).toEqual(path);
+	expect(config.login.uri).toEqual(uri);
 	expect(config.login.uri).toEqual(uri);
     });
 

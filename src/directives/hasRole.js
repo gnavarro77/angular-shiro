@@ -24,10 +24,10 @@ var hasRoleDirective = [ 'subject','$animate', function(subject, $animate) {
 		$$tlb: true,
 		link: function ($scope, $element, $attr, ctrl, $transclude) {
 	        var block, childScope, previousElements;
-			$scope.$watch($attr.hasRole, function hasRoleWatchAction(role) {
-				
-				role = (angular.isUndefined(role)) ? $attr.hasRole : role;
-				
+			$scope.$watch(function(){
+            	return subject.authenticated;
+            }, function hasRoleWatchAction() {
+				var role = $attr.hasRole;
 				if (subject.hasRole(role)) {
 					if (!childScope) {
 					  childScope = $scope.$new();

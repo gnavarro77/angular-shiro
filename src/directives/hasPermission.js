@@ -24,8 +24,10 @@ var hasPermissionDirective = [ 'subject','$animate', function(subject, $animate)
 		$$tlb: true,
 		link: function ($scope, $element, $attr, ctrl, $transclude) {
 	        var block, childScope, previousElements;
-			$scope.$watch($attr.hasPermission, function (permission) {
-				permission = (angular.isUndefined(permission)) ? $attr.hasPermission : permission;
+			$scope.$watch(function(){
+            	return subject.authenticated;
+            }, function (permission) {
+				permission = $attr.hasPermission;
 				if (subject.isPermitted(permission)) {
 					if (!childScope) {
 					  childScope = $scope.$new();

@@ -24,6 +24,7 @@
 function AngularShiroConfigProvider() {
 
 	this.options = {
+		loginUrl : '/login',
 		urls : {
 			'/' : 'anon',
 			'/index' : 'anon',

@@ -98,6 +98,7 @@ describe('formAuthenticationFilter', function() {
     it('should allow access to authenticated Subject', inject(function(subject) {
 	subject.authenticated = true;
 	var out = authc.execute();
+	$timeout.flush();
 	expect(out).toBeTruthy();
 	expect($location.path()).toEqual('');
     }));

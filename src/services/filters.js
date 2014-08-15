@@ -364,7 +364,9 @@ var filtersResolver = [ 'angularShiroConfig', '$injector', function FiltersResol
 var $$onAccessDenied = function($timeout, $location, config) {
     if (config && config.login && config.login.path) {
 	$timeout(function() {
+	    console.log('config.login.url => ' + config.login.path);
 	    $location.path(config.login.path);
+	    $log.debug('redirecting to => ' + config.login.path);
 	});
     }
 }

@@ -5,8 +5,8 @@
  * @name angularShiro.directives.lacksRole
  * @restrict A
  * 
- * @description Display if the current Subject is **NOT**
- *              assigned the specified role (for example, `ADMIN`)
+ * @description Display if the current Subject is **NOT** assigned the specified
+ *              role (for example, `ADMIN`)
  * 
  * @element ANY
  * @scope
@@ -24,8 +24,10 @@ var lacksRoleDirective = [ 'subject', '$animate', function(subject, $animate) {
 		$$tlb : true,
 		link : function($scope, $element, $attr, ctrl, $transclude) {
 			var block, childScope, previousElements;
-			$scope.$watch($attr.lacksRole, function(role) {
-				role = (angular.isUndefined(role)) ? $attr.lacksRole : role;
+			$scope.$watch(function() {
+				return subject.authenticated;
+			}, function() {
+				var role = $attr.lacksRole;
 				if (!subject.hasRole(role)) {
 					if (!childScope) {
 						childScope = $scope.$new();
