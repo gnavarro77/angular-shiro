@@ -6,7 +6,9 @@ var demo = angular
 				[ '$routeProvider', 'angularShiroConfigProvider',
 						function($routeProvider, config) {
 
-							// Subject must be authenticated to access any path
+							// Subject must be
+							// authenticated to
+							// access any path
 							config.options.urls['/**/*'] = 'authc';
 
 							$routeProvider.when('/login', {
@@ -87,8 +89,9 @@ demo
 						'subject',
 						'usernamePasswordToken',
 						'$location',
+						'$filter',
 						function($scope, $rootScope, $timeout, subject,
-								usernamePasswordToken, $location) {
+								usernamePasswordToken, $location, $filter) {
 
 							$scope.errauthc = false;
 
@@ -148,6 +151,13 @@ demo
 								$scope.entry = angular
 										.copy($scope.selectedItem);
 							}
+							
+							$scope.delete = function() {
+							    $scope.entries = $filter('filter')($scope.entries, function(item){
+								return item != $scope.selectedItem;
+							    });
+							    $scope.selectedItem = null;
+							}
 
 							$scope.saveOrUpdate = function() {
 								if ($scope.selectedItem) {
@@ -157,9 +167,18 @@ demo
 										}
 									}
 								} else {
+								    	$scope.entry.id = $scope.entries.length +1; 
 									$scope.entries.push($scope.entry);
 								}
 								$scope.entry = null;
+							}
+							
+							$scope.$isActive = function(item) {
+							    var active = false;
+							    if (item && $scope.selectedItem) {
+								active = $scope.selectedItem.id == item.id; 
+							    }
+							    return active;
 							}
 
 						} ]);

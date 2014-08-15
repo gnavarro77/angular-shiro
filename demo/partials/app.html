@@ -48,7 +48,7 @@
 					has-permission="address$edit">
 					<span class="glyphicon glyphicon-pencil"></span> Edit
 				</button>
-				<button type="button" class="btn btn-default"
+				<button type="button" class="btn btn-default" ng-click="delete()"
 					ng-disabled="!selectedItem" has-permission="address$delete">
 					<span class="glyphicon glyphicon-trash"></span> Delete
 				</button>
@@ -58,7 +58,7 @@
 			<a ng-href class="list-group-item"
 				ng-repeat="entry in entries | orderBy : 'lastname'"
 				ng-click="onItemClicked(entry)"
-				ng-class="{'active': selectedItem.id == entry.id}">
+				ng-class="{'active': $isActive(entry)}">
 				<h4 class="list-group-item-heading">
 					<span ng-bind="entry.firstname + ' ' + entry.lastname"></span>
 				</h4>
