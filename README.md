@@ -19,7 +19,7 @@ As [Apache Shiro](http://shiro.apache.org/) is all about those issues (and more)
 
 Using `bower`
 
-`bower install angular-shiro`
+`bower install angular-shiro` --save
 
 or by downloading project as zip
 
@@ -32,7 +32,7 @@ or by downloading project as zip
 ```javascript
 <script type="text/javascript" src="path_to_angular_shiro/angular-shiro.min.js"></script>
 ```
-   - Add `angular-shiro` module to your application dependencies
+   - Add `angular-shiro` module to your application module dependencies
 
 ```javascript
 angular.module('myApp', ['angularShiro', ...])
