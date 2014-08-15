@@ -44,7 +44,7 @@ var demo = angular
 							+ "    },\n"
 							+ "    \"authz\": {\n"
 							+ "        \"roles\" : [\"ADMIN\"],\n"
-							+ "        \"permissions\" : [\"address$view,create,edit,delete\"]\n"
+							+ "        \"permissions\" : [\"address:view,create,edit,delete\"]\n"
 							+ "    }\n" + "  }\n" + "}";
 
 					$httpBackend
@@ -66,7 +66,7 @@ var demo = angular
 							+ "        \"email\": \"hlautrec@mail.com\"\n"
 							+ "      }\n" + "    },\n" + "    \"authz\": {\n"
 							+ "        \"roles\" : [\"GUEST\"],\n"
-							+ "        \"permissions\" : [\"address$view\"]\n"
+							+ "        \"permissions\" : [\"address:view\"]\n"
 							+ "    }\n" + "  }\n" + "}";
 
 					$httpBackend
@@ -136,7 +136,7 @@ demo
 							$scope.selectedItem;
 
 							$scope.onItemClicked = function(item) {
-								if (subject.isPermitted('address$view')) {
+								if (subject.isPermitted('address:view')) {
 									$scope.selectedItem = item;
 									$scope.entry = null;
 								}

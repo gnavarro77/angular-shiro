@@ -37,7 +37,7 @@
 		<div class="panel-body">
 			<div class="btn-group">
 				<button type="button" class="btn btn-default" ng-click="create()"
-					has-permission="address$create">
+					has-permission="'address:create'">
 					<span class="glyphicon glyphicon-plus"></span> New
 				</button>
 			</div>
@@ -45,11 +45,11 @@
 			<div class="btn-group pull-right">
 				<button type="button" class="btn btn-default"
 					ng-disabled="!selectedItem" ng-click="edit()"
-					has-permission="address$edit">
+					has-permission="'address:edit'">
 					<span class="glyphicon glyphicon-pencil"></span> Edit
 				</button>
 				<button type="button" class="btn btn-default" ng-click="delete()"
-					ng-disabled="!selectedItem" has-permission="address$delete">
+					ng-disabled="!selectedItem" has-permission="'address:delete'">
 					<span class="glyphicon glyphicon-trash"></span> Delete
 				</button>
 			</div>

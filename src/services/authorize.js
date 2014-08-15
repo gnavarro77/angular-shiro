@@ -30,7 +30,7 @@ function Permission(wildcardString, caseSensitive) {
 	 * @returns {string} the string used to separate the different parts of a
 	 *          token
 	 */
-	this.PART_DIVIDER_TOKEN = '$';
+	this.PART_DIVIDER_TOKEN = ':';
 	/**
 	 * @ngdoc property
 	 * @name Permission#SUBPART_DIVIDER_TOKEN
