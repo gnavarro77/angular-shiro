@@ -19,13 +19,15 @@
     "type": "git",
     "url": "https://github.com/gnavarro77/angular-shiro.git"
   },
+  "bugs": "https://github.com/gnavarro77/angular-shiro/issues",
   "licenses": [
     {
       "type": "MIT"
     }
   ],
   "main": [
-    "dist/angular-shiro.min.js"
+    "./dist/angular-shiro.js",
+    "./dist/angular-shiro.min.js"
   ],
   "ignore": [
     "test",
