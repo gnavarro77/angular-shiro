@@ -24,7 +24,6 @@
 function AngularShiroConfigProvider() {
 
 	this.options = {
-		loginUrl : '/login',
 		urls : {
 			'/' : 'anon',
 			'/index' : 'anon',
@@ -35,7 +34,7 @@ function AngularShiroConfigProvider() {
 		},
 		login : {
 			uri : '/api/authenticate',
-			path : 'index'
+			path : '/login'
 		},
 		logout : {
 			uri : '/api/logout',
