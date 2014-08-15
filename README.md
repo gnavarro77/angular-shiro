@@ -99,8 +99,8 @@ The response returned from the backend have to be a `json` object that comply to
 				],
 				permissions:[ 
 					// list of the Subject/User permissions, for example
-					"newsletter$read",
-					"book$*",
+					"newsletter:read",
+					"book:*",
 				]
 			}
 		}
@@ -166,7 +166,7 @@ _URL_Ant_Path_Expression_ is an Ant-style path expression.
 For example, 
 	
     '/admin/**' = 'authc, roles["ADMIN"]'
-    '/newsletter/* = 'perms["newsletter$read", "newsletter$edit"]'
+    '/newsletter/* = 'perms["newsletter:read", "newsletter:edit"]'
 
 declares that "any path of `/admin` or any of it's sub paths (`/admin/user`,`/admin/user/profile`) will trigger the 'authc, roles["ADMIN"]' filter chain.
 
@@ -177,10 +177,10 @@ The default _Filter_ instances available automatically for configuration are :
 |Filter Name    | Description 
 | ------------- |-------------
 | anon      | Filter that allows access to a path immeidately without performing security checks of any kind
-| authc     | The Subject must be authenticated for the request to continue, otherwise forces the user to login by redirecting to the configured `loginUrl`
-| logout    | Simple Filter that, upon location change, will immediately log-out the currently executing `subject` and then redirect them to a configured `logout.redirectUrl`
-| perms     | Filter that allows access if the current user has the permissions specified by the mapped value, or denies access if the user does not have all of the permissions specified
-| roles     | Filter that allows access if the current user has the roles specified by the mapped value, or denies access if the user does not have all of the roles specified
+| authc     | The Subject must be authenticated for the request to continue, otherwise forces the user to login by redirecting to the configured `login.path`
+| logout    | Simple Filter that will immediately log-out the currently executing `subject` and redirect him to the configured `logout.redirectUrl`
+| perms     | Filter that allows access if the current user has the permissions specified by the mapped value, or denies access if the user does not have all of the permissions specified and redirect him to the configured `login.path` 
+| roles     | Filter that allows access if the current user has the roles specified by the mapped value, or denies access if the user does not have all of the roles specified and redirect him to the configured `login.path`
 
 
 ## API
