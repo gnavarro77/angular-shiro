@@ -1,6 +1,6 @@
 /**
  * angular-shiro
- * @version v0.0.1 - 2014-06-16
+ * @version v0.1.0 - 2014-08-15
  * @link https://github.com/gnavarro77/angular-shiro
  * @author Gilles Navarro ()
  * @license MIT License, http://www.opensource.org/licenses/MIT
@@ -20,7 +20,7 @@
       },
       login: {
         uri: '/api/authenticate',
-        path: 'index'
+        path: '/login'
       },
       logout: {
         uri: '/api/logout',
@@ -32,50 +32,36 @@
         return this.options;
       }];
   }
-  // /**
-  // * @ngdoc object
-  // * @name angularShiro.authenticatorProvider
-  // * @description Use the `authenticatorProvider` to configure how the
-  // application
-  // * authenticates users
-  // */
   function AuthenticatorProvider() {
-    var uri = '/api/authenticate';
-    // /**
-    // * @ngdoc property
-    // * @name authenticatorProvider#setUri
-    // * @methodOf angularShiro.authenticatorProvider0
-    // * @description
-    // * @param {string=}
-    // * uri associated to the authentication process
-    // * @returns {*} itself (chaining)
-    // */
-    this.setUri = function (value) {
-      uri = value;
-      return this;
-    };
-    this.setDelegate = function (delegate) {
-      this.delegate = delegate;
-      return this;
-    };
     this.$get = [
       '$q',
       '$http',
       '$timeout',
-      function ($q, $http, $timeout) {
+      'angularShiroConfig',
+      function ($q, $http, $timeout, config) {
         return {
           authenticate: function (token) {
-            var deferred = $q.defer();
-            var data = {
-                principal: token ? token.getPrincipal() : null,
-                credentials: token ? token.getCredentials() : null
-              };
-            $http.post(uri, { token: data }).success(function (data, status, headers, config) {
-              deferred.resolve(data);
-            }).error(function (data, status, headers, config) {
-              deferred.reject(data);
-            });
-            return deferred.promise;
+            var promise = null;
+            if (!token || !token.getPrincipal() || !token.getCredentials()) {
+              throw '[Autheticate] Can not authenticate. Invalid token provided!';
+            }
+            if (config && config.login && config.login.uri) {
+              var deferred = $q.defer();
+              $http.post(config.login.uri, {
+                token: {
+                  principal: token.getPrincipal(),
+                  credentials: token.getCredentials()
+                }
+              }).success(function (data, status, headers, config) {
+                deferred.resolve(data);
+              }).error(function (data, status, headers, config) {
+                deferred.reject(data);
+              });
+              promise = deferred.promise;
+            } else {
+              throw '[Autheticate] Can not authenticate since no \'config.login.uri\' is provided. Please check your configuration.';
+            }
+            return promise;
           }
         };
       }
@@ -92,41 +78,41 @@
  */
   function UsernamePasswordToken() {
     /**
-	 * @ngdoc property
-	 * @name UsernamePasswordToken#username
-	 * @propertyOf angularShiro.services.usernamePasswordToken
-	 * @description the Subject's user name
-	 * @returns {string} the Subject's user name
-	 */
+     * @ngdoc property
+     * @name UsernamePasswordToken#username
+     * @propertyOf angularShiro.services.usernamePasswordToken
+     * @description the Subject's user name
+     * @returns {string} the Subject's user name
+     */
     this.username = null;
     /**
-	 * @ngdoc property
-	 * @name UsernamePasswordToken#password
-	 * @propertyOf angularShiro.services.usernamePasswordToken
-	 * @description the Subject's password
-	 * @returns {string} the Subject's password
-	 */
+     * @ngdoc property
+     * @name UsernamePasswordToken#password
+     * @propertyOf angularShiro.services.usernamePasswordToken
+     * @description the Subject's password
+     * @returns {string} the Subject's password
+     */
     this.password = null;
     /**
-	 * @ngdoc method
-	 * @name UsernamePasswordToken#getPrincipal
-	 * @methodOf angularShiro.services.usernamePasswordToken
-	 * 
-	 * @description Returns <code>username</code> value
-	 * @return {string} <code>username</code> value
-	 */
+     * @ngdoc method
+     * @name UsernamePasswordToken#getPrincipal
+     * @methodOf angularShiro.services.usernamePasswordToken
+     * 
+     * @description Returns <code>username</code> value
+     * @return {string} <code>username</code> value
+     */
     this.getPrincipal = function () {
       return this.username;
     };
     /**
-	 * @ngdoc method
-	 * @name UsernamePasswordToken#getCredentials
-	 * @methodOf angularShiro.services.usernamePasswordToken
-	 * 
-	 * @description Returns the <code>getPassword()</code> returned value
-	 * 
-	 * @return {string} <code>password</code> value
-	 */
+     * @ngdoc method
+     * @name UsernamePasswordToken#getCredentials
+     * @methodOf angularShiro.services.usernamePasswordToken
+     * 
+     * @description Returns the <code>getPassword()</code> returned value
+     * 
+     * @return {string} <code>password</code> value
+     */
     this.getCredentials = function () {
       return this.password;
     };
@@ -139,56 +125,56 @@
  *              informations regarding the authentication process
  * 
  * @param {string}
- *            principal Subject's principal (ex : Subject's login, username,
- *            ...)
+ *                principal Subject's principal (ex : Subject's login, username,
+ *                ...)
  * 
  * @param {string}
- *            credentials Subject's principal (ex : Subject's login, username,
- *            ...)
+ *                credentials Subject's principal (ex : Subject's login,
+ *                username, ...)
  * 
  * @since 0.0.1
  */
   function AuthenticationInfo(principal, credentials) {
     /**
-	 * @ngdoc property
-	 * @name AuthenticationInfo#principal
-	 * @propertyOf angularShiro.services.authenticationInfo
-	 * @description the Subject's principal
-	 * @returns {string} the Subject's principal
-	 */
+     * @ngdoc property
+     * @name AuthenticationInfo#principal
+     * @propertyOf angularShiro.services.authenticationInfo
+     * @description the Subject's principal
+     * @returns {string} the Subject's principal
+     */
     this.principal = principal;
     /**
-	 * @ngdoc property
-	 * @name AuthenticationInfo#username
-	 * @propertyOf angularShiro.services.authenticationInfo
-	 * @description the Subject's credentials
-	 * @returns {object} the Subject's credentials
-	 */
+     * @ngdoc property
+     * @name AuthenticationInfo#username
+     * @propertyOf angularShiro.services.authenticationInfo
+     * @description the Subject's credentials
+     * @returns {object} the Subject's credentials
+     */
     this.credentials = credentials;
     /**
-	 * @ngdoc method
-	 * @name AuthenticationInfo#getCredentials
-	 * @methodOf angularShiro.services.authenticationInfo
-	 * 
-	 * @description Returns the Suject's principal
-	 * 
-	 * @return {object} the Subject's principal
-	 * @since 0.0.1
-	 */
+     * @ngdoc method
+     * @name AuthenticationInfo#getCredentials
+     * @methodOf angularShiro.services.authenticationInfo
+     * 
+     * @description Returns the Suject's principal
+     * 
+     * @return {object} the Subject's principal
+     * @since 0.0.1
+     */
     this.getPrincipal = function () {
       return this.principal;
     };
     /**
-	 * @ngdoc method
-	 * @name AuthenticationInfo#getCredentials
-	 * @methodOf angularShiro.services.authenticationInfo
-	 * 
-	 * @description Returns the Subject's credentials . A credential verifies
-	 *              the Subject's principal, such as a password or private key
-	 * 
-	 * @returns {object} the Subject's credentials
-	 * @since 0.0.1
-	 */
+     * @ngdoc method
+     * @name AuthenticationInfo#getCredentials
+     * @methodOf angularShiro.services.authenticationInfo
+     * 
+     * @description Returns the Subject's credentials . A credential verifies
+     *              the Subject's principal, such as a password or private key
+     * 
+     * @returns {object} the Subject's credentials
+     * @since 0.0.1
+     */
     this.getCredentials = function () {
       return this.credentials;
     };
@@ -210,7 +196,7 @@
 	 * @returns {string} the string used to separate the different parts of a
 	 *          token
 	 */
-    this.PART_DIVIDER_TOKEN = '$';
+    this.PART_DIVIDER_TOKEN = ':';
     /**
 	 * @ngdoc property
 	 * @name Permission#SUBPART_DIVIDER_TOKEN
@@ -775,8 +761,8 @@
       return true;
     };
     /**
-	 * 
-	 */
+     * 
+     */
     this.matchStrings = function (pattern, str) {
       var patArr = pattern.split('');
       var strArr = str.split('');
@@ -989,6 +975,13 @@
         };
       }
     ];
+  var $$onAccessDenied = function ($timeout, $location, config) {
+    if (config && config.login && config.login.path) {
+      $timeout(function () {
+        $location.path(config.login.path);
+      });
+    }
+  };
   /**
  * Filter that allows access to a path immeidately without performing security
  * checks of any kind.
@@ -1030,12 +1023,7 @@
             return accessAllowed;
           },
           onAccessDenied: function () {
-            if (config.loginUrl) {
-              $timeout(function () {
-                $location.path(config.loginUrl);
-                $log.debug('authc::redirecting to => ' + config.loginUrl);
-              });
-            }
+            $$onAccessDenied($timeout, $location, config);
             return false;
           }
         };
@@ -1089,12 +1077,7 @@
             return accessAllowed;
           },
           onAccessDenied: function () {
-            if (config.loginUrl) {
-              $timeout(function () {
-                $location.path(config.loginUrl);
-                $log.debug('perms::redirecting to => ' + config.loginUrl);
-              });
-            }
+            $$onAccessDenied($timeout, $location, config);
             return false;
           }
         };
@@ -1123,12 +1106,7 @@
             return accessAllowed;
           },
           onAccessDenied: function () {
-            if (config.loginUrl) {
-              $timeout(function () {
-                $location.path(config.loginUrl);
-                $log.debug('roles::redirecting to => ' + config.loginUrl);
-              });
-            }
+            $$onAccessDenied($timeout, $location, config);
             return false;
           }
         };
@@ -1469,7 +1447,9 @@
           $$tlb: true,
           link: function ($scope, $element, $attr, ctrl, $transclude) {
             var block, childScope, previousElements;
-            $scope.$watch('subject.authenticated', function () {
+            $scope.$watch(function () {
+              return subject.authenticated;
+            }, function () {
               if (subject.isAuthenticated()) {
                 if (!childScope) {
                   childScope = $scope.$new();
@@ -1512,8 +1492,10 @@
           $$tlb: true,
           link: function ($scope, $element, $attr, ctrl, $transclude) {
             var block, childScope, previousElements;
-            $scope.$watch($attr.hasAnyRole, function (roles) {
-              roles = angular.isUndefined(roles) ? $attr.hasAnyRole : roles;
+            $scope.$watch(function () {
+              return subject.authenticated;
+            }, function () {
+              var roles = $scope.$eval($attr.hasAnyRole) || $attr.hasAnyRole;
               roles = angular.isArray(roles) ? roles : [roles];
               if (subject.hasRoles(roles).indexOf(true) > -1) {
                 if (!childScope) {
@@ -1557,8 +1539,10 @@
           $$tlb: true,
           link: function ($scope, $element, $attr, ctrl, $transclude) {
             var block, childScope, previousElements;
-            $scope.$watch($attr.hasPermission, function (permission) {
-              permission = angular.isUndefined(permission) ? $attr.hasPermission : permission;
+            $scope.$watch(function () {
+              return subject.authenticated;
+            }, function (permission) {
+              permission = $scope.$eval($attr.hasPermission) || $attr.hasPermission;
               if (subject.isPermitted(permission)) {
                 if (!childScope) {
                   childScope = $scope.$new();
@@ -1601,8 +1585,10 @@
           $$tlb: true,
           link: function ($scope, $element, $attr, ctrl, $transclude) {
             var block, childScope, previousElements;
-            $scope.$watch($attr.hasRole, function hasRoleWatchAction(role) {
-              role = angular.isUndefined(role) ? $attr.hasRole : role;
+            $scope.$watch(function () {
+              return subject.authenticated;
+            }, function hasRoleWatchAction() {
+              var role = $attr.hasRole;
               if (subject.hasRole(role)) {
                 if (!childScope) {
                   childScope = $scope.$new();
@@ -1645,8 +1631,10 @@
           $$tlb: true,
           link: function ($scope, $element, $attr, ctrl, $transclude) {
             var block, childScope, previousElements;
-            $scope.$watch($attr.lacksPermission, function (permission) {
-              permission = angular.isUndefined(permission) ? $attr.lacksPermission : permission;
+            $scope.$watch(function () {
+              return subject.authenticated;
+            }, function () {
+              var permission = $scope.$eval($attr.lacksPermission) || $attr.lacksPermission;
               if (!subject.isPermitted(permission)) {
                 if (!childScope) {
                   childScope = $scope.$new();
@@ -1689,8 +1677,10 @@
           $$tlb: true,
           link: function ($scope, $element, $attr, ctrl, $transclude) {
             var block, childScope, previousElements;
-            $scope.$watch($attr.lacksRole, function (role) {
-              role = angular.isUndefined(role) ? $attr.lacksRole : role;
+            $scope.$watch(function () {
+              return subject.authenticated;
+            }, function () {
+              var role = $attr.lacksRole;
               if (!subject.hasRole(role)) {
                 if (!childScope) {
                   childScope = $scope.$new();
@@ -1733,7 +1723,9 @@
           $$tlb: true,
           link: function ($scope, $element, $attr, ctrl, $transclude) {
             var block, childScope, previousElements;
-            $scope.$watch('subject.authenticated', function () {
+            $scope.$watch(function () {
+              return subject.authenticated;
+            }, function () {
               if (!subject.isAuthenticated()) {
                 if (!childScope) {
                   childScope = $scope.$new();
@@ -1838,18 +1830,23 @@
       }
     ];
   var angularShiroServicesModule = angular.module('angularShiro.services', []);
-  angularShiroServicesModule.provider('authenticator', AuthenticatorProvider).provider('angularShiroConfig', AngularShiroConfigProvider).factory('subject', [
+  angularShiroServicesModule.provider('authenticator', AuthenticatorProvider);
+  angularShiroServicesModule.provider('angularShiroConfig', AngularShiroConfigProvider);
+  angularShiroServicesModule.factory('subject', [
     'authenticator',
     'authorizer',
     'authenticationResponseParser',
     function (authenticator, authorizer, authenticationResponseParser) {
       return new Subject(authenticator, authorizer, authenticationResponseParser);
     }
-  ]).factory('usernamePasswordToken', function () {
+  ]);
+  angularShiroServicesModule.factory('usernamePasswordToken', function () {
     return new UsernamePasswordToken();
-  }).factory('authorizer', function () {
+  });
+  angularShiroServicesModule.factory('authorizer', function () {
     return new Authorizer();
-  }).factory('authenticationResponseParser', function () {
+  });
+  angularShiroServicesModule.factory('authenticationResponseParser', function () {
     return new AuthenticationResponseParser();
   });
   var filters = {
@@ -1907,7 +1904,7 @@
  * Return the DOM siblings between the first and last node in the given array.
  * 
  * @param {Array}
- *            array like object
+ *                array like object
  * @returns jQlite object containing the elements
  */
   function getBlockElements(nodes) {

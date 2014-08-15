@@ -6,7 +6,9 @@ var demo = angular
 				[ '$routeProvider', 'angularShiroConfigProvider',
 						function($routeProvider, config) {
 
-							// Subject must be authenticated to access any path
+							// Subject must be
+							// authenticated to
+							// access any path
 							config.options.urls['/**/*'] = 'authc';
 
 							$routeProvider.when('/login', {
@@ -42,7 +44,7 @@ var demo = angular
 							+ "    },\n"
 							+ "    \"authz\": {\n"
 							+ "        \"roles\" : [\"ADMIN\"],\n"
-							+ "        \"permissions\" : [\"address$view,create,edit,delete\"]\n"
+							+ "        \"permissions\" : [\"address:view,create,edit,delete\"]\n"
 							+ "    }\n" + "  }\n" + "}";
 
 					$httpBackend
@@ -64,7 +66,7 @@ var demo = angular
 							+ "        \"email\": \"hlautrec@mail.com\"\n"
 							+ "      }\n" + "    },\n" + "    \"authz\": {\n"
 							+ "        \"roles\" : [\"GUEST\"],\n"
-							+ "        \"permissions\" : [\"address$view\"]\n"
+							+ "        \"permissions\" : [\"address:view\"]\n"
 							+ "    }\n" + "  }\n" + "}";
 
 					$httpBackend
@@ -87,8 +89,9 @@ demo
 						'subject',
 						'usernamePasswordToken',
 						'$location',
+						'$filter',
 						function($scope, $rootScope, $timeout, subject,
-								usernamePasswordToken, $location) {
+								usernamePasswordToken, $location, $filter) {
 
 							$scope.errauthc = false;
 
@@ -133,7 +136,7 @@ demo
 							$scope.selectedItem;
 
 							$scope.onItemClicked = function(item) {
-								if (subject.isPermitted('address$view')) {
+								if (subject.isPermitted('address:view')) {
 									$scope.selectedItem = item;
 									$scope.entry = null;
 								}
@@ -148,6 +151,13 @@ demo
 								$scope.entry = angular
 										.copy($scope.selectedItem);
 							}
+							
+							$scope.delete = function() {
+							    $scope.entries = $filter('filter')($scope.entries, function(item){
+								return item != $scope.selectedItem;
+							    });
+							    $scope.selectedItem = null;
+							}
 
 							$scope.saveOrUpdate = function() {
 								if ($scope.selectedItem) {
@@ -157,9 +167,18 @@ demo
 										}
 									}
 								} else {
+								    	$scope.entry.id = $scope.entries.length +1; 
 									$scope.entries.push($scope.entry);
 								}
 								$scope.entry = null;
+							}
+							
+							$scope.$isActive = function(item) {
+							    var active = false;
+							    if (item && $scope.selectedItem) {
+								active = $scope.selectedItem.id == item.id; 
+							    }
+							    return active;
 							}
 
 						} ]);
