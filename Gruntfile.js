@@ -87,7 +87,6 @@ module.exports = function(grunt) {
 						dest : '<%= build %>/<%= pkg.name %>.templates.js',
 					}
 				},
-
 				karma : {
 					unit : {
 						configFile : 'karma.conf.js'
