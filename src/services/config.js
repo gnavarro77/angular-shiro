@@ -2,22 +2,16 @@
 
 /**
  * @ngdoc service
- * @name angularShiro.services.angularShiroConfig
+ * @name angularShiro.services.AngularShiroConfig
  * 
- * @description Angular Shiro Configuration # Default configuration
+ * @description Angular Shiro Configuration 
  * 
- * <pre>
- * options = {
- * 	logout : {
- * 		uri : '/api/logout',
- * 		path : 'logout',
- * 	}
- * }
- * </pre> # Custom configuration
+ * #Custom configuration
  * 
  * <pre>
  *  app.config([ 'angularShiroConfigProvider', function(config) {
  *  	// Customize the configuration
+ *  	config.options.login.uri = 'my/custom/uri';
  *  } ]);
  * </pre>
  */
