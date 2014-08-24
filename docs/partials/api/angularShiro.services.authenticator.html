@@ -1,27 +1,24 @@
-<h1><code ng:non-bindable="">authenticator</code>
+<h1><code ng:non-bindable="">Authenticator</code>
 <div><span class="hint">service in module <code ng:non-bindable="">angularShiro.services</code>
 </span>
 </div>
 </h1>
 <div><h2 id="description">Description</h2>
 <div class="description"><div class="angularshiro-services-authenticator-page"><p>Service in charge of the authentication process.</p>
-<p>Default implementation send a <code>post</code> request to the uri <code>/api/authenticate</code>
-with a <code>UsernamePasswordToken</code> as data.</p>
+<p>Default implementation send a <code>post</code> request to the uri specified in the
+<code>AngularShiroConfig</code> through the <code>login.uri</code>
+property value.</p>
 <p><span class=" alert-danger">This service is not intended to be accessed
 directly; It&#39;s meant to be used internally by the <code>subject</code> service.</span></p>
-<h3 id="description_configuration">Configuration</h3>
-<p>In case that the default behavior of the <code>authenticator</code> service does not fit
-your needs you can - specify our own uri (if that the point of contention)</p>
-<pre class="prettyprint linenums">
-app.config([ 'authenticatorProvider', function(authenticatorProvider) {
-	authenticatorProvider.setUri('path/to/my/authentication/service');
-} ]);
-</pre>
 </div></div>
 <h2 id="dependencies">Dependencies</h2>
 <ul class="dependencies"><li><code ng:non-bindable=""><a href="#/api/ng.$q">$q</a></code>
 </li>
 <li><code ng:non-bindable=""><a href="#/api/ng.$http">$http</a></code>
+</li>
+<li><code ng:non-bindable=""><a href="#/api/ng.$$timeout">$$timeout</a></code>
+</li>
+<li><code ng:non-bindable=""><a href="#/api/angularShiro.services.AngularShiroConfig">AngularShiroConfig</a></code>
 </li>
 </ul>
 <div class="member method"><h2 id="methods">Methods</h2>

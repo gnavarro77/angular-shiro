@@ -1,22 +1,28 @@
-<h1><code ng:non-bindable="">subject</code>
+<h1><code ng:non-bindable="">Subject</code>
 <div><span class="hint">service in module <code ng:non-bindable="">angularShiro.services</code>
 </span>
 </div>
 </h1>
 <div><h2 id="description">Description</h2>
-<div class="description"><div class="angularshiro-services-subject-page"><p>A Subject represents state and security operations for an
+<div class="description"><div class="angularshiro-services-subject-page"><p>A <code>Subject</code> represents state and security operations for an
 application user. Operations goes from authentication (login and
-logout) to authorization and session management.</p>
+logout) to authorization.</p>
 </div></div>
 <h2 id="dependencies">Dependencies</h2>
-<ul class="dependencies"><li><code ng:non-bindable=""><a href="#/api/authenticator">authenticator</a></code>
+<ul class="dependencies"><li><code ng:non-bindable=""><a href="#/api/angularShiro.services.Authenticator">Authenticator</a></code>
+</li>
+<li><code ng:non-bindable=""><a href="#/api/angularShiro.services.Authorizer">Authorizer</a></code>
+</li>
+<li><code ng:non-bindable=""><a href="#/api/angularShiro.services.AuthenticationResponseParser">AuthenticationResponseParser</a></code>
 </li>
 </ul>
 <h2 id="usage">Usage</h2>
-<div class="usage"><pre class="prettyprint linenums">subject(Authenticator, configuration);</pre>
-<h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>Authenticator</td><td><a href="" class="label type-hint type-hint-authenticator">Authenticator</a></td><td><div class="angularshiro-services-subject-page"><p>instance in charge of the authentication of the
-Subject</p>
-</div></td></tr><tr><td>configuration</td><td><a href="" class="label type-hint type-hint-angularshiroconfig">AngularShiroConfig</a></td><td></td></tr></tbody></table></div>
+<div class="usage"><pre class="prettyprint linenums">Subject(authenticator, authorizer, authenticationResponseParser);</pre>
+<h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>authenticator</td><td><a href="" class="label type-hint type-hint-authenticator">Authenticator</a></td><td><div class="angularshiro-services-subject-page"><p>instance of <code>Authenticator</code></p>
+</div></td></tr><tr><td>authorizer</td><td><a href="" class="label type-hint type-hint-authorizer">Authorizer</a></td><td><div class="angularshiro-services-subject-page"><p>instance of <code>Authorizer</code></p>
+</div></td></tr><tr><td>authenticationResponseParser</td><td><a href="" class="label type-hint type-hint-authenticationresponseparser">AuthenticationResponseParser</a></td><td><div class="angularshiro-services-subject-page"><p>instance of
+<code>AuthenticationResponseParser</code></p>
+</div></td></tr></tbody></table></div>
 <div class="member method"><h2 id="methods">Methods</h2>
 <ul class="methods"><li><h3 id="methods_getprincipal">getPrincipal()</h3>
 <div class="getprincipal"><div class="subject-getprincipal-page"><p>Returns this Subject&#39;s application-wide uniquely identifying
@@ -29,8 +35,8 @@ anonymous</p>
 <div class="hasallroles"><div class="subject-hasallroles-page"><p>Returns <code>true</code> if the <code>Subject</code>
 has all of the specified roles, <code>false</code>
 otherwise.</p>
-</div><h5 id="methods_hasallroles_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>roleIdentifiers</td><td><a href="" class="label type-hint type-hint-array">array</a></td><td><div class="subject-hasallroles-page"><p>the application-specific role identifiers to
-check (usually role ids or role names)</p>
+</div><h5 id="methods_hasallroles_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>roleIdentifiers</td><td><a href="" class="label type-hint type-hint-array">array</a></td><td><div class="subject-hasallroles-page"><p>the application-specific role identifiers
+to check (usually role ids or role names)</p>
 </div></td></tr></tbody></table><h5 id="methods_hasallroles_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-boolean">boolean</a></td><td><div class="subject-hasallroles-page"><p><code>true</code> if the <code>Subject</code> has
 all the roles, <code>false</code> otherwise.</p>
 </div></td></tr></table></div>
@@ -48,8 +54,8 @@ the specified role, <code>false</code> otherwise</p>
 <div class="hasroles"><div class="subject-hasroles-page"><p>Checks if the <code>Subject</code> has the specified
 roles, returning a boolean array indicating which roles are
 associated</p>
-</div><h5 id="methods_hasroles_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>roleIdentifiers</td><td><a href="" class="label type-hint type-hint-array">array</a></td><td><div class="subject-hasroles-page"><p>the application-specific role identifiers to
-check (usually role ids or role names)</p>
+</div><h5 id="methods_hasroles_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>roleIdentifiers</td><td><a href="" class="label type-hint type-hint-array">array</a></td><td><div class="subject-hasroles-page"><p>the application-specific role identifiers
+to check (usually role ids or role names)</p>
 </div></td></tr></tbody></table><h5 id="methods_hasroles_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-array">array</a></td><td><div class="subject-hasroles-page"><p>a boolean array where indices correspond to the index of
 the roles in the given identifiers. A <code>true</code> value
 indicates the <code>Subject</code> has the role at that index.
@@ -65,15 +71,24 @@ otherwise.</p>
 authenticated, <code>false</code> otherwise</p>
 </div></td></tr></table></div>
 </li>
-<li><h3 id="methods_ispermitted">isPermitted()</h3>
-<div class="ispermitted"></div>
+<li><h3 id="methods_ispermitted">isPermitted(permission)</h3>
+<div class="ispermitted"><div class="subject-ispermitted-page"><p>Returns <code>true</code> if the current
+<code>Subject</code> has the specified permission(s),
+<code>false</code> otherwise.</p>
+</div><h5 id="methods_ispermitted_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>permission</td><td><a href="" class="label type-hint type-hint-string">string </a><a href="" class="label type-hint type-hint-object">
+Permission </a><a href="" class="label type-hint type-hint-object"> array</a></td><td><div class="subject-ispermitted-page"><p>a permission</p>
+</div></td></tr></tbody></table><h5 id="methods_ispermitted_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-boolean">boolean | array</a></td><td><div class="subject-ispermitted-page"><p><code>true</code> if the current
+<code>Subject</code> has the specified permission(s),
+<code>false</code> otherwise.</p>
+</div></td></tr></table></div>
 </li>
 <li><h3 id="methods_ispermittedall">isPermittedAll(permissions)</h3>
 <div class="ispermittedall"><div class="subject-ispermittedall-page"><p>Returns <code>true</code> if this Subject implies all of
 the specified permissions, <code>false</code> otherwise</p>
 </div><h5 id="methods_ispermittedall_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>permissions</td><td><a href="" class="label type-hint type-hint-array">array</a></td><td><div class="subject-ispermittedall-page"><p>the permissions to check</p>
-</div></td></tr></tbody></table><h5 id="methods_ispermittedall_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-boolean">boolean</a></td><td><div class="subject-ispermittedall-page"><p><code>true</code> if this Subject implies all of the
-specified permissions, <code>false</code> otherwise</p>
+</div></td></tr></tbody></table><h5 id="methods_ispermittedall_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-boolean">boolean</a></td><td><div class="subject-ispermittedall-page"><p><code>true</code> if the current <code>Subject</code>
+implies all of the specified permissions, <code>false</code>
+otherwise</p>
 </div></td></tr></table></div>
 </li>
 <li><h3 id="methods_login">login(token)</h3>
@@ -86,8 +101,8 @@ is considered authenticated so that the isAuthenticated() method will
 return true and the getPrincipal() method must return a non-null value
 and .</p>
 </div><h5 id="methods_login_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>token</td><td><a href="" class="label type-hint type-hint-usernamepasswordtoken">UsernamePasswordToken</a></td><td><div class="subject-login-page"><p>the token encapsulating the subject&#39;s principals and
-credentials to be passed to the Authentication subsystem for
-verification.</p>
+credentials to be passed to the Authentication subsystem
+for verification.</p>
 </div></td></tr></tbody></table><h5 id="methods_login_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-promise">Promise</a></td><td><div class="subject-login-page"><p>Returns a promise</p>
 </div></td></tr></table></div>
 </li>
@@ -98,28 +113,6 @@ authorization data. After this method is called, the Subject
 is considered &#39;anonymous&#39; and may continue to be used for
 another log-in if desired.</p>
 </div></div>
-</li>
-</ul>
-</div>
-<div class="member property"><h2 id="properties">Properties</h2>
-<ul class="properties"><li><h3 id="properties_authenticated">authenticated</h3>
-<div class="authenticated"><div class="subject-authenticated-page"><p>flag indicating if the current Subject is authenticated or
-not</p>
-</div><h5 id="properties_authenticated_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-boolean">boolean</a></td><td><div class="subject-authenticated-page"><p><code>true</code> if this Subject is authenticated,
-<code>false</code> otherwise</p>
-</div></td></tr></table></div>
-</li>
-<li><h3 id="properties_authenticationinfo">authenticationInfo</h3>
-<div class="authenticationinfo"><div class="subject-authenticationinfo-page"><p>this Subject authenticiation infos</p>
-</div><h5 id="properties_authenticationinfo_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-authenticationinfo">AuthenticationInfo</a></td><td><div class="subject-authenticationinfo-page"><p>this Subject authentication infos</p>
-</div></td></tr></table></div>
-</li>
-<li><h3 id="properties_authorizer">authorizer</h3>
-<div class="authorizer"><div class="subject-authorizer-page"><p><code>Authorizer</code> instance in charge of
-authorization operations</p>
-</div><h5 id="properties_authorizer_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-authorizer">Authorizer</a></td><td><div class="subject-authorizer-page"><p><code>Authorizer</code> instance in charge of
-authorization operations</p>
-</div></td></tr></table></div>
 </li>
 </ul>
 </div>

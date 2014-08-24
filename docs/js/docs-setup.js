@@ -18,7 +18,7 @@ NG_DOCS={
       "shortName": "angularShiro.directives.hasAnyRole",
       "type": "directive",
       "moduleName": "angularShiro.directives",
-      "shortDescription": "Display if the current Subject is assigned",
+      "shortDescription": "Display if the current Subject is assigned any of the",
       "keywords": "admin angularshiro api array assigned current developper directive directives display example expression guest hasanyrole names role roles subject"
     },
     {
@@ -27,7 +27,7 @@ NG_DOCS={
       "shortName": "angularShiro.directives.hasPermission",
       "type": "directive",
       "moduleName": "angularShiro.directives",
-      "shortDescription": "Display its content only if the current Subject &#39;has&#39; (implies) the specified permission (for example, newletter$edit)",
+      "shortDescription": "Display its content only if the current Subject &#39;has&#39;",
       "keywords": "$parse angular angularshiro api character check content current directive directives display example expression haspermission newletter permission replaced service subject support"
     },
     {
@@ -45,7 +45,7 @@ NG_DOCS={
       "shortName": "angularShiro.directives.lacksPermission",
       "type": "directive",
       "moduleName": "angularShiro.directives",
-      "shortDescription": "Display if the current Subject &#39;has&#39; (implies) the specified permission (for example, newletter$edit)",
+      "shortDescription": "Display if the current Subject &#39;has&#39; (implies) the specified",
       "keywords": "$parse angular angularshiro api character check current directive directives display example expression lackspermission newletter permission replaced service subject support"
     },
     {
@@ -54,7 +54,7 @@ NG_DOCS={
       "shortName": "angularShiro.directives.lacksRole",
       "type": "directive",
       "moduleName": "angularShiro.directives",
-      "shortDescription": "Display if the current Subject is NOT",
+      "shortDescription": "Display if the current Subject is NOT assigned the specified",
       "keywords": "admin angularshiro api assigned current directive directives display example excluded expression lacksrole role subject"
     },
     {
@@ -86,26 +86,26 @@ NG_DOCS={
     },
     {
       "section": "api",
-      "id": "angularShiro.services.angularShiroConfig",
-      "shortName": "angularShiro.services.angularShiroConfig",
+      "id": "angularShiro.services.AngularShiroConfig",
+      "shortName": "angularShiro.services.AngularShiroConfig",
       "type": "service",
       "moduleName": "angularShiro.services",
-      "shortDescription": "Angular Shiro Configuration # Default configuration",
-      "keywords": "angular angularshiro angularshiroconfig angularshiroconfigprovider api app config configuration custom customize default function logout options path service services shiro uri"
+      "shortDescription": "Angular Shiro Configuration",
+      "keywords": "angular angularshiro angularshiroconfig angularshiroconfigprovider api app config configuration custom customize function login options service services shiro uri"
     },
     {
       "section": "api",
-      "id": "angularShiro.services.authenticationInfo",
-      "shortName": "angularShiro.services.authenticationInfo",
+      "id": "angularShiro.services.AuthenticationInfo",
+      "shortName": "angularShiro.services.AuthenticationInfo",
       "type": "object",
       "moduleName": "angularShiro.services",
       "shortDescription": "AuthenticationInfo represents the Subject&#39;s",
-      "keywords": "angularshiro api authentication authenticationinfo credential credentials getcredentials informations key login method object password principal private process property represents returns services subject suject username verifies"
+      "keywords": "angularshiro api authentication authenticationinfo credential credentials getcredentials informations key login method object password principal private process represents returns services subject suject username verifies"
     },
     {
       "section": "api",
-      "id": "angularShiro.services.authenticationResponseParser",
-      "shortName": "angularShiro.services.authenticationResponseParser",
+      "id": "angularShiro.services.AuthenticationResponseParser",
+      "shortName": "angularShiro.services.AuthenticationResponseParser",
       "type": "object",
       "moduleName": "angularShiro.services",
       "shortDescription": "AuthenticationResponseParser is responsible of validating then",
@@ -113,35 +113,35 @@ NG_DOCS={
     },
     {
       "section": "api",
-      "id": "angularShiro.services.authenticator",
-      "shortName": "angularShiro.services.authenticator",
+      "id": "angularShiro.services.Authenticator",
+      "shortName": "angularShiro.services.Authenticator",
       "type": "service",
       "moduleName": "angularShiro.services",
       "shortDescription": "Service in charge of the authentication process.",
-      "keywords": "$http $q accessed alert-danger angularshiro api app authenticate authentication authenticator authenticatorprovider behavior case charge class config configuration contention data default directly fit function implementation intended internally meant method path point post process promise request returns send service services seturi subject token uri usernamepasswordtoken"
+      "keywords": "$http $q accessed alert-danger angularshiro angularshiroconfig api authenticate authentication authenticator charge class default directly implementation intended internally meant method post process promise property request returns send service services subject token uri"
     },
     {
       "section": "api",
-      "id": "angularShiro.services.authorizationInfo",
-      "shortName": "angularShiro.services.authorizationInfo",
+      "id": "angularShiro.services.AuthorizationInfo",
+      "shortName": "angularShiro.services.AuthorizationInfo",
       "type": "object",
       "moduleName": "angularShiro.services",
       "shortDescription": "AuthorizationInfo represents a Subject&#39;s authorization",
-      "keywords": "access angularshiro api assigned authorization authorizationinfo control corresponding getpermissions getroles informations list method names object operations permissions property represents returns roles services subject"
+      "keywords": "access angularshiro api assigned authorization authorizationinfo control corresponding getpermissions getroles informations list method names object operations permissions represents returns roles services subject"
     },
     {
       "section": "api",
-      "id": "angularShiro.services.authorizer",
-      "shortName": "angularShiro.services.authorizer",
+      "id": "angularShiro.services.Authorizer",
+      "shortName": "angularShiro.services.Authorizer",
       "type": "object",
       "moduleName": "angularShiro.services",
       "shortDescription": "An Authorizer performs authorization (access",
-      "keywords": "access action angularshiro api array assigned authorization authorizationinfo authorizations authorizer based booleans check checks control correspond corresponding evaluate hasallroles hasrole hasroles identifiers implied indicates indices informations injected instance ispermitted ispermittedall list method object objects operations perform performs permission permissions permitted property resource role roles services subject user"
+      "keywords": "angularshiro api array authorization authorizationinfo authorizations authorizer based booleans check control correspond current hasallroles hasrole hasroles identifiers indicates indices informations injected instance ispermitted ispermittedall list method object operations performs permission permissions returns role roles services subject user"
     },
     {
       "section": "api",
-      "id": "angularShiro.services.permission",
-      "shortName": "angularShiro.services.permission",
+      "id": "angularShiro.services.Permission",
+      "shortName": "angularShiro.services.Permission",
       "type": "object",
       "moduleName": "angularShiro.services",
       "shortDescription": "A Permission represents the ability to perform an",
@@ -149,21 +149,21 @@ NG_DOCS={
     },
     {
       "section": "api",
-      "id": "angularShiro.services.subject",
-      "shortName": "angularShiro.services.subject",
+      "id": "angularShiro.services.Subject",
+      "shortName": "angularShiro.services.Subject",
       "type": "service",
       "moduleName": "angularShiro.services",
       "shortDescription": "A Subject represents state and security operations for an",
-      "keywords": "angularshiro anonymous api application application-specific application-wide array associated attempt attempts authenticated authentication authenticationinfo authenticator authenticiation authorization authorizer boolean called charge check checks configuration considered continue contrary correspond credentials current data desired encapsulating entities flag getprincipal hasallroles hasrole hasroles identifier identifiers identifying identity ids implies indicates indicating indices informations infos instance invalidates isauthenticated ispermitted ispermittedall log-in login logout logs management method names non-null operations passed performs permissions principal principals promise property provided quietly rejected removes represents return returned returning returns role roleidentifier roleidentifiers roles security service services session subject submitted subsystem successful token true unique uniquely unsuccessful user valid verification"
+      "keywords": "angularshiro anonymous api application application-specific application-wide array associated attempt attempts authenticated authentication authenticationresponseparser authenticator authorization authorizer boolean called check checks considered continue contrary correspond credentials current data desired encapsulating entities getprincipal hasallroles hasrole hasroles identifier identifiers identifying identity ids implies indicates indicating indices informations instance invalidates isauthenticated ispermitted ispermittedall log-in login logout logs method names non-null operations passed performs permission permissions principal principals promise provided quietly rejected removes represents return returned returning returns role roleidentifier roleidentifiers roles security service services subject submitted subsystem successful token true unique uniquely unsuccessful user valid verification"
     },
     {
       "section": "api",
-      "id": "angularShiro.services.usernamePasswordToken",
-      "shortName": "angularShiro.services.usernamePasswordToken",
+      "id": "angularShiro.services.UsernamePasswordToken",
+      "shortName": "angularShiro.services.UsernamePasswordToken",
       "type": "object",
       "moduleName": "angularShiro.services",
       "shortDescription": "UsernamePasswordToken is a simple",
-      "keywords": "angularshiro api authentication getcredentials getprincipal method object password property returned returns services simple subject token user username usernamepasswordtoken"
+      "keywords": "angularshiro api authentication getcredentials getprincipal method object password property returns services simple subject token user username usernamepasswordtoken"
     }
   ],
   "apis": {

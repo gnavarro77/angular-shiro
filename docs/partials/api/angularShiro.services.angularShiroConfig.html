@@ -1,21 +1,15 @@
-<h1><code ng:non-bindable="">angularShiroConfig</code>
+<h1><code ng:non-bindable="">AngularShiroConfig</code>
 <div><span class="hint">service in module <code ng:non-bindable="">angularShiro.services</code>
 </span>
 </div>
 </h1>
 <div><h2 id="description">Description</h2>
-<div class="description"><div class="angularshiro-services-angularshiroconfig-page"><p>Angular Shiro Configuration # Default configuration</p>
-<pre class="prettyprint linenums">
-options = {
-	logout : {
-		uri : '/api/logout',
-		path : 'logout',
-	}
-}
-</pre> # Custom configuration</p>
+<div class="description"><div class="angularshiro-services-angularshiroconfig-page"><p>Angular Shiro Configuration</p>
+<h3 id="description_custom-configuration">Custom configuration</h3>
 <pre class="prettyprint linenums">
  app.config([ 'angularShiroConfigProvider', function(config) {
  	// Customize the configuration
+ 	config.options.login.uri = 'my/custom/uri';
  } ]);
 </pre>
 </div></div>
