@@ -31,8 +31,8 @@ var hasAnyPermissionDirective = [ 'subject', '$animate', function(subject, $anim
 	    }, function() {
 		var permissions = $scope.$eval($attr.hasAnyPermission) || $attr.hasAnyPermission;
 		permissions = angular.isArray(permissions) ? permissions : [ permissions ];
-		var perms = subject.isPermitted(permissions);
-		if (angular.isArray(perms) && perms.indexOf(true) > -1) {
+		var results = subject.isPermitted(permissions);
+		if (angular.isArray(results) && results.indexOf(true) > -1) {
 		    if (!childScope) {
 			childScope = $scope.$new();
 			$transclude(childScope, function(clone) {
