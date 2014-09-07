@@ -44,7 +44,8 @@
     "grunt-contrib-jshint": "~0.10.0",
     "jshint-stylish": "~0.2.0",
     "grunt-ngmin": "0.0.3",
-    "grunt-bump": "0.0.14"
+    "grunt-bump": "0.0.14",
+    "grunt-conventional-changelog": "~1.1.0"
   },
   "engines": {
     "node": ">= 0.8.0"

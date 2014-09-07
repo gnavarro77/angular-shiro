@@ -155,6 +155,9 @@ module.exports = function(grunt) {
 	    docs : [ '<%= docs %>' ],
 	    pages : [ '<%= pages %>/**/*' ]
 	},
+	changelog : {
+	    options : {}
+	},
 	connect : {
 	    options : {
 		keepalive : true
@@ -174,6 +177,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-ngdocs');
     grunt.loadNpmTasks('grunt-bump');
     grunt.loadNpmTasks('grunt-contrib-connect');
+    grunt.loadNpmTasks('grunt-conventional-changelog');
 
     grunt.registerTask('doc', [ 'clean:docs', 'ngdocs' ]);
     grunt.registerTask('test', [ 'karma' ]);
