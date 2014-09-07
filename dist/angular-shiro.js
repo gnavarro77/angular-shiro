@@ -1,6 +1,6 @@
 /**
  * angular-shiro
- * @version v0.1.0 - 2014-09-07
+ * @version v0.1.1 - 2014-09-07
  * @link https://github.com/gnavarro77/angular-shiro
  * @author Gilles Navarro ()
  * @license MIT License, http://www.opensource.org/licenses/MIT
