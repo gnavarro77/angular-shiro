@@ -28,7 +28,7 @@ module.exports = function(config) {
 				'src/directives/usernamePasswordForm.html',
 				'src/angular-shiro.js',
 
-//				'test/services/filtersSpec.js'
+//				'test/directives/hasAnyPermissionSpec.js'
 				'test/services/*Spec.js', 
 				'test/directives/*Spec.js' 
 				],

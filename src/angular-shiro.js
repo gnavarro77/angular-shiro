@@ -39,6 +39,7 @@ var directives = {
     'hasAnyRole' : hasAnyRoleDirective,
     'hasPermission' : hasPermissionDirective,
     'lacksPermission' : lacksPermissionDirective,
+    "hasAnyPermission" : hasAnyPermissionDirective,
     'principal' : principalDirective,
     'usernamePasswordForm' : usernamePasswordFormDirective
 };
@@ -53,7 +54,6 @@ angular.module('angularShiro', [ 'angularShiro.services', 'angularShiro.directiv
 	function($rootScope, $location, subject, angularShiroConfig, filtersResolver, $log) {
 
 	    $rootScope.$on('$locationChangeStart', function(event, next, current) {
-		$log.debug('locationChangeStart => ' + next);
 		var filters = filtersResolver.resolve($location.path());
 		for ( var i = 0; i < filters.length; i++) {
 		    var filter = filters[i];

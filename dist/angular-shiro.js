@@ -1,6 +1,6 @@
 /**
  * angular-shiro
- * @version v0.1.0 - 2014-08-15
+ * @version v0.1.0 - 2014-09-07
  * @link https://github.com/gnavarro77/angular-shiro
  * @author Gilles Navarro ()
  * @license MIT License, http://www.opensource.org/licenses/MIT
@@ -69,7 +69,7 @@
   }
   /**
  * @ngdoc object
- * @name angularShiro.services.usernamePasswordToken
+ * @name angularShiro.services.UsernamePasswordToken
  * 
  * @description <code>UsernamePasswordToken</code> is a simple
  *              username/password authentication token.
@@ -80,7 +80,7 @@
     /**
      * @ngdoc property
      * @name UsernamePasswordToken#username
-     * @propertyOf angularShiro.services.usernamePasswordToken
+     * @propertyOf angularShiro.services.UsernamePasswordToken
      * @description the Subject's user name
      * @returns {string} the Subject's user name
      */
@@ -88,7 +88,7 @@
     /**
      * @ngdoc property
      * @name UsernamePasswordToken#password
-     * @propertyOf angularShiro.services.usernamePasswordToken
+     * @propertyOf angularShiro.services.UsernamePasswordToken
      * @description the Subject's password
      * @returns {string} the Subject's password
      */
@@ -96,7 +96,7 @@
     /**
      * @ngdoc method
      * @name UsernamePasswordToken#getPrincipal
-     * @methodOf angularShiro.services.usernamePasswordToken
+     * @methodOf angularShiro.services.UsernamePasswordToken
      * 
      * @description Returns <code>username</code> value
      * @return {string} <code>username</code> value
@@ -107,9 +107,9 @@
     /**
      * @ngdoc method
      * @name UsernamePasswordToken#getCredentials
-     * @methodOf angularShiro.services.usernamePasswordToken
+     * @methodOf angularShiro.services.UsernamePasswordToken
      * 
-     * @description Returns the <code>getPassword()</code> returned value
+     * @description Returns the <code>password</code> value
      * 
      * @return {string} <code>password</code> value
      */
@@ -119,7 +119,7 @@
   }
   /**
  * @ngdoc object
- * @name angularShiro.services.authenticationInfo
+ * @name angularShiro.services.AuthenticationInfo
  * 
  * @description <code>AuthenticationInfo</code> represents the Subject's
  *              informations regarding the authentication process
@@ -136,17 +136,15 @@
  */
   function AuthenticationInfo(principal, credentials) {
     /**
-     * @ngdoc property
      * @name AuthenticationInfo#principal
-     * @propertyOf angularShiro.services.authenticationInfo
+     * @propertyOf angularShiro.services.AuthenticationInfo
      * @description the Subject's principal
      * @returns {string} the Subject's principal
      */
     this.principal = principal;
     /**
-     * @ngdoc property
      * @name AuthenticationInfo#username
-     * @propertyOf angularShiro.services.authenticationInfo
+     * @propertyOf angularShiro.services.AuthenticationInfo
      * @description the Subject's credentials
      * @returns {object} the Subject's credentials
      */
@@ -154,7 +152,7 @@
     /**
      * @ngdoc method
      * @name AuthenticationInfo#getCredentials
-     * @methodOf angularShiro.services.authenticationInfo
+     * @methodOf angularShiro.services.AuthenticationInfo
      * 
      * @description Returns the Suject's principal
      * 
@@ -167,7 +165,7 @@
     /**
      * @ngdoc method
      * @name AuthenticationInfo#getCredentials
-     * @methodOf angularShiro.services.authenticationInfo
+     * @methodOf angularShiro.services.AuthenticationInfo
      * 
      * @description Returns the Subject's credentials . A credential verifies
      *              the Subject's principal, such as a password or private key
@@ -181,66 +179,66 @@
   }
   function Permission(wildcardString, caseSensitive) {
     /**
-	 * @ngdoc property
-	 * @name Permission#WILDCARD_TOKEN
-	 * @propertyOf angularShiro.services.permission
-	 * @description the token representing wildcard
-	 * @returns {string} the token representing wildcard
-	 */
+     * @ngdoc property
+     * @name Permission#WILDCARD_TOKEN
+     * @propertyOf angularShiro.services.Permission
+     * @description the token representing wildcard
+     * @returns {string} the token representing wildcard
+     */
     this.WILDCARD_TOKEN = '*';
     /**
-	 * @ngdoc property
-	 * @name Permission#PART_DIVIDER_TOKEN
-	 * @propertyOf angularShiro.services.permission
-	 * @description the string used to separate the different parts of a token
-	 * @returns {string} the string used to separate the different parts of a
-	 *          token
-	 */
+     * @ngdoc property
+     * @name Permission#PART_DIVIDER_TOKEN
+     * @propertyOf angularShiro.services.Permission
+     * @description the string used to separate the different parts of a token
+     * @returns {string} the string used to separate the different parts of a
+     *          token
+     */
     this.PART_DIVIDER_TOKEN = ':';
     /**
-	 * @ngdoc property
-	 * @name Permission#SUBPART_DIVIDER_TOKEN
-	 * @propertyOf angularShiro.services.permission
-	 * @description the string used to separate multiple tokens
-	 * @returns {string} the string used to separate multiple tokens
-	 */
+     * @ngdoc property
+     * @name Permission#SUBPART_DIVIDER_TOKEN
+     * @propertyOf angularShiro.services.Permission
+     * @description the string used to separate multiple tokens
+     * @returns {string} the string used to separate multiple tokens
+     */
     this.SUBPART_DIVIDER_TOKEN = ',';
     /**
-	 * @ngdoc property
-	 * @name Permission#caseSensitive
-	 * @propertyOf angularShiro.services.permission
-	 * @description flag indicating if the comparisons are case sensitive or not
-	 * @returns {string} flag indicating if the comparisons are case sensitive
-	 *          or not
-	 */
+     * @ngdoc property
+     * @name Permission#caseSensitive
+     * @propertyOf angularShiro.services.Permission
+     * @description flag indicating if the comparisons are case sensitive or not
+     * @returns {string} flag indicating if the comparisons are case sensitive
+     *          or not
+     */
     this.caseSensitive = caseSensitive ? caseSensitive : false;
     /**
-	 * @ngdoc property
-	 * @name Permission#parts
-	 * @propertyOf angularShiro.services.permission
-	 * @description Represents the differents parts of a token
-	 * @returns {array} Represents the differents parts of a token
-	 */
+     * @ngdoc property
+     * @name Permission#parts
+     * @propertyOf angularShiro.services.Permission
+     * @description Represents the differents parts of a token
+     * @returns {array} Represents the differents parts of a token
+     */
     this.parts;
     /**
-	 * @ngdoc method
-	 * @name Permission#implies
-	 * @methodOf angularShiro.services.permission
-	 * 
-	 * @description Returns <code>true</code> if this current instance implies
-	 *              all the functionality and/or resource access described by
-	 *              the specified <code>Permission</code> argument,
-	 *              <code>false</code> otherwise
-	 * 
-	 * @param {string |
-	 *            Permission} permission the permission to check for
-	 *            behavior/functionality comparison
-	 * 
-	 * @return {boolean} <code>true</code> if this current instance implies
-	 *         all the functionality and/or resource access described by the
-	 *         specified <code>Permission</code> argument, <code>false</code>
-	 *         otherwise
-	 */
+     * @ngdoc method
+     * @name Permission#implies
+     * @methodOf angularShiro.services.Permission
+     * 
+     * @description Returns <code>true</code> if this current instance implies
+     *              all the functionality and/or resource access described by
+     *              the specified <code>Permission</code> argument,
+     *              <code>false</code> otherwise
+     * 
+     * @param {string |
+     *                Permission} permission the permission to check for
+     *                behavior/functionality comparison
+     * 
+     * @return {boolean} <code>true</code> if this current instance implies
+     *         all the functionality and/or resource access described by the
+     *         specified <code>Permission</code> argument, <code>false</code>
+     *         otherwise
+     */
     this.implies = function (permission) {
       var implies = angular.isDefined(permission) && this.getParts().length > 0;
       if (implies) {
@@ -267,18 +265,18 @@
       return implies;
     };
     /**
-	 * Returns <code>true</code> if all their parts are contained in our
-	 * parts, <code>false</code> otherwise.
-	 * 
-	 * @param {array}
-	 *            ourPart
-	 * @param {array}
-	 *            theirPart
-	 * 
-	 * @return {boolean} <code>true</code> if all their parts are contained in
-	 *         our parts, <code>false</code> otherwise
-	 * @private
-	 */
+     * Returns <code>true</code> if all their parts are contained in our
+     * parts, <code>false</code> otherwise.
+     * 
+     * @param {array}
+     *                ourPart
+     * @param {array}
+     *                theirPart
+     * 
+     * @return {boolean} <code>true</code> if all their parts are contained in
+     *         our parts, <code>false</code> otherwise
+     * @private
+     */
     this.containsAll = function (ourPart, theirPart) {
       var contains = true;
       for (var i = 0; i < theirPart.length; i++) {
@@ -290,29 +288,29 @@
       return contains;
     };
     /**
-	 * Returns <code>true</code> if the part contains the wildcard token,
-	 * <code>false</code> otherwise.
-	 * 
-	 * @param {String}
-	 *            part part of the token to be tested
-	 * @return {boolean} <code>true</code> if the part contains the wildcard
-	 *         token, <code>false</code> otherwise
-	 * @private
-	 */
+     * Returns <code>true</code> if the part contains the wildcard token,
+     * <code>false</code> otherwise.
+     * 
+     * @param {String}
+     *                part part of the token to be tested
+     * @return {boolean} <code>true</code> if the part contains the wildcard
+     *         token, <code>false</code> otherwise
+     * @private
+     */
     this.containsWildCardToken = function (part) {
       return part.indexOf(this.WILDCARD_TOKEN) > -1;
     };
     /**
-	 * Returns the parts composing the specified wildcard string
-	 * 
-	 * @param {string}
-	 *            wildcardString string representing the permission
-	 * @param {boolean}
-	 *            caseSensitive flag indicating if the comparison is case
-	 *            sensitive
-	 * @return {array} the parts composinf the wildcard string
-	 * @private
-	 */
+     * Returns the parts composing the specified wildcard string
+     * 
+     * @param {string}
+     *                wildcardString string representing the permission
+     * @param {boolean}
+     *                caseSensitive flag indicating if the comparison is case
+     *                sensitive
+     * @return {array} the parts composinf the wildcard string
+     * @private
+     */
     this.resolveParts = function (wildcardString, caseSensitive) {
       var parts = [];
       if (angular.isDefined(wildcardString) && angular.isString(wildcardString)) {
@@ -325,16 +323,17 @@
       return parts;
     };
     /**
-	 * Split a part of the overall wildcardString into its sub parts
-	 * 
-	 * @method resolveSubParts
-	 * @param part
-	 *            {string} a part of the overall wildcardString
-	 * @param caseSensitive
-	 *            {boolean} flag indicating if the comparison is case sensitive
-	 * @retun {array} the subparts
-	 * @private
-	 */
+     * Split a part of the overall wildcardString into its sub parts
+     * 
+     * @method resolveSubParts
+     * @param part
+     *                {string} a part of the overall wildcardString
+     * @param caseSensitive
+     *                {boolean} flag indicating if the comparison is case
+     *                sensitive
+     * @retun {array} the subparts
+     * @private
+     */
     this.resolveSubParts = function (part, caseSensitive) {
       var subParts = [];
       var tokens = part.split(this.SUBPART_DIVIDER_TOKEN);
@@ -347,11 +346,11 @@
       return subParts;
     };
     /**
-	 * Returns the wildcardString parts
-	 * 
-	 * @return {array} wildcard string parts
-	 * @private
-	 */
+     * Returns the wildcardString parts
+     * 
+     * @return {array} wildcard string parts
+     * @private
+     */
     this.getParts = function () {
       return this.parts;
     };
@@ -360,70 +359,73 @@
   }
   /**
  * @ngdoc object
- * @name angularShiro.services.authorizationInfo
+ * @name angularShiro.services.AuthorizationInfo
  * 
  * 
  * @description AuthorizationInfo represents a Subject's authorization
  *              informations (roles, permissions, etc) used for access control
  *              operations
  * 
+ * @param {array}
+ *                roles the list of the <code>Subject</code> roles
+ * @param {array}
+ *                permissions the list of the <code>Subject</code> permissions
  * 
  * 
- * @since 0.0.1
  */
   function AuthorizationInfo(roles, permissions) {
     /**
-	 * @ngdoc property
-	 * @name AuthorizationInfo#roles
-	 * @propertyOf angularShiro.services.authorizationInfo
-	 * @description names of all roles assigned to a corresponding Subject
-	 * @returns {array} the Subject's roles
-	 */
+     * @name AuthorizationInfo#roles
+     * @propertyOf angularShiro.services.AuthorizationInfo
+     * @description names of all roles assigned to a corresponding
+     *              <code>Subject</code>
+     * @returns {array} the Subject's roles
+     */
     this.roles = angular.isArray(roles) ? roles : [];
     /**
-	 * @ngdoc property
-	 * @name AuthorizationInfo#permissions
-	 * @propertyOf angularShiro.services.authorizationInfo
-	 * @description list of the permissions assigned to the corresponding
-	 *              Subject
-	 * @returns {array} the Subject's permissions
-	 */
+     * @name AuthorizationInfo#permissions
+     * @propertyOf angularShiro.services.AuthorizationInfo
+     * @description list of the permissions assigned to the corresponding
+     *              <code>Subject</code>
+     * @returns {array} the Subject's permissions
+     */
     this.permissions = angular.isArray(permissions) ? permissions : [];
     /**
-	 * @ngdoc method
-	 * @name AuthorizationInfo#getRoles
-	 * @methodOf angularShiro.services.authorizationInfo
-	 * 
-	 * @description Returns names of all roles assigned to a corresponding
-	 *              Subject
-	 * 
-	 * @return {Array} names of all roles assigned to a corresponding Subject
-	 */
+     * @ngdoc method
+     * @name AuthorizationInfo#getRoles
+     * @methodOf angularShiro.services.AuthorizationInfo
+     * 
+     * @description Returns names of all roles assigned to a corresponding
+     *              <code>Subject</code>
+     * 
+     * @return {Array} all roles assigned to a corresponding
+     *         <code>Subject</code>
+     */
     this.getRoles = function () {
       return this.roles;
     };
     /**
-	 * @ngdoc method
-	 * @name AuthorizationInfo#getPermissions
-	 * @methodOf angularShiro.services.authorizationInfo
-	 * 
-	 * @description Returns all permissions assigned to the Subject
-	 * 
-	 * @return {Array} all permissions assigned to the Subject
-	 */
+     * @ngdoc method
+     * @name AuthorizationInfo#getPermissions
+     * @methodOf angularShiro.services.AuthorizationInfo
+     * 
+     * @description Returns all permissions assigned to the <code>Subject</code>
+     * 
+     * @return {Array} all permissions assigned to the <code>Subject</code>
+     */
     this.getPermissions = function () {
       return this.permissions;
     };
     /**
-	 * Returns all string-based permissions assigned to the corresponding
-	 * Subject
-	 * 
-	 * @method getStringPermissions
-	 * @return {Array} all string-based permissions assigned to the
-	 *         corresponding Subject
-	 * @since 0.0.1
-	 * 
-	 */
+     * Returns all string-based permissions assigned to the corresponding
+     * Subject
+     * 
+     * @method getStringPermissions
+     * @return {Array} all string-based permissions assigned to the
+     *         corresponding Subject
+     * @since 0.0.1
+     * 
+     */
     this.getStringPermissions = function () {
       var permissions = [];
       for (var i = 0, len = this.permissions.length; i < len; i++) {
@@ -435,14 +437,14 @@
       return permissions;
     };
     /**
-	 * Returns all <code>Permission</code>s assigned to the corresponding
-	 * Subject.
-	 * 
-	 * @method getObjectPermissions
-	 * @return {Array} all <code>Permission</code>s assigned to the
-	 *         corresponding Subject
-	 * @since 0.0.1
-	 */
+     * Returns all <code>Permission</code>s assigned to the corresponding
+     * Subject.
+     * 
+     * @method getObjectPermissions
+     * @return {Array} all <code>Permission</code>s assigned to the
+     *         corresponding Subject
+     * @since 0.0.1
+     */
     this.getObjectPermissions = function () {
       var permissions = [];
       for (var i = 0, len = this.permissions.length; i < len; i++) {
@@ -456,7 +458,7 @@
   }
   /**
  * @ngdoc object
- * @name angularShiro.services.authorizer
+ * @name angularShiro.services.Authorizer
  * 
  * 
  * @description An <code>Authorizer</code> performs authorization (access
@@ -468,23 +470,28 @@
  * 
  * 
  * @param {AuthorizationInfo}
- *            authorizationInfo All informations regarding the Subject
- *            authorizations
+ *                authorizationInfo All informations regarding the Subject
+ *                authorizations
  */
   function Authorizer() {
     /**
-	 * @ngdoc property
-	 * @name Authorizer#permissions
-	 * @propertyOf angularShiro.services.authorizer
-	 * @description list of the permission objects assigned to the corresponding
-	 *              Subject
-	 * @returns {array} the Subject's permissions
-	 */
+     * @name Authorizer#permissions
+     * @propertyOf angularShiro.services.Authorizer
+     * @description list of the permission objects assigned to the corresponding
+     *              Subject
+     * @return {array} the Subject's permissions
+     */
     this.permissions;
+    /**
+     * <code>AuthorizationInfo</code> instance support of authorization
+     * operations
+     * 
+     * @private
+     */
     this.authorizationInfo;
     /**
-	 * 
-	 */
+     * Set the <code>AuthorizationInfo</code> instance
+     */
     this.setAuthorizationInfo = function (authorizationInfo) {
       if (!authorizationInfo || authorizationInfo === null || !(authorizationInfo instanceof AuthorizationInfo)) {
         throw { 'illegalArgumentException': 'invalid value for authorizationInfo' };
@@ -492,23 +499,30 @@
       this.authorizationInfo = authorizationInfo;
       this.permissions = this.getPermissions(authorizationInfo);
     };
+    /**
+     * Clear the properties of the current <code>Authorizer</code> instance.
+     * 
+     * @private
+     */
     this.clear = function () {
       this.authorizationInfo = this.permissions = null;
     };
     /**
-	 * @ngdoc method
-	 * @name Authorizer#isPermitted
-	 * @methodOf angularShiro.services.authorizer
-	 * 
-	 * @description Evaluate if the Subject is permitted to perform an action or
-	 *              access a resource
-	 * 
-	 * @param {string |
-	 *            Permission | array} permission a permission
-	 * @return {boolean | array} <code>true</code> for permitted Subject,
-	 *         <code>false</code> otherwise.
-	 * 
-	 */
+     * @ngdoc method
+     * @name Authorizer#isPermitted
+     * @methodOf angularShiro.services.Authorizer
+     * 
+     * @description Returns <code>true</code> if the current
+     *              <code>Subject</code> has the specified permission(s),
+     *              <code>false</code> otherwise.
+     * 
+     * @param {string |
+     *                Permission | array} permission a permission
+     * @return {boolean | array} <code>true</code> if the current
+     *         <code>Subject</code> has the specified permission(s),
+     *         <code>false</code> otherwise.
+     * 
+     */
     this.isPermitted = function (permission) {
       var result;
       if (angular.isArray(permission)) {
@@ -522,34 +536,36 @@
       return result;
     };
     /**
-	 * @ngdoc method
-	 * @name Authorizer#isPermittedAll
-	 * @methodOf angularShiro.services.authorizer
-	 * 
-	 * @description Evaluate if the Subject is permitted to perform all action
-	 *              or access all resource implied by specified permissions
-	 * 
-	 * @param {array}
-	 *            permission a list of permission
-	 * @return {boolean | Array} <code>true</code> for all permissions are
-	 *         permitted, <code>false</code> otherwise.
-	 */
+     * @ngdoc method
+     * @name Authorizer#isPermittedAll
+     * @methodOf angularShiro.services.Authorizer
+     * 
+     * @description Returns <code>true</code> if the <code>Subject</code>
+     *              has all the specified permissions.
+     * 
+     * @param {array}
+     *                permissions a list of permission
+     * @return {boolean} <code>true</code> if the <code>Subject</code> has
+     *         all the specified permissions, <code>false</code> otherwise.
+     */
     this.isPermittedAll = function (permissions) {
       return this.isPermitted(permissions).indexOf(false) === -1;
     };
     /**
-	 * @ngdoc method
-	 * @name Authorizer#hasRole
-	 * @methodOf angularShiro.services.authorizer
-	 * 
-	 * @description Evaluate if the Subject has the specified role
-	 * 
-	 * @param {string}
-	 *            role role to check
-	 * @return {boolean} <code>true</code> if the Subject has the specified
-	 *         role, <code>false</code> otherwise
-	 * 
-	 */
+     * @ngdoc method
+     * @name Authorizer#hasRole
+     * @methodOf angularShiro.services.Authorizer
+     * 
+     * @description Returns <code>true</code> if the current
+     *              <code>Subject</code> has the specified role,
+     *              <code>false</code> otherwise.
+     * 
+     * @param {string}
+     *                role role to check
+     * @return {boolean} <code>true</code> if the current Subject has the
+     *         specified role, <code>false</code> otherwise.
+     * 
+     */
     this.hasRole = function (role) {
       var hasRole = false;
       if (role) {
@@ -558,19 +574,21 @@
       return hasRole;
     };
     /**
-	 * @ngdoc method
-	 * @name Authorizer#hasRoles
-	 * @methodOf angularShiro.services.authorizer
-	 * 
-	 * @description Checks a list of roles against the Subject's roles
-	 * 
-	 * @param {array}
-	 *            roles the list of roles to check against the Subject's roles
-	 * @return {array} an array of booleans whose indices correspond to the
-	 *         index of the roles in the given identifiers. At a given index, a
-	 *         <code>true</code> value indicates that the user has the role, a
-	 *         <code>false</code> value indicates that does not have the role
-	 */
+     * @ngdoc method
+     * @name Authorizer#hasRoles
+     * @methodOf angularShiro.services.Authorizer
+     * 
+     * @description Returns an <code>array</code> of booleans whose indices
+     *              correspond to the index of the roles in the given
+     *              identifiers. At a given index, a <code>true</code> value
+     *              indicates that the user has the role, a <code>false</code>
+     *              value indicates that he does not have the role.
+     * 
+     * @param {array}
+     *                roles the list of roles to check against the
+     *                <code>Subject</code>'s roles
+     * @return {array} an array of booleans
+     */
     this.hasRoles = function (roles) {
       var result = [];
       if (roles && angular.isArray(roles)) {
@@ -581,31 +599,32 @@
       return result;
     };
     /**
-	 * @ngdoc method
-	 * @name Authorizer#hasAllRoles
-	 * @methodOf angularShiro.services.authorizer
-	 * 
-	 * @description Checks if the Subject has all of the specified roles
-	 * 
-	 * @param {array}
-	 *            roles the list of roles to check
-	 * @return {boolean} <code>true</code> if the user has all the roles,
-	 *         <code>false</code> otherwise.
-	 */
+     * @ngdoc method
+     * @name Authorizer#hasAllRoles
+     * @methodOf angularShiro.services.Authorizer
+     * 
+     * @description Returns <code>true</code> if the current
+     *              <code>Subject</code> has all of the specified roles,
+     *              <code>false</code> otherwise.
+     * 
+     * @param {array}
+     *                roles the list of roles to check
+     * @return {boolean} <code>true</code> if the current <code>Subject</code>
+     *         has all of the specified roles, <code>false</code> otherwise.
+     */
     this.hasAllRoles = function (roles) {
       return this.hasRoles(roles).indexOf(false) === -1;
     };
     /**
-	 * Returns the permission objects collected out of the
-	 * <code>AuthorizationInfo</code> object
-	 * 
-	 * @method getPermissions
-	 * @param {AuthorizationInfo}
-	 *            authorizationInfo Subject/User authorization data
-	 * @return {Array} the permissions (object) collected out of the
-	 *         <code>AuthorizationInfo</code> object
-	 * @private
-	 */
+     * Returns the permission objects collected out of the
+     * <code>AuthorizationInfo</code> object
+     * 
+     * @method getPermissions
+     * @param {AuthorizationInfo}
+     *                authorizationInfo Subject/User authorization data
+     * @return {Array} the permissions (object) collected out of the
+     *         <code>AuthorizationInfo</code> object
+     */
     this.getPermissions = function (authInfo) {
       var permissions = authInfo.getObjectPermissions();
       var stringPermissions = authInfo.getStringPermissions();
@@ -615,15 +634,14 @@
       return permissions;
     };
     /**
-	 * Evaluate if the permission is granted to the Subject/User
-	 * 
-	 * @method isObjectPermissionPermitted
-	 * @param {Permission}
-	 *            permission Permission object to evaluate
-	 * @retun {boolean} <code>true</code> if the permission is granted,
-	 *        <code>false</code>otherwise
-	 * @private
-	 */
+     * Evaluate if the permission is granted to the Subject/User
+     * 
+     * @method isObjectPermissionPermitted
+     * @param {Permission}
+     *                permission Permission object to evaluate
+     * @retun {boolean} <code>true</code> if the permission is granted,
+     *        <code>false</code>otherwise
+     */
     this.isObjectPermissionPermitted = function (permission) {
       var permitted = false;
       for (var i = 0, len = this.permissions.length; i < len && !permitted; i++) {
@@ -632,13 +650,12 @@
       return permitted;
     };
     /**
-	 * Returns an object Permission
-	 * 
-	 * @param {string |
-	 *            Permission} permission a permission
-	 * @retun {Permission} a Permission object
-	 * @private
-	 */
+     * Returns an object Permission
+     * 
+     * @param {string |
+     *                Permission} permission a permission
+     * @retun {Permission} a Permission object
+     */
     this.resolvePermission = function (permission) {
       return angular.isString(permission) ? new Permission(permission) : permission;
     };
@@ -1114,23 +1131,23 @@
     ];
   function AuthenticationResponseParser() {
     /**
-	 * 
-	 * @ngdoc method
-	 * @function
-	 * @name AuthenticationResponseParser#parse
-	 * @methodOf angularShiro.services.authenticationResponseParser
-	 * 
-	 * @description Validates then parse the data received from the backend
-	 *              authentication service
-	 * 
-	 * @param {Object}
-	 *            data the token encapsulating the subject's principals and
-	 *            credentials to be passed to the Authentication subsystem for
-	 *            verification.
-	 * 
-	 * @returns {object} the parsed data
-	 * 
-	 */
+     * 
+     * @ngdoc method
+     * @function
+     * @name AuthenticationResponseParser#parse
+     * @methodOf angularShiro.services.AuthenticationResponseParser
+     * 
+     * @description Validates then parse the data received from the backend
+     *              authentication service
+     * 
+     * @param {Object}
+     *                data the token encapsulating the subject's principals and
+     *                credentials to be passed to the Authentication subsystem
+     *                for verification.
+     * 
+     * @returns {object} the parsed data
+     * 
+     */
     this.parse = function (data) {
       this.checkValidity(data);
       return {
@@ -1145,8 +1162,8 @@
       return new AuthorizationInfo(authz.roles, authz.permissions);
     };
     /**
-	 * 
-	 */
+     * 
+     */
     this.checkValidity = function (data) {
       if (!angular.isDefined(data) || !angular.isDefined(data.info) || !this.isAuthcValid(data.info) || !this.isAuthzValid(data.info)) {
         var msg = 'Response does not match expected structure.';
@@ -1176,85 +1193,88 @@
   /**
  * 
  * @ngdoc service
- * @name angularShiro.services.subject
- * @requires authenticator
+ * @name angularShiro.services.Subject
+ * @requires angularShiro.services.Authenticator
+ * @requires angularShiro.services.Authorizer
+ * @requires angularShiro.services.AuthenticationResponseParser
  * 
- * @description A Subject represents state and security operations for an
+ * @description A <code>Subject</code> represents state and security operations for an
  *              application user. Operations goes from authentication (login and
- *              logout) to authorization and session management.
+ *              logout) to authorization.
  * 
  * @class Subject
  * @constructor
  * 
  * @param {Authenticator}
- *            Authenticator instance in charge of the authentication of the
- *            Subject
+ *                authenticator instance of <code>Authenticator</code>
  * 
- * @param {AngularShiroConfig}
- *            configuration
+ * @param {Authorizer}
+ *                authorizer instance of <code>Authorizer</code>
+ * 
+ * @param {AuthenticationResponseParser}
+ *                authenticationResponseParser instance of
+ *                <code>AuthenticationResponseParser</code>
+ * 
  * 
  * @since 0.0.1
  */
   function Subject(authenticator, authorizer, authenticationResponseParser) {
     /**
-	 * @ngdoc property
-	 * @name Subject#authenticated
-	 * @description flag indicating if the current Subject is authenticated or
-	 *              not
-	 * @returns {boolean} <code>true</code> if this Subject is authenticated,
-	 *          <code>false</code> otherwise
-	 * @propertyOf angularShiro.services.subject
-	 */
+     * @name Subject#authenticated
+     * @description flag indicating if the current Subject is authenticated or
+     *              not
+     * @returns {boolean} <code>true</code> if this Subject is authenticated,
+     *          <code>false</code> otherwise
+     * @propertyOf angularShiro.services.Subject
+     */
     this.authenticated = false;
     /**
-	 * @private
-	 */
+     * @private
+     */
     // this.session = new Session();
     /**
-	 * @ngdoc property
-	 * @name Subject#authorizer
-	 * @propertyOf angularShiro.services.subject
-	 * @description <code>Authorizer</code> instance in charge of
-	 *              authorization operations
-	 * @returns {Authorizer} <code>Authorizer</code> instance in charge of
-	 *          authorization operations
-	 * 
-	 */
+     * @name Subject#authorizer
+     * @propertyOf angularShiro.services.Subject
+     * @description <code>Authorizer</code> instance in charge of
+     *              authorization operations
+     * @returns {Authorizer} <code>Authorizer</code> instance in charge of
+     *          authorization operations
+     * 
+     */
     this.authorizer = authorizer;
     /**
-	 * @ngdoc property
-	 * @name Subject#authenticationInfo
-	 * @propertyOf angularShiro.services.subject
-	 * @description this Subject authenticiation infos
-	 * @returns {AuthenticationInfo} this Subject authentication infos
-	 */
+     * @name Subject#authenticationInfo
+     * @propertyOf angularShiro.services.Subject
+     * @description this Subject authenticiation infos
+     * @returns {AuthenticationInfo} this Subject authentication infos
+     */
     this.authenticationInfo;
     /**
-	 * 
-	 * @ngdoc method
-	 * @function
-	 * @name Subject#login
-	 * @methodOf angularShiro.services.subject
-	 * 
-	 * @description Performs a login attempt for this Subject.
-	 * 
-	 * On unsuccessful attempts returned <code>httpPromise</code> is rejected;
-	 * 
-	 * On the contrary authentication informations along with with the submitted
-	 * principals/credentials are associated with this Subject and the method
-	 * will return quietly. On successful authentication, the Subject instance
-	 * is considered authenticated so that the isAuthenticated() method will
-	 * return true and the getPrincipal() method must return a non-null value
-	 * and .
-	 * 
-	 * @param {UsernamePasswordToken}
-	 *            token the token encapsulating the subject's principals and
-	 *            credentials to be passed to the Authentication subsystem for
-	 *            verification.
-	 * 
-	 * @returns {Promise} Returns a promise
-	 * 
-	 */
+     * 
+     * @ngdoc method
+     * @function
+     * @name Subject#login
+     * @methodOf angularShiro.services.Subject
+     * 
+     * @description Performs a login attempt for this Subject.
+     * 
+     * On unsuccessful attempts returned <code>httpPromise</code> is rejected;
+     * 
+     * On the contrary authentication informations along with with the submitted
+     * principals/credentials are associated with this Subject and the method
+     * will return quietly. On successful authentication, the Subject instance
+     * is considered authenticated so that the isAuthenticated() method will
+     * return true and the getPrincipal() method must return a non-null value
+     * and .
+     * 
+     * @param {UsernamePasswordToken}
+     *                token the token encapsulating the subject's principals and
+     *                credentials to be passed to the Authentication subsystem
+     *                for verification.
+     * 
+     * @returns {Promise} Returns a promise
+     * 
+     */
     this.login = function (token) {
       var promise = authenticator.authenticate(token);
       var me = this;
@@ -1271,51 +1291,51 @@
       return promise;
     };
     /**
-	 * @ngdoc method
-	 * @name Subject#logout
-	 * @methodOf angularShiro.services.subject
-	 * 
-	 * @description Logs out this Subject and invalidates and/or removes any
-	 *              associated entities, such as <code>Session</code> and
-	 *              authorization data. After this method is called, the Subject
-	 *              is considered 'anonymous' and may continue to be used for
-	 *              another log-in if desired.
-	 * 
-	 * @method logout
-	 * @public
-	 */
+     * @ngdoc method
+     * @name Subject#logout
+     * @methodOf angularShiro.services.Subject
+     * 
+     * @description Logs out this Subject and invalidates and/or removes any
+     *              associated entities, such as <code>Session</code> and
+     *              authorization data. After this method is called, the Subject
+     *              is considered 'anonymous' and may continue to be used for
+     *              another log-in if desired.
+     * 
+     * @method logout
+     * @public
+     */
     this.logout = function () {
       this.clear();
     };
     /**
-	 * 
-	 */
+     * 
+     */
     this.clear = function () {
       this.authenticated = false;
       this.authenticationInfo = null;
       this.authorizer.clear();
     };
     /**
-	 * Returns the application <code>Session</code> associated with this
-	 * Subject/User. If no session exists when this method is called, a new
-	 * session will be created, associated with this Subject, and then returned.
-	 * 
-	 * @return the application <code>Session</code> associated with this
-	 *         SubjectUser
-	 */
+     * Returns the application <code>Session</code> associated with this
+     * Subject/User. If no session exists when this method is called, a new
+     * session will be created, associated with this Subject, and then returned.
+     * 
+     * @return the application <code>Session</code> associated with this
+     *         SubjectUser
+     */
     this.getSession = function (create) {
     };
     /**
-	 * @ngdoc method
-	 * @name Subject#getPrincipal
-	 * @methodOf angularShiro.services.subject
-	 * 
-	 * @description Returns this Subject's application-wide uniquely identifying
-	 *              principal, or <code>null</code> if this Subject is
-	 *              anonymous
-	 * 
-	 * @return {*} this Subject's application-specific unique identity
-	 */
+     * @ngdoc method
+     * @name Subject#getPrincipal
+     * @methodOf angularShiro.services.Subject
+     * 
+     * @description Returns this Subject's application-wide uniquely identifying
+     *              principal, or <code>null</code> if this Subject is
+     *              anonymous
+     * 
+     * @return {*} this Subject's application-specific unique identity
+     */
     this.getPrincipal = function () {
       var principal = '';
       if (angular.isDefined(this.authenticationInfo) && angular.isObject(this.authenticationInfo)) {
@@ -1324,56 +1344,56 @@
       return principal;
     };
     /**
-	 * @ngdoc method
-	 * @name Subject#isAuthenticated
-	 * @methodOf angularShiro.services.subject
-	 * 
-	 * @description Returns <code>true</code> if the <code>Subject</code>
-	 *              has provided valid credentials, <code>false</code>
-	 *              otherwise.
-	 * 
-	 * @return {boolean} <code>true</code> if the <code>Subject</code> is
-	 *         authenticated, <code>false</code> otherwise
-	 */
+     * @ngdoc method
+     * @name Subject#isAuthenticated
+     * @methodOf angularShiro.services.Subject
+     * 
+     * @description Returns <code>true</code> if the <code>Subject</code>
+     *              has provided valid credentials, <code>false</code>
+     *              otherwise.
+     * 
+     * @return {boolean} <code>true</code> if the <code>Subject</code> is
+     *         authenticated, <code>false</code> otherwise
+     */
     this.isAuthenticated = function () {
       return this.authenticated;
     };
     /**
-	 * @ngdoc method
-	 * @name Subject#hasRole
-	 * @methodOf angularShiro.services.subject
-	 * 
-	 * @description Returns <code>true</code> if the <code>Subject</code>
-	 *              has the specified role, <code>false</code> otherwise.
-	 * 
-	 * 
-	 * @param {string}
-	 *            roleIdentifier the application-specific role identifier
-	 *            (usually a role id or role name)
-	 * @return {boolean} <code>true</code> if the <code>Subject</code> has
-	 *         the specified role, <code>false</code> otherwise
-	 */
+     * @ngdoc method
+     * @name Subject#hasRole
+     * @methodOf angularShiro.services.Subject
+     * 
+     * @description Returns <code>true</code> if the <code>Subject</code>
+     *              has the specified role, <code>false</code> otherwise.
+     * 
+     * 
+     * @param {string}
+     *                roleIdentifier the application-specific role identifier
+     *                (usually a role id or role name)
+     * @return {boolean} <code>true</code> if the <code>Subject</code> has
+     *         the specified role, <code>false</code> otherwise
+     */
     this.hasRole = function (role) {
       return this.isAuthenticated() && angular.isDefined(this.authorizer) && this.authorizer.hasRole(role);
     };
     /**
-	 * @ngdoc method
-	 * @name Subject#hasRoles
-	 * @methodOf angularShiro.services.subject
-	 * 
-	 * @description Checks if the <code>Subject</code> has the specified
-	 *              roles, returning a boolean array indicating which roles are
-	 *              associated
-	 * 
-	 * @param {array}
-	 *            roleIdentifiers the application-specific role identifiers to
-	 *            check (usually role ids or role names)
-	 * @return {array} a boolean array where indices correspond to the index of
-	 *         the roles in the given identifiers. A <code>true</code> value
-	 *         indicates the <code>Subject</code> has the role at that index.
-	 *         <code>false</code> indicates the <code>Subject</code> does
-	 *         not have the role at that index
-	 */
+     * @ngdoc method
+     * @name Subject#hasRoles
+     * @methodOf angularShiro.services.Subject
+     * 
+     * @description Checks if the <code>Subject</code> has the specified
+     *              roles, returning a boolean array indicating which roles are
+     *              associated
+     * 
+     * @param {array}
+     *                roleIdentifiers the application-specific role identifiers
+     *                to check (usually role ids or role names)
+     * @return {array} a boolean array where indices correspond to the index of
+     *         the roles in the given identifiers. A <code>true</code> value
+     *         indicates the <code>Subject</code> has the role at that index.
+     *         <code>false</code> indicates the <code>Subject</code> does
+     *         not have the role at that index
+     */
     this.hasRoles = function (roles) {
       var result = [];
       angular.forEach(roles, function (role) {
@@ -1382,48 +1402,58 @@
       return result;
     };
     /**
-	 * @ngdoc method
-	 * @name Subject#hasAllRoles
-	 * @methodOf angularShiro.services.subject
-	 * 
-	 * @description Returns <code>true</code> if the <code>Subject</code>
-	 *              has all of the specified roles, <code>false</code>
-	 *              otherwise.
-	 * 
-	 * @param {array}
-	 *            roleIdentifiers the application-specific role identifiers to
-	 *            check (usually role ids or role names)
-	 * 
-	 * @return {boolean} <code>true</code> if the <code>Subject</code> has
-	 *         all the roles, <code>false</code> otherwise.
-	 */
+     * @ngdoc method
+     * @name Subject#hasAllRoles
+     * @methodOf angularShiro.services.Subject
+     * 
+     * @description Returns <code>true</code> if the <code>Subject</code>
+     *              has all of the specified roles, <code>false</code>
+     *              otherwise.
+     * 
+     * @param {array}
+     *                roleIdentifiers the application-specific role identifiers
+     *                to check (usually role ids or role names)
+     * 
+     * @return {boolean} <code>true</code> if the <code>Subject</code> has
+     *         all the roles, <code>false</code> otherwise.
+     */
     this.hasAllRoles = function (roles) {
       return this.isAuthenticated() && this.authorizer.hasAllRoles(roles);
     };
     /**
-	 * @ngdoc method
-	 * @name Subject#isPermitted
-	 * @methodOf angularShiro.services.subject
-	 * 
-	 * 
-	 */
+     * @ngdoc method
+     * @name Subject#isPermitted
+     * @methodOf angularShiro.services.Subject
+     * 
+     * @description Returns <code>true</code> if the current
+     *              <code>Subject</code> has the specified permission(s),
+     *              <code>false</code> otherwise.
+     * 
+     * @param {string |
+     *                Permission | array} permission a permission
+     * @return {boolean | array} <code>true</code> if the current
+     *         <code>Subject</code> has the specified permission(s),
+     *         <code>false</code> otherwise.
+     * 
+     */
     this.isPermitted = function (permissions) {
       return this.isAuthenticated() && this.authorizer.isPermitted(permissions);
     };
     /**
-	 * @ngdoc method
-	 * @name Subject#isPermittedAll
-	 * @methodOf angularShiro.services.subject
-	 * 
-	 * @description Returns <code>true</code> if this Subject implies all of
-	 *              the specified permissions, <code>false</code> otherwise
-	 * 
-	 * @param {array}
-	 *            permissions the permissions to check
-	 * 
-	 * @return {boolean} <code>true</code> if this Subject implies all of the
-	 *         specified permissions, <code>false</code> otherwise
-	 */
+     * @ngdoc method
+     * @name Subject#isPermittedAll
+     * @methodOf angularShiro.services.Subject
+     * 
+     * @description Returns <code>true</code> if this Subject implies all of
+     *              the specified permissions, <code>false</code> otherwise
+     * 
+     * @param {array}
+     *                permissions the permissions to check
+     * 
+     * @return {boolean} <code>true</code> if the current <code>Subject</code>
+     *         implies all of the specified permissions, <code>false</code>
+     *         otherwise
+     */
     this.isPermittedAll = function (permissions) {
       return this.isAuthenticated() && this.authorizer.isPermittedAll(permissions);
     };
@@ -1451,6 +1481,54 @@
               return subject.authenticated;
             }, function () {
               if (subject.isAuthenticated()) {
+                if (!childScope) {
+                  childScope = $scope.$new();
+                  $transclude(childScope, function (clone) {
+                    block = { clone: clone };
+                    $animate.enter(clone, $element.parent(), $element);
+                  });
+                }
+              } else {
+                if (previousElements) {
+                  previousElements.remove();
+                  previousElements = null;
+                }
+                if (childScope) {
+                  childScope.$destroy();
+                  childScope = null;
+                }
+                if (block) {
+                  previousElements = getBlockElements(block.clone);
+                  $animate.leave(previousElements, function () {
+                    previousElements = null;
+                  });
+                  block = null;
+                }
+              }
+            });
+          }
+        };
+      }
+    ];
+  var hasAnyPermissionDirective = [
+      'subject',
+      '$animate',
+      function (subject, $animate) {
+        return {
+          transclude: 'element',
+          priority: 600,
+          terminal: true,
+          restrict: 'A',
+          $$tlb: true,
+          link: function ($scope, $element, $attr, ctrl, $transclude) {
+            var block, childScope, previousElements;
+            $scope.$watch(function () {
+              return subject.authenticated;
+            }, function () {
+              var permissions = $scope.$eval($attr.hasAnyPermission) || $attr.hasAnyPermission;
+              permissions = angular.isArray(permissions) ? permissions : [permissions];
+              var perms = subject.isPermitted(permissions);
+              if (angular.isArray(perms) && perms.indexOf(true) > -1) {
                 if (!childScope) {
                   childScope = $scope.$new();
                   $transclude(childScope, function (clone) {
@@ -1868,6 +1946,7 @@
       'hasAnyRole': hasAnyRoleDirective,
       'hasPermission': hasPermissionDirective,
       'lacksPermission': lacksPermissionDirective,
+      'hasAnyPermission': hasAnyPermissionDirective,
       'principal': principalDirective,
       'usernamePasswordForm': usernamePasswordFormDirective
     };
@@ -1888,7 +1967,6 @@
     '$log',
     function ($rootScope, $location, subject, angularShiroConfig, filtersResolver, $log) {
       $rootScope.$on('$locationChangeStart', function (event, next, current) {
-        $log.debug('locationChangeStart => ' + next);
         var filters = filtersResolver.resolve($location.path());
         for (var i = 0; i < filters.length; i++) {
           var filter = filters[i];
