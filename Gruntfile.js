@@ -182,7 +182,7 @@ module.exports = function(grunt) {
     grunt.registerTask('doc', [ 'clean:docs', 'ngdocs' ]);
     grunt.registerTask('test', [ 'karma' ]);
     grunt.registerTask('build', [ 'clean:dist', 'html2js', 'concat:dist', 'ngmin:dist', 'uglify:dist', 'concat:banner',
-	    'clean:build' ]);
+	    'clean:build', 'changelog' ]);
     grunt.registerTask('pages', [ 'build', 'doc', 'clean:pages', 'copy:pages' ]);
 
 };
