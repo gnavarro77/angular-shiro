@@ -1,6 +1,6 @@
 /**
  * angular-shiro
- * @version v0.1.1 - 2014-09-07
+ * @version v0.1.1 - 2015-03-11
  * @link https://github.com/gnavarro77/angular-shiro
  * @author Gilles Navarro ()
  * @license MIT License, http://www.opensource.org/licenses/MIT
@@ -27,6 +27,27 @@
         path: 'logout',
         redirectUrl: '/'
       }
+    };
+    this.registerPathFilter = function (path, filterChain) {
+      var obj = {};
+      obj[path] = filterChain;
+      var replaced = false;
+      var urls = this.options.urls;
+      var tmp = [];
+      for (var i = 0; i < urls.length; i++) {
+        var url = urls[i];
+        var p = Object.keys(url)[0];
+        if (p === path) {
+          tmp.push(obj);
+          replaced = true;
+        } else {
+          tmp.push(url);
+        }
+      }
+      if (!replaced) {
+        tmp.push(obj);
+      }
+      this.options.urls = tmp;
     };
     this.$get = [function () {
         return this.options;
