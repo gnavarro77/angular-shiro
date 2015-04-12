@@ -38,7 +38,7 @@ function AuthenticatorProvider() {
 		    authenticate : function(token) {
 			var promise = null;
 			if (!token || !token.getPrincipal() || !token.getCredentials()) {
-			    throw "[Autheticate] Can not authenticate. Invalid token provided!";
+			    throw '[Autheticate] Can not authenticate. Invalid token provided!';
 			}
 
 			if (config && config.login && config.login.uri) {
@@ -55,7 +55,7 @@ function AuthenticatorProvider() {
 			    });
 			    promise = deferred.promise;
 			} else {
-			    throw "[Autheticate] Can not authenticate since no \'config.login.uri\' is provided. Please check your configuration."
+			    throw '[Autheticate] Can not authenticate since no \'config.login.uri\' is provided. Please check your configuration.';
 			}
 			return promise;
 		    }

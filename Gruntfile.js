@@ -14,6 +14,7 @@ module.exports = function(grunt) {
 	dist : 'dist',
 	build : 'build',
 	src : 'src',
+	test : 'test',
 	docs : '<%= dist %>/docs',
 	pages : '../angular-shiro-gh-pages/angular-shiro',
 	concat : {

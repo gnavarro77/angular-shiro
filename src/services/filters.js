@@ -1,5 +1,7 @@
 'use strict';
 
+/*globals  trim*/
+
 function PathMatcher() {
 
     this.DEFAULT_PATH_SEPARATOR = '/';
@@ -66,11 +68,11 @@ function PathMatcher() {
 
 	// up to last '**'
 	while (pattIdxStart <= pattIdxEnd && pathIdxStart <= pathIdxEnd) {
-	    var patDir = pattDirs[pattIdxEnd];
-	    if (patDir === '**') {
+	    var parts = pattDirs[pattIdxEnd];
+	    if (parts === '**') {
 		break;
 	    }
-	    if (!this.matchStrings(patDir, pathDirs[pathIdxEnd])) {
+	    if (!this.matchStrings(parts, pathDirs[pathIdxEnd])) {
 		return false;
 	    }
 	    pattIdxEnd--;
@@ -78,8 +80,8 @@ function PathMatcher() {
 	}
 	if (pathIdxStart > pathIdxEnd) {
 	    // String is exhausted
-	    for ( var i = pattIdxStart; i <= pattIdxEnd; i++) {
-		if (pattDirs[i] !== '**') {
+	    for ( var j = pattIdxStart; j <= pattIdxEnd; j++) {
+		if (pattDirs[j] !== '**') {
 		    return false;
 		}
 	    }
@@ -88,9 +90,9 @@ function PathMatcher() {
 
 	while (pattIdxStart !== pattIdxEnd && pathIdxStart <= pathIdxEnd) {
 	    var patIdxTmp = -1;
-	    for ( var i = pattIdxStart + 1; i <= pattIdxEnd; i++) {
-		if (pattDirs[i] === '**') {
-		    patIdxTmp = i;
+	    for ( var k = pattIdxStart + 1; k <= pattIdxEnd; k++) {
+		if (pattDirs[k] === '**') {
+		    patIdxTmp = k;
 		    break;
 		}
 	    }
@@ -105,15 +107,15 @@ function PathMatcher() {
 	    var strLength = (pathIdxEnd - pathIdxStart + 1);
 	    var foundIdx = -1;
 
-	    for ( var i = 0; i <= strLength - patLength; i++) {
-		for ( var j = 0; j < patLength; j++) {
-		    var subPat = pattDirs[pattIdxStart + j + 1];
-		    var subStr = pathDirs[pathIdxStart + i + j];
+	    for ( var l = 0; l <= strLength - patLength; l++) {
+		for ( var m = 0; m < patLength; m++) {
+		    var subPat = pattDirs[pattIdxStart + m + 1];
+		    var subStr = pathDirs[pathIdxStart + l + m];
 		    if (!this.matchStrings(subPat, subStr)) {
 
 		    }
 		}
-		foundIdx = pathIdxStart + i;
+		foundIdx = pathIdxStart + l;
 		break;
 	    }
 
@@ -125,8 +127,8 @@ function PathMatcher() {
 	    pathIdxStart = foundIdx + patLength;
 	}
 
-	for ( var i = pattIdxStart; i <= pattIdxEnd; i++) {
-	    if (!(pattDirs[i] === '**')) {
+	for ( var n = pattIdxStart; n <= pattIdxEnd; n++) {
+	    if (pattDirs[n] !== '**') {
 		return false;
 	    }
 	}
@@ -183,8 +185,8 @@ function PathMatcher() {
 	    // are
 	    // left in the pattern. If so, we succeeded. Otherwise
 	    // failure.
-	    for ( var i = patIdxStart; i <= patIdxEnd; i++) {
-		if (patArr[i] !== '*') {
+	    for ( var j = patIdxStart; j <= patIdxEnd; j++) {
+		if (patArr[j] !== '*') {
 		    return false;
 		}
 	    }
@@ -206,8 +208,8 @@ function PathMatcher() {
 	    // are
 	    // left in the pattern. If so, we succeeded. Otherwise
 	    // failure.
-	    for ( var i = patIdxStart; i <= patIdxEnd; i++) {
-		if (patArr[i] !== '*') {
+	    for ( var k = patIdxStart; k <= patIdxEnd; k++) {
+		if (patArr[k] !== '*') {
 		    return false;
 		}
 	    }
@@ -219,9 +221,9 @@ function PathMatcher() {
 	// always to a '*'.
 	while (patIdxStart !== patIdxEnd && strIdxStart <= strIdxEnd) {
 	    var patIdxTmp = -1;
-	    for ( var i = patIdxStart + 1; i <= patIdxEnd; i++) {
-		if (patArr[i] === '*') {
-		    patIdxTmp = i;
+	    for ( var l = patIdxStart + 1;l <= patIdxEnd; l++) {
+		if (patArr[l] === '*') {
+		    patIdxTmp = l;
 		    break;
 		}
 	    }
@@ -236,17 +238,17 @@ function PathMatcher() {
 	    var patLength = (patIdxTmp - patIdxStart - 1);
 	    var strLength = (strIdxEnd - strIdxStart + 1);
 	    var foundIdx = -1;
-	    strLoop: for ( var i = 0; i <= strLength - patLength; i++) {
-		for ( var j = 0; j < patLength; j++) {
-		    ch = patArr[patIdxStart + j + 1];
+	    strLoop: for ( var m = 0; m <= strLength - patLength; m++) {
+		for ( var n = 0; n < patLength; n++) {
+		    ch = patArr[patIdxStart + n + 1];
 		    if (ch !== '?') {
-			if (ch !== strArr[strIdxStart + i + j]) {
+			if (ch !== strArr[strIdxStart + m + n]) {
 			    continue strLoop;
 			}
 		    }
 		}
 
-		foundIdx = strIdxStart + i;
+		foundIdx = strIdxStart + m;
 		break;
 	    }
 
@@ -261,8 +263,8 @@ function PathMatcher() {
 	// All characters in the string are used. Check if only '*'s are
 	// left
 	// in the pattern. If so, we succeeded. Otherwise failure.
-	for ( var i = patIdxStart; i <= patIdxEnd; i++) {
-	    if (patArr[i] !== '*') {
+	for ( var p = patIdxStart; p <= patIdxEnd; p++) {
+	    if (patArr[p] !== '*') {
 		return false;
 	    }
 	}
@@ -359,7 +361,7 @@ var filtersResolver = [ 'angularShiroConfig', '$injector', function FiltersResol
 
     };
 
-} ]
+} ];
 
 var $$onAccessDenied = function($timeout, $location, config) {
     if (config && config.login && config.login.path) {
@@ -367,7 +369,7 @@ var $$onAccessDenied = function($timeout, $location, config) {
 	    $location.path(config.login.path);
 	});
     }
-}
+};
 
 /**
  * Filter that allows access to a path immeidately without performing security
@@ -381,7 +383,7 @@ var anonymousFilter = [ 'subject', '$log', function AnonymousFilter(subject, $lo
 	    $log.debug('anon::execute');
 	    return true;
 	}
-    }
+    };
 } ];
 
 /**
@@ -404,7 +406,7 @@ var formAuthenticationFilter = [ '$rootScope', 'subject', 'angularShiroConfig', 
 		    $$onAccessDenied($timeout, $location, config);
 		    return false;
 		}
-	    }
+	    };
 	} ];
 
 /**
@@ -424,7 +426,7 @@ var logoutFilter = [ 'subject', 'angularShiroConfig', '$location', '$timeout', '
 		    }
 		    return true;
 		}
-	    }
+	    };
 	} ];
 /**
  * Filter that allows access if the current user has the permissions specified
@@ -447,7 +449,7 @@ var permsFilter = [ 'subject', 'angularShiroConfig', '$location', '$timeout', '$
 		    $$onAccessDenied($timeout, $location, config);
 		    return false;
 		}
-	    }
+	    };
 	} ];
 /**
  * Filter that allows access if the current user has the roles specified by the
@@ -470,5 +472,5 @@ var rolesFilter = [ 'subject', 'angularShiroConfig', '$location', '$timeout', '$
 		    $$onAccessDenied($timeout, $location, config);
 		    return false;
 		}
-	    }
+	    };
 	} ];

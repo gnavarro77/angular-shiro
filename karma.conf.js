@@ -21,16 +21,17 @@ module.exports = function(config) {
 				'src/services/config.js',
 				'src/services/filters.js',
 				'src/services/authenticate.js',
-				'src/services/authorize.js', 
+				'src/services/authorize.js',
+				'src/services/session.js',
 				'src/services/subject.js',
 
-				'src/directives/*.html', 'src/directives/*.js',
+				'src/directives/*.html', 
+				'src/directives/*.js',
 				'src/directives/usernamePasswordForm.html',
 				'src/angular-shiro.js',
 
-//				'test/directives/hasAnyPermissionSpec.js'
-				'test/services/*Spec.js', 
-				'test/directives/*Spec.js' 
+				'test/services/sessionSpec.js'
+				//'test/directives/*Spec.js' 
 				],
 
 		reporters : [ 'progress', 'junit', 'dots' ],

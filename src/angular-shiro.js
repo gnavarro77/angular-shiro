@@ -1,5 +1,10 @@
 'use strict';
 
+/*globals AuthenticatorProvider, AngularShiroConfigProvider, Subject, UsernamePasswordToken, Authorizer, AuthenticationResponseParser,
+anonymousFilter, formAuthenticationFilter, logoutFilter, permsFilter, rolesFilter, filtersResolver, hasRoleDirective, notAuthenticatedDirective,
+authenticatedDirective, lacksRoleDirective, hasAnyRoleDirective, hasPermissionDirective, lacksPermissionDirective, hasAnyPermissionDirective, principalDirective,
+usernamePasswordFormDirective */
+
 var angularShiroServicesModule = angular.module('angularShiro.services', []);
 angularShiroServicesModule.provider('authenticator', AuthenticatorProvider);
 angularShiroServicesModule.provider('angularShiroConfig', AngularShiroConfigProvider);
@@ -39,15 +44,15 @@ var directives = {
     'hasAnyRole' : hasAnyRoleDirective,
     'hasPermission' : hasPermissionDirective,
     'lacksPermission' : lacksPermissionDirective,
-    "hasAnyPermission" : hasAnyPermissionDirective,
+    'hasAnyPermission' : hasAnyPermissionDirective,
     'principal' : principalDirective,
     'usernamePasswordForm' : usernamePasswordFormDirective
 };
 
 var moduleDirectives = angular.module('angularShiro.directives', []);
 
-for ( var name in directives) {
-    moduleDirectives.directive(name, directives[name]);
+for ( var key in directives) {
+    moduleDirectives.directive(key, directives[key]);
 }
 
 angular.module('angularShiro', [ 'angularShiro.services', 'angularShiro.directives', 'angularShiro.templates' ]).run(

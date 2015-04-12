@@ -1,5 +1,7 @@
 'use strict';
 
+/*globals getBlockElements*/
+
 /**
  * @ngdoc directive
  * @name angularShiro.directives.hasPermission

@@ -1,5 +1,7 @@
 'use strict';
 
+/*globals  AuthenticationInfo, AuthorizationInfo*/
+
 /**
  * @ngdoc object
  * @name angularShiro.services.AuthenticationResponseParser
