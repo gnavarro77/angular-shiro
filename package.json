@@ -9,7 +9,8 @@
     "authentication",
     "authorization",
     "role",
-    "permission"
+    "permission",
+    "session"
   ],
   "homepage": "https://github.com/gnavarro77/angular-shiro",
   "author": {
