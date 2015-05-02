@@ -10,11 +10,6 @@ describe('Session', function() {
 	session = new Session();
     });
 
-    it('should have an id', function() {
-	expect(session.getId()).not.toBeNull();
-	expect(session.getId()).toBeDefined();
-    });
-
     it('should have a starttime', function() {
 	expect(session.getStartTimestamp()).not.toBeNull();
 	expect(session.getStartTimestamp()).toBeDefined();
@@ -73,6 +68,46 @@ describe('Session', function() {
 	    expect(validate).toThrow();
 	    done();
 	}, 2 * timeout);
+    });
+
+});
+
+describe('SessionDAO', function() {
+
+    var sessionDAO;
+    var sessionId;
+
+    beforeEach(module('angularShiro'));
+
+    beforeEach(function() {
+	sessionDAO = new SessionDAO();
+    });
+
+    it('should create the session', function() {
+	var session = new Session();
+	sessionId = sessionDAO.create(session);
+	expect(session.getId()).not.toBeNull();
+	expect(session.getId()).toBeDefined();
+	expect(session.getId()).toBe(sessionId);
+
+    });
+
+    it('should read the session', function() {
+	var session = new Session();
+	var token = new UsernamePasswordToken('username','password',true);
+	session.setAttribute('token',token.serialize());
+	sessionId = sessionDAO.create(session);
+	session = sessionDAO.readSession(sessionId);
+	expect(session instanceof Session).toBeTruthy();
+	expect(session).toBeDefined();
+	expect(session.getAttribute('token')).toBe('{"username":"username","password":"password","rememberMe":true}');
+    });
+
+    it('should delete session', function() {
+	var session = new Session();
+	var id = sessionDAO.create(session);
+	sessionDAO.delete(session);
+	expect(sessionDAO.readSession(id)).toBeNull();
     });
 
 });

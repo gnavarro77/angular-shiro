@@ -28,7 +28,7 @@ module.exports = function(grunt) {
 		    stripBanners : true
 		},
 		src : [ 'src/services/config.js', 'src/services/authenticate.js', 'src/services/authorize.js',
-			'src/services/filters.js', 'src/services/subject.js',
+			'src/services/session.js', 'src/services/filters.js', 'src/services/subject.js',
 			'<%= build %>/<%= pkg.name %>.templates.js', 'src/directives/*.js', 'src/angular-shiro.js' ],
 		dest : '<%= dist %>/<%= pkg.name %>.js',
 	    },
@@ -159,6 +159,15 @@ module.exports = function(grunt) {
 	changelog : {
 	    options : {}
 	},
+	watch : {
+	    scripts : {
+		files : [ 'src/**/*.js' ],
+		tasks : [ 'jshint' ],
+		options : {
+		    spawn : false,
+		},
+	    }
+	},
 	connect : {
 	    options : {
 		keepalive : true
@@ -179,11 +188,12 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-bump');
     grunt.loadNpmTasks('grunt-contrib-connect');
     grunt.loadNpmTasks('grunt-conventional-changelog');
+    grunt.loadNpmTasks('grunt-contrib-watch');
 
     grunt.registerTask('doc', [ 'clean:docs', 'ngdocs' ]);
     grunt.registerTask('test', [ 'karma' ]);
     grunt.registerTask('build', [ 'clean:dist', 'html2js', 'concat:dist', 'ngmin:dist', 'uglify:dist', 'concat:banner',
 	    'clean:build', 'changelog' ]);
     grunt.registerTask('pages', [ 'build', 'doc', 'clean:pages', 'copy:pages' ]);
-
+    grunt.registerTask('demo', [ 'build', 'copy:demo' ]);
 };

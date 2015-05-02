@@ -1,6 +1,6 @@
 'use strict';
 
-/*globals  AuthenticationInfo, AuthorizationInfo*/
+/* globals AuthenticationInfo, AuthorizationInfo, SessionManager, SessionDAO */
 
 /**
  * @ngdoc object
@@ -121,9 +121,9 @@ function AuthenticationResponseParser() {
  * @requires angularShiro.services.Authorizer
  * @requires angularShiro.services.AuthenticationResponseParser
  * 
- * @description A <code>Subject</code> represents state and security operations for an
- *              application user. Operations goes from authentication (login and
- *              logout) to authorization.
+ * @description A <code>Subject</code> represents state and security
+ *              operations for an application user. Operations goes from
+ *              authentication (login and logout) to authorization.
  * 
  * @class Subject
  * @constructor
@@ -147,22 +147,22 @@ function Subject(authenticator, authorizer, authenticationResponseParser) {
      * @name Subject#authenticated
      * @description flag indicating if the current Subject is authenticated or
      *              not
-     * @returns {boolean} <code>true</code> if this Subject is authenticated,
-     *          <code>false</code> otherwise
      * @propertyOf angularShiro.services.Subject
      */
     this.authenticated = false;
     /**
+     * 
+     */
+    this.sessionManager = new SessionManager(new SessionDAO());
+    /**
      * @private
      */
-    // this.session = new Session();
+    this.session = null;
     /**
      * @name Subject#authorizer
      * @propertyOf angularShiro.services.Subject
      * @description <code>Authorizer</code> instance in charge of
      *              authorization operations
-     * @returns {Authorizer} <code>Authorizer</code> instance in charge of
-     *          authorization operations
      * 
      */
     this.authorizer = authorizer;
@@ -171,9 +171,15 @@ function Subject(authenticator, authorizer, authenticationResponseParser) {
      * @name Subject#authenticationInfo
      * @propertyOf angularShiro.services.Subject
      * @description this Subject authenticiation infos
-     * @returns {AuthenticationInfo} this Subject authentication infos
      */
     this.authenticationInfo;
+
+    /**
+     * @name Subject#remembered
+     * @propertyOf angularShiro.services.Subject
+     * @description flag indicating if the current subject is to be remembered
+     */
+    this.remembered = false;
 
     /**
      * 
@@ -209,14 +215,33 @@ function Subject(authenticator, authorizer, authenticationResponseParser) {
 	    me.authenticationInfo = infos.authc;
 	    me.authorizer.setAuthorizationInfo(infos.authz);
 	    me.authenticated = true;
-	    token.username = null;
-	    token.password = null;
+	    if (token.isRememberMe()) {
+		// put the token in session to auto login if needed
+		var session = me.getSession(true);
+		session.setAttribute('token', token);
+		me.sessionManager.update(session);
+		me.remembered = true;
+	    }
+	    token.clear();
 	}, function(data, status, headers, config) {
 	    me.clear();
 	});
 	return promise;
     };
-
+    /**
+     * 
+     */
+    this.rememberMe = function(sessionId) {
+	var output = false;
+	var session = this.sessionManager.getSession(sessionId);
+	if (session !== null && session.getAttribute('token')) {
+	    var token = new UsernamePasswordToken();
+	    token.deserialize(session.getAttribute('token'));
+	    // auto login to reload authorization infos
+	    output = this.login(token);
+	}
+	return output;
+    }
     /**
      * @ngdoc method
      * @name Subject#logout
@@ -236,15 +261,6 @@ function Subject(authenticator, authorizer, authenticationResponseParser) {
     };
 
     /**
-     * 
-     */
-    this.clear = function() {
-	this.authenticated = false;
-	this.authenticationInfo = null;
-	this.authorizer.clear();
-    };
-
-    /**
      * Returns the application <code>Session</code> associated with this
      * Subject/User. If no session exists when this method is called, a new
      * session will be created, associated with this Subject, and then returned.
@@ -253,7 +269,10 @@ function Subject(authenticator, authorizer, authenticationResponseParser) {
      *         SubjectUser
      */
     this.getSession = function(create) {
-
+	if (this.session === null && create) {
+	    this.session = this.sessionManager.start();
+	}
+	return this.session;
     };
 
     /**
@@ -290,6 +309,21 @@ function Subject(authenticator, authorizer, authenticationResponseParser) {
     this.isAuthenticated = function() {
 	return this.authenticated;
     };
+
+    /**
+     * @ngdoc method
+     * @name Subject#isRemembered
+     * @methodOf angularShiro.services.Subject
+     * 
+     * @description Returns `true` if this Subject is remembered from a
+     *              successful authentication.
+     * 
+     * @return {boolean} Returns `true` if this Subject is remembered from a
+     *         successful authentication.
+     */
+    this.isRemembered = function() {
+	return this.remembered;
+    }
 
     /**
      * @ngdoc method
@@ -393,5 +427,15 @@ function Subject(authenticator, authorizer, authenticationResponseParser) {
      */
     this.isPermittedAll = function(permissions) {
 	return this.isAuthenticated() && this.authorizer.isPermittedAll(permissions);
+    };
+
+    /**
+     * 
+     */
+    this.clear = function() {
+	this.authenticated = false;
+	this.authenticationInfo = null;
+	this.authorizer.clear();
+	this.remembered = false;
     };
 }

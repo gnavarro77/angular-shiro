@@ -1,6 +1,6 @@
 'use strict';
 
-/*globals  trim*/
+/* globals trim */
 
 function PathMatcher() {
 
@@ -221,7 +221,7 @@ function PathMatcher() {
 	// always to a '*'.
 	while (patIdxStart !== patIdxEnd && strIdxStart <= strIdxEnd) {
 	    var patIdxTmp = -1;
-	    for ( var l = patIdxStart + 1;l <= patIdxEnd; l++) {
+	    for ( var l = patIdxStart + 1; l <= patIdxEnd; l++) {
 		if (patArr[l] === '*') {
 		    patIdxTmp = l;
 		    break;
@@ -398,9 +398,7 @@ var formAuthenticationFilter = [ '$rootScope', 'subject', 'angularShiroConfig', 
 		    return this.isAccessAllowed() || this.onAccessDenied();
 		},
 		isAccessAllowed : function() {
-		    var accessAllowed = subject.isAuthenticated();
-		    $log.debug('authc::isAccessAllowed => ' + accessAllowed);
-		    return accessAllowed;
+		    return subject.isAuthenticated();
 		},
 		onAccessDenied : function() {
 		    $$onAccessDenied($timeout, $location, config);
@@ -420,9 +418,10 @@ var logoutFilter = [ 'subject', 'angularShiroConfig', '$location', '$timeout', '
 		execute : function() {
 		    $log.debug('logoutFilter::execute');
 		    subject.logout();
+		    $location.search('sessionId', null);
+		    console.log("$location.search('sessionId', null)");
 		    if (config.logout && config.logout.redirectUrl) {
 			$location.path(config.logout.redirectUrl);
-			$log.debug('logout::redirecting to => ' + config.logout.redirectUrl);
 		    }
 		    return true;
 		}
@@ -441,9 +440,7 @@ var permsFilter = [ 'subject', 'angularShiroConfig', '$location', '$timeout', '$
 		    return this.isAccessAllowed(permissions) || this.onAccessDenied();
 		},
 		isAccessAllowed : function(permissions) {
-		    var accessAllowed = subject.isPermittedAll(permissions);
-		    $log.debug('perms::isAccessAllowed => ' + accessAllowed);
-		    return accessAllowed;
+		    return subject.isPermittedAll(permissions);
 		},
 		onAccessDenied : function() {
 		    $$onAccessDenied($timeout, $location, config);
@@ -464,9 +461,7 @@ var rolesFilter = [ 'subject', 'angularShiroConfig', '$location', '$timeout', '$
 		    return this.isAccessAllowed(roles) || this.onAccessDenied();
 		},
 		isAccessAllowed : function(roles) {
-		    var accessAllowed = subject.hasAllRoles(roles);
-		    $log.debug('roles::isAccessAllowed => ' + accessAllowed);
-		    return accessAllowed;
+		    return subject.hasAllRoles(roles);
 		},
 		onAccessDenied : function() {
 		    $$onAccessDenied($timeout, $location, config);

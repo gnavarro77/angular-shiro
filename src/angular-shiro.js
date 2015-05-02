@@ -1,9 +1,14 @@
 'use strict';
 
-/*globals AuthenticatorProvider, AngularShiroConfigProvider, Subject, UsernamePasswordToken, Authorizer, AuthenticationResponseParser,
-anonymousFilter, formAuthenticationFilter, logoutFilter, permsFilter, rolesFilter, filtersResolver, hasRoleDirective, notAuthenticatedDirective,
-authenticatedDirective, lacksRoleDirective, hasAnyRoleDirective, hasPermissionDirective, lacksPermissionDirective, hasAnyPermissionDirective, principalDirective,
-usernamePasswordFormDirective */
+/*
+ * globals AuthenticatorProvider, AngularShiroConfigProvider, Subject,
+ * UsernamePasswordToken, Authorizer, AuthenticationResponseParser,
+ * anonymousFilter, formAuthenticationFilter, logoutFilter, permsFilter,
+ * rolesFilter, filtersResolver, hasRoleDirective, notAuthenticatedDirective,
+ * authenticatedDirective, lacksRoleDirective, hasAnyRoleDirective,
+ * hasPermissionDirective, lacksPermissionDirective, hasAnyPermissionDirective,
+ * principalDirective, usernamePasswordFormDirective
+ */
 
 var angularShiroServicesModule = angular.module('angularShiro.services', []);
 angularShiroServicesModule.provider('authenticator', AuthenticatorProvider);
@@ -58,13 +63,37 @@ for ( var key in directives) {
 angular.module('angularShiro', [ 'angularShiro.services', 'angularShiro.directives', 'angularShiro.templates' ]).run(
 	function($rootScope, $location, subject, angularShiroConfig, filtersResolver, $log) {
 
-	    $rootScope.$on('$locationChangeStart', function(event, next, current) {
+	    var doFilter = function(filtersResolver, $location) {
 		var filters = filtersResolver.resolve($location.path());
-		for ( var i = 0; i < filters.length; i++) {
-		    var filter = filters[i];
-		    if (!filter()) {
-			event.preventDefault();
+		for ( var i = 0, len = filters.length; i < len; i++) {
+		    if (!filters[i]()) {
 			break;
+		    }
+		}
+	    }
+
+	    $rootScope.$on('$locationChangeStart', function(event, next, current) {
+		var params = $location.search();
+		if (!subject.isAuthenticated() && params.sessionId) {
+		    try {
+			var output = subject.rememberMe(params.sessionId);
+			if (output !== false) {
+			    output.then(function() {
+				doFilter(filtersResolver, $location);
+			    });
+			} else {
+			    $location.search('sessionId', null);
+			    $location.path(angularShiroConfig.loginUrl);
+			}
+		    } catch (e) {
+			$log.error(e.message);
+			$location.search('sessionId', null);
+			$location.path(angularShiroConfig.loginUrl);
+		    }
+		} else {
+		    doFilter(filtersResolver, $location);
+		    if (subject.isRemembered() && !params.sessionId) {
+			$location.search('sessionId', subject.getSession(false).getId());
 		    }
 		}
 

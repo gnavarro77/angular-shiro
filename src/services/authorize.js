@@ -357,7 +357,7 @@ function Authorizer() {
 	this.authorizationInfo = authorizationInfo;
 	this.permissions = this.getPermissions(authorizationInfo);
     };
-
+    
     /**
      * Clear the properties of the current <code>Authorizer</code> instance.
      * 

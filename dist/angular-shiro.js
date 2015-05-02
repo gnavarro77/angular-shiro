@@ -1,6 +1,6 @@
 /**
  * angular-shiro
- * @version v0.1.1 - 2015-03-11
+ * @version v0.1.2 - 2015-05-02
  * @link https://github.com/gnavarro77/angular-shiro
  * @author Gilles Navarro ()
  * @license MIT License, http://www.opensource.org/licenses/MIT
@@ -97,23 +97,29 @@
  * 
  * @since 0.0.1
  */
-  function UsernamePasswordToken() {
+  function UsernamePasswordToken(username, password, rememberMe) {
     /**
      * @ngdoc property
      * @name UsernamePasswordToken#username
      * @propertyOf angularShiro.services.UsernamePasswordToken
      * @description the Subject's user name
-     * @returns {string} the Subject's user name
      */
-    this.username = null;
+    this.username = username || null;
     /**
      * @ngdoc property
      * @name UsernamePasswordToken#password
      * @propertyOf angularShiro.services.UsernamePasswordToken
      * @description the Subject's password
-     * @returns {string} the Subject's password
      */
-    this.password = null;
+    this.password = password || null;
+    /**
+     * @ngdoc property
+     * @name UsernamePasswordToken#rememberMe
+     * @propertyOf angularShiro.services.UsernamePasswordToken
+     * @description Whether or not 'rememberMe' should be enabled for the
+     *              corresponding login attempt; default is `false`
+     */
+    this.rememberMe = rememberMe || false;
     /**
      * @ngdoc method
      * @name UsernamePasswordToken#getPrincipal
@@ -136,6 +142,78 @@
      */
     this.getCredentials = function () {
       return this.password;
+    };
+    /**
+     * @ngdoc method
+     * @name UsernamePasswordToken#isRememberMe
+     * @methodOf angularShiro.services.UsernamePasswordToken
+     * 
+     * 
+     * @description Returns `true` if the submitting user wishes their identity
+     *              (principal(s)) to be remembered across sessions, `false`
+     *              otherwise (`false` by default)
+     * 
+     * @return `true` if the submitting user wishes their identity
+     *         (principal(s)) to be remembered across sessions, `false`
+     *         otherwise (`false` by default)
+     */
+    this.isRememberMe = function () {
+      return this.rememberMe;
+    };
+    /**
+     * 
+     * @ngdoc method
+     * @name UsernamePasswordToken#setRememberMe
+     * @methodOf angularShiro.services.UsernamePasswordToken
+     * 
+     * @description If set to `true`, in cas of page reload, if a valid session
+     *              corresponding to the url `sessionId` param is found, use the
+     *              serialiazed token to auto login to reload authorizations
+     * 
+     * @param {boolean}
+     *                rememberMe value
+     */
+    this.setRememberMe = function (rememberMe) {
+      this.rememberMe = rememberMe;
+    };
+    /**
+     * @ngdoc method
+     * @name UsernamePasswordToken#clear
+     * @methodOf angularShiro.services.UsernamePasswordToken
+     * 
+     * @description Clear all the data
+     * 
+     */
+    this.clear = function () {
+      this.username = this.password = null;
+      this.rememberMe = false;
+    };
+    /**
+     * @ngdoc method
+     * @name UsernamePasswordToken#serialize
+     * @methodOf angularShiro.services.UsernamePasswordToken
+     * 
+     * @description Clear all the data
+     * 
+     * @return {string} the current token serialized as a json string
+     */
+    this.serialize = function () {
+      return angular.toJson(this);
+    };
+    /**
+     * @ngdoc method
+     * @name UsernamePasswordToken#deserialize
+     * @methodOf angularShiro.services.UsernamePasswordToken
+     * 
+     * @description Deserialize the json string representing the token and copy
+     *              the value to the current object
+     * 
+     * @param {string}
+     *                serializedToken json string representing the token
+     */
+    this.deserialize = function (serializedToken) {
+      var obj = angular.fromJson(serializedToken);
+      angular.extend(this, obj);
     };
   }
   /**
@@ -681,6 +759,537 @@
       return angular.isString(permission) ? new Permission(permission) : permission;
     };
   }
+  /**
+ * @ngdoc object
+ * @name angularShiro.services.SessionException
+ * 
+ * @description Exception associated with the session management
+ * 
+ */
+  function SessionException(msg) {
+    this.msg = msg;
+  }
+  /**
+ * @ngdoc object
+ * @name angularShiro.services.Session
+ * 
+ * @description A `Session` is a stateful data context associated with a single
+ *              `Subject` who interacts with a software system over a period of
+ *              time.
+ * 
+ */
+  function Session() {
+    /**
+     * @name Session#uid
+     * @description unique identifier assigned by the system
+     * @propertyOf angularShiro.services.Session
+     */
+    this.uid;
+    /**
+     * @name Session#startTimestamp
+     * @description time the session was started
+     * @propertyOf angularShiro.services.Session
+     */
+    this.startTimestamp = new Date();
+    /**
+     * @name Session#stopTimestamp
+     * @description time the session was stopped
+     * @propertyOf angularShiro.services.Session
+     */
+    this.stopTimestamp = null;
+    /**
+     * @name Session#lastAccessTime
+     * @description last time the application received a request or method
+     *              invocation
+     * @propertyOf angularShiro.services.Session
+     */
+    this.lastAccessTime = new Date();
+    /**
+     * @name Session#timeout
+     * @description the time in milliseconds that the session session may remain
+     *              idle before expiring. Default value is 30 minutes
+     * @propertyOf angularShiro.services.Session
+     */
+    this.timeout = 30 * 60 * 1000;
+    /**
+     * @name Session#expired
+     * @description flag indicating if the session is expired
+     * @propertyOf angularShiro.services.Session
+     */
+    this.expired = false;
+    /**
+     * @name Session#attributes
+     * @description the attributes attached to the session
+     * @propertyOf angularShiro.services.Session
+     */
+    this.attributes = {};
+    /**
+     * 
+     * @ngdoc method
+     * @function
+     * @name Session#getId
+     * @methodOf angularShiro.services.Session
+     * 
+     * @description Returns the unique identifier assigned by the system upon
+     *              session creation
+     * 
+     * @returns {string} unique identifier assigned by the system upon session
+     *          creation
+     */
+    this.getId = function () {
+      return this.uid;
+    };
+    /**
+     * @ngdoc method
+     * @function
+     * @name Session#setId
+     * @methodOf angularShiro.services.Session
+     * 
+     * @description Assign a generated session ID to the session instance
+     *              directly
+     */
+    this.setId = function (uid) {
+      this.uid = uid;
+    };
+    /**
+     * 
+     * @ngdoc method
+     * @function
+     * @name Session#getStartTimestamp
+     * @methodOf angularShiro.services.Session
+     * 
+     * @description Returns the time the session was started
+     * 
+     * @returns {date} time the session was started
+     */
+    this.getStartTimestamp = function () {
+      return this.startTimestamp;
+    };
+    /**
+     * 
+     * @ngdoc method
+     * @function
+     * @name Session#getLastAccessTime
+     * @methodOf angularShiro.services.Session
+     * 
+     * @description Returns the last time the application received a request or
+     *              method invocation from the user associated with this session
+     * 
+     * @returns {date} last time the application received a request or method
+     *          invocation from the user associated with this session
+     */
+    this.getLastAccessTime = function () {
+      return this.lastAccessTime;
+    };
+    /**
+     * 
+     * @ngdoc method
+     * @function
+     * @name Session#getTimeout
+     * @methodOf angularShiro.services.Session
+     * 
+     * @description Returns the time in milliseconds that the session session
+     *              may remain idle before expiring
+     * 
+     * @returns {date} the time in milliseconds the session may remain idle
+     *          before expiring
+     */
+    this.getTimeout = function () {
+      return this.timeout;
+    };
+    /**
+     * 
+     * @ngdoc method
+     * @function
+     * @name Session#setTimeout
+     * @methodOf angularShiro.services.Session
+     * 
+     * @description Sets the time in milliseconds that the session may remain
+     *              idle before expiring
+     * 
+     * @param {long}
+     *                the time in milliseconds that the session may remain idle
+     *                before expiring
+     * 
+     */
+    this.setTimeout = function (maxIdleTimeInMillis) {
+      this.timeout = maxIdleTimeInMillis;
+    };
+    /**
+     * 
+     * @ngdoc method
+     * @function
+     * @name Session#touch
+     * @methodOf angularShiro.services.Session
+     * 
+     * @description Explicitly updates the `lastAccessTime` of this session to
+     *              the current time when this method is invoked. This method
+     *              can be used to ensure a session does not time out
+     * 
+     */
+    this.touch = function () {
+      this.lastAccessTime = new Date();
+    };
+    /**
+     * 
+     * @ngdoc method
+     * @function
+     * @name Session#stop
+     * @methodOf angularShiro.services.Session
+     * 
+     * @description Explicitly stops (invalidates) this session
+     * 
+     */
+    this.stop = function () {
+      if (this.stopTimestamp === null) {
+        this.stopTimestamp = new Date();
+      }
+    };
+    /**
+     * 
+     * @ngdoc method
+     * @function
+     * @name Session#isStopped
+     * @methodOf angularShiro.services.Session
+     * 
+     * @description Returns `true` if the session is stopped, `false' otherwise
+     * 
+     * @returns {boolean} `true` if the session is stopped, `false' otherwise
+     */
+    this.isStopped = function () {
+      return this.stopTimestamp !== null;
+    };
+    /**
+     * 
+     * @ngdoc method
+     * @function
+     * @name Session#isExpired
+     * @methodOf angularShiro.services.Session
+     * 
+     * @description Returns `true` if the session is expired, `false' otherwise
+     * 
+     * @returns {boolean} `true` if the session is expired, `false' otherwise
+     */
+    this.isExpired = function () {
+      return this.expired;
+    };
+    /**
+     * 
+     * @ngdoc method
+     * @function
+     * @name Session#expire
+     * @methodOf angularShiro.services.Session
+     * 
+     * @description Explicitly make the session expires
+     * 
+     */
+    this.expire = function () {
+      this.stop();
+      this.expired = true;
+    };
+    /**
+     * 
+     * @ngdoc method
+     * @function
+     * @name Session#isValid
+     * @methodOf angularShiro.services.Session
+     * 
+     * @description Returns `true` if the session is valid (not expired nor
+     *              stopped), `false' otherwise
+     * 
+     * @returns {boolean} `true` if the session is valid, `false' otherwise
+     */
+    this.isValid = function () {
+      return !this.isStopped() && !this.isExpired();
+    };
+    /**
+     * 
+     */
+    this.validate = function () {
+      if (this.isStopped()) {
+        var msg = 'Session with id [' + this.getId() + '] has been ' + 'explicitly stopped.  No further interaction under this session is allowed.';
+        throw new SessionException(msg);
+      }
+      if (this.isTimedOut()) {
+        this.expire();
+        throw new SessionException('Session has expired');
+      }
+    };
+    /**
+     * 
+     */
+    this.isTimedOut = function () {
+      var timedOut = this.isExpired();
+      if (!timedOut) {
+        var timeout = this.getTimeout();
+        if (timeout >= 1) {
+          var currentTimestamp = new Date().getTime();
+          var expireTimeMillis = currentTimestamp - timeout;
+          var expireTime = new Date(expireTimeMillis);
+          timedOut = this.lastAccessTime <= expireTime;
+        }
+      }
+      return timedOut;
+    };
+    /**
+     * 
+     * @ngdoc method
+     * @function
+     * @name Session#getAttributeKeys
+     * @methodOf angularShiro.services.Session
+     * 
+     * @description Returns the keys of all the attributes stored under this
+     *              session. If there are no attributes, this returns an empty
+     *              collection
+     * 
+     * @returns {array} the keys of all attributes stored under this session, or
+     *          an empty collection if there are no session attributes
+     * 
+     */
+    this.getAttributeKeys = function () {
+      var keys = [];
+      angular.forEach(this.attributes, function (value, key) {
+        keys.push(key);
+      });
+      return keys;
+    };
+    /**
+     * 
+     * @ngdoc method
+     * @function
+     * @name Session#getAttribute
+     * @methodOf angularShiro.services.Session
+     * 
+     * @description Returns the keys of all the attributes stored under this
+     *              session. If there are no attributes, this returns an empty
+     *              collection
+     * 
+     * @param {object}
+     *                the unique name of the object bound to this session
+     * 
+     * @returns {object} the object bound under the specified `key` name or
+     *          `null` if there is no object bound under that name
+     * 
+     */
+    this.getAttribute = function (key) {
+      return this.attributes[key];
+    };
+    /**
+     * 
+     * @ngdoc method
+     * @function
+     * @name Session#setAttribute
+     * @methodOf angularShiro.services.Session
+     * 
+     * @description Returns the keys of all the attributes stored under this
+     *              session. If there are no attributes, this returns an empty
+     *              collection
+     * 
+     * @param {object}
+     *                `key` the name under which the `value` object will be
+     *                bound in this session
+     * @param {object}
+     *                `value` the object to bind in this session
+     * 
+     */
+    this.setAttribute = function (key, value) {
+      this.attributes[key] = value;
+    };
+    /**
+     * 
+     * @ngdoc method
+     * @function
+     * @name Session#removeAttribute
+     * @methodOf angularShiro.services.Session
+     * 
+     * @description Removes (unbinds) the object bound to this session under the
+     *              specified `key` name
+     * 
+     * @param {object}
+     *                `key` the name under which the `value` object will be
+     *                bound in this session
+     * 
+     */
+    this.removeAttribute = function (key) {
+      delete this.attributes[key];
+    };
+  }
+  /**
+ * @ngdoc object
+ * @name angularShiro.services.SessionManager
+ * 
+ * @description `SessionManager` manages the creation, maintenance, and clean-up
+ *              of all application Sessions.
+ * 
+ */
+  function SessionManager(sessionDAO) {
+    this.sessionDAO = sessionDAO;
+    /**
+     * 
+     * @ngdoc method
+     * @function
+     * @name SessionManager#start
+     * @methodOf angularShiro.services.SessionManager
+     * 
+     * @description Starts a new session
+     * 
+     * @return the `Session` object or `null` if no session is found
+     */
+    this.start = function () {
+      var session = new Session();
+      this.sessionDAO.create(session);
+      return session;
+    };
+    /**
+     * 
+     * @ngdoc method
+     * @function
+     * @name SessionManager#getSession
+     * @methodOf angularShiro.services.SessionManager
+     * 
+     * @description Retrieves the session corresponding to the specified ID, or
+     *              `null` if no Session is found
+     * 
+     * @param {string}
+     *                session ID
+     * @return the `Session` object or `null` if no session is found
+     */
+    this.getSession = function (sessionId) {
+      var session = this.sessionDAO.readSession(sessionId);
+      if (session) {
+        session.validate();
+      }
+      return session;
+    };
+    /**
+     * 
+     * @ngdoc method
+     * @function
+     * @name SessionManager#update
+     * @methodOf angularShiro.services.SessionManager
+     * 
+     * @description Update the session
+     * 
+     * @param {angularShiro.services.Session}
+     *                session the session to update
+     */
+    this.update = function (session) {
+      this.sessionDAO.update(session);
+    };
+  }
+  /**
+ * Function used to generate a unique session id
+ * 
+ * @returns
+ */
+  function guid() {
+    function s4() {
+      return Math.floor((1 + Math.random()) * 65536).toString(16).substring(1);
+    }
+    return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
+  }
+  /**
+ * @ngdoc object
+ * @name angularShiro.services.SessionDAO
+ * 
+ * @description Data Access Object design pattern specification to enable
+ *              {@link Session} access to an EIS (Enterprise Information System)
+ * 
+ */
+  function SessionDAO() {
+    /**
+     * 
+     * @ngdoc method
+     * @function
+     * @name SessionDAO#create
+     * @methodOf angularShiro.services.SessionDAO
+     * 
+     * @description Inserts a new Session record into the browser session
+     *              storage
+     * 
+     * @param {angularShiro.services.Session}
+     *                `session` the name under which the `value` object will be
+     *                bound in this session
+     * @return the EIS id (e.g. primary key) of the created `Session` object
+     */
+    this.create = function (session) {
+      var sessionId = guid();
+      session.setId(sessionId);
+      sessionStorage.setItem(sessionId, angular.toJson(session));
+      return sessionId;
+    };
+    /**
+     * @ngdoc method
+     * @function
+     * @name SessionDAO#readSession
+     * @methodOf angularShiro.services.SessionDAO
+     * 
+     * @description Retrieves the session from the EIS uniquely identified by
+     *              the specified `sessionId`.
+     * 
+     * @param {object}
+     *                'sessionId' the system-wide unique identifier of the
+     *                Session object to retrieve from the EIS.
+     * @return the persisted session in the EIS identified by `sessionId`.
+     */
+    this.readSession = function (sessionId) {
+      var session = null;
+      var obj = angular.fromJson(sessionStorage.getItem(sessionId));
+      if (obj) {
+        session = new Session();
+        angular.extend(session, obj);
+      }
+      return session;
+    };
+    /**
+     * 
+     * @ngdoc method
+     * @function
+     * @name SessionDAO#update
+     * @methodOf angularShiro.services.SessionDAO
+     * 
+     * @description Updates (persists) data from a previously created Session
+     *              instance in the the browser session storage identified by
+     *              `session.getId()`.
+     * 
+     * @param {angularShiro.services.Session}
+     *                `session` the Session to update
+     */
+    this.update = function (session) {
+      sessionStorage.setItem(session.getId(), angular.toJson(session));
+    };
+    /**
+     * 
+     * @ngdoc method
+     * @function
+     * @name SessionDAO#delete
+     * @methodOf angularShiro.services.SessionDAO
+     * 
+     * @description Removes the `session` identified by `session.getId()` from
+     *              the browser session storage
+     * 
+     * @param {angularShiro.services.Session}
+     *                `session` the session to delete.
+     */
+    this.delete = function (session) {
+      sessionStorage.removeItem(session.getId());
+    };  // /**
+        // *
+        // * @ngdoc method
+        // * @function
+        // * @name SessionDAO#getActiveSessions
+        // * @methodOf angularShiro.services.SessionDAO
+        // *
+        // * @description Returns all sessions in the EIS that are considered active,
+        // * meaning all sessions that haven't been stopped/expired
+        // *
+        // * @return {array} Sessions that are considered active, or an empty
+        // * collection or `null` if there are no active sessions.
+        // */
+        // this.getActiveSessions = function(){
+        //	
+        // };
+  }
   function PathMatcher() {
     this.DEFAULT_PATH_SEPARATOR = '/';
     this.pathSeparator = this.DEFAULT_PATH_SEPARATOR;
@@ -738,11 +1347,11 @@
       }
       // up to last '**'
       while (pattIdxStart <= pattIdxEnd && pathIdxStart <= pathIdxEnd) {
-        var patDir = pattDirs[pattIdxEnd];
-        if (patDir === '**') {
+        var parts = pattDirs[pattIdxEnd];
+        if (parts === '**') {
           break;
         }
-        if (!this.matchStrings(patDir, pathDirs[pathIdxEnd])) {
+        if (!this.matchStrings(parts, pathDirs[pathIdxEnd])) {
           return false;
         }
         pattIdxEnd--;
@@ -750,8 +1359,8 @@
       }
       if (pathIdxStart > pathIdxEnd) {
         // String is exhausted
-        for (var i = pattIdxStart; i <= pattIdxEnd; i++) {
-          if (pattDirs[i] !== '**') {
+        for (var j = pattIdxStart; j <= pattIdxEnd; j++) {
+          if (pattDirs[j] !== '**') {
             return false;
           }
         }
@@ -759,9 +1368,9 @@
       }
       while (pattIdxStart !== pattIdxEnd && pathIdxStart <= pathIdxEnd) {
         var patIdxTmp = -1;
-        for (var i = pattIdxStart + 1; i <= pattIdxEnd; i++) {
-          if (pattDirs[i] === '**') {
-            patIdxTmp = i;
+        for (var k = pattIdxStart + 1; k <= pattIdxEnd; k++) {
+          if (pattDirs[k] === '**') {
+            patIdxTmp = k;
             break;
           }
         }
@@ -775,14 +1384,14 @@
         var patLength = patIdxTmp - pattIdxStart - 1;
         var strLength = pathIdxEnd - pathIdxStart + 1;
         var foundIdx = -1;
-        for (var i = 0; i <= strLength - patLength; i++) {
-          for (var j = 0; j < patLength; j++) {
-            var subPat = pattDirs[pattIdxStart + j + 1];
-            var subStr = pathDirs[pathIdxStart + i + j];
+        for (var l = 0; l <= strLength - patLength; l++) {
+          for (var m = 0; m < patLength; m++) {
+            var subPat = pattDirs[pattIdxStart + m + 1];
+            var subStr = pathDirs[pathIdxStart + l + m];
             if (!this.matchStrings(subPat, subStr)) {
             }
           }
-          foundIdx = pathIdxStart + i;
+          foundIdx = pathIdxStart + l;
           break;
         }
         if (foundIdx === -1) {
@@ -791,8 +1400,8 @@
         pattIdxStart = patIdxTmp;
         pathIdxStart = foundIdx + patLength;
       }
-      for (var i = pattIdxStart; i <= pattIdxEnd; i++) {
-        if (!(pattDirs[i] === '**')) {
+      for (var n = pattIdxStart; n <= pattIdxEnd; n++) {
+        if (pattDirs[n] !== '**') {
           return false;
         }
       }
@@ -845,8 +1454,8 @@
         // are
         // left in the pattern. If so, we succeeded. Otherwise
         // failure.
-        for (var i = patIdxStart; i <= patIdxEnd; i++) {
-          if (patArr[i] !== '*') {
+        for (var j = patIdxStart; j <= patIdxEnd; j++) {
+          if (patArr[j] !== '*') {
             return false;
           }
         }
@@ -867,8 +1476,8 @@
         // are
         // left in the pattern. If so, we succeeded. Otherwise
         // failure.
-        for (var i = patIdxStart; i <= patIdxEnd; i++) {
-          if (patArr[i] !== '*') {
+        for (var k = patIdxStart; k <= patIdxEnd; k++) {
+          if (patArr[k] !== '*') {
             return false;
           }
         }
@@ -879,9 +1488,9 @@
       // always to a '*'.
       while (patIdxStart !== patIdxEnd && strIdxStart <= strIdxEnd) {
         var patIdxTmp = -1;
-        for (var i = patIdxStart + 1; i <= patIdxEnd; i++) {
-          if (patArr[i] === '*') {
-            patIdxTmp = i;
+        for (var l = patIdxStart + 1; l <= patIdxEnd; l++) {
+          if (patArr[l] === '*') {
+            patIdxTmp = l;
             break;
           }
         }
@@ -897,16 +1506,16 @@
         var strLength = strIdxEnd - strIdxStart + 1;
         var foundIdx = -1;
         strLoop:
-          for (var i = 0; i <= strLength - patLength; i++) {
-            for (var j = 0; j < patLength; j++) {
-              ch = patArr[patIdxStart + j + 1];
+          for (var m = 0; m <= strLength - patLength; m++) {
+            for (var n = 0; n < patLength; n++) {
+              ch = patArr[patIdxStart + n + 1];
               if (ch !== '?') {
-                if (ch !== strArr[strIdxStart + i + j]) {
+                if (ch !== strArr[strIdxStart + m + n]) {
                   continue strLoop;
                 }
               }
             }
-            foundIdx = strIdxStart + i;
+            foundIdx = strIdxStart + m;
             break;
           }
         if (foundIdx === -1) {
@@ -918,8 +1527,8 @@
       // All characters in the string are used. Check if only '*'s are
       // left
       // in the pattern. If so, we succeeded. Otherwise failure.
-      for (var i = patIdxStart; i <= patIdxEnd; i++) {
-        if (patArr[i] !== '*') {
+      for (var p = patIdxStart; p <= patIdxEnd; p++) {
+        if (patArr[p] !== '*') {
           return false;
         }
       }
@@ -1056,9 +1665,7 @@
             return this.isAccessAllowed() || this.onAccessDenied();
           },
           isAccessAllowed: function () {
-            var accessAllowed = subject.isAuthenticated();
-            $log.debug('authc::isAccessAllowed => ' + accessAllowed);
-            return accessAllowed;
+            return subject.isAuthenticated();
           },
           onAccessDenied: function () {
             $$onAccessDenied($timeout, $location, config);
@@ -1083,9 +1690,10 @@
           execute: function () {
             $log.debug('logoutFilter::execute');
             subject.logout();
+            $location.search('sessionId', null);
+            console.log('$location.search(\'sessionId\', null)');
             if (config.logout && config.logout.redirectUrl) {
               $location.path(config.logout.redirectUrl);
-              $log.debug('logout::redirecting to => ' + config.logout.redirectUrl);
             }
             return true;
           }
@@ -1110,9 +1718,7 @@
             return this.isAccessAllowed(permissions) || this.onAccessDenied();
           },
           isAccessAllowed: function (permissions) {
-            var accessAllowed = subject.isPermittedAll(permissions);
-            $log.debug('perms::isAccessAllowed => ' + accessAllowed);
-            return accessAllowed;
+            return subject.isPermittedAll(permissions);
           },
           onAccessDenied: function () {
             $$onAccessDenied($timeout, $location, config);
@@ -1139,9 +1745,7 @@
             return this.isAccessAllowed(roles) || this.onAccessDenied();
           },
           isAccessAllowed: function (roles) {
-            var accessAllowed = subject.hasAllRoles(roles);
-            $log.debug('roles::isAccessAllowed => ' + accessAllowed);
-            return accessAllowed;
+            return subject.hasAllRoles(roles);
           },
           onAccessDenied: function () {
             $$onAccessDenied($timeout, $location, config);
@@ -1150,6 +1754,48 @@
         };
       }
     ];
+  /**
+ * @ngdoc object
+ * @name angularShiro.services.AuthenticationResponseParser
+ * 
+ * @description `AuthenticationResponseParser` is responsible of validating then
+ *              parsing the response received from the authentication service
+ *              backend
+ * 
+ * #Response
+ * 
+ * The response returned from the backend have to be a `json` object that comply
+ * to the following structure :
+ * 
+ * <pre>
+ * {
+ *     info : {
+ * 	authc : {
+ * 	    principal : {
+ * 		// the Suject/User principal, for example
+ * 		&quot;login&quot; : &quot;edegas&quot;,
+ * 		&quot;apiKey&quot; : &quot;*******&quot;
+ * 	    },
+ * 	    credentials : {
+ * 		// the Subject/User credentials, for example
+ * 		&quot;name&quot; : &quot;Edgar Degas&quot;,
+ * 		&quot;email&quot; : &quot;degas@mail.com&quot;
+ * 	    }
+ * 	},
+ * 	authz : {
+ * 	    roles : [
+ * 	    // list of the Subject/User roles, for example
+ * 	    &quot;GUEST&quot; ],
+ * 	    permissions : [
+ * 	    // list of the Subject/User permissions, for example
+ * 	    &quot;newsletter$read&quot;, &quot;book$*&quot;, ]
+ * 	}
+ *     }
+ * }
+ * </pre>
+ * 
+ * @since 0.0.1
+ */
   function AuthenticationResponseParser() {
     /**
      * 
@@ -1219,9 +1865,9 @@
  * @requires angularShiro.services.Authorizer
  * @requires angularShiro.services.AuthenticationResponseParser
  * 
- * @description A <code>Subject</code> represents state and security operations for an
- *              application user. Operations goes from authentication (login and
- *              logout) to authorization.
+ * @description A <code>Subject</code> represents state and security
+ *              operations for an application user. Operations goes from
+ *              authentication (login and logout) to authorization.
  * 
  * @class Subject
  * @constructor
@@ -1244,22 +1890,22 @@
      * @name Subject#authenticated
      * @description flag indicating if the current Subject is authenticated or
      *              not
-     * @returns {boolean} <code>true</code> if this Subject is authenticated,
-     *          <code>false</code> otherwise
      * @propertyOf angularShiro.services.Subject
      */
     this.authenticated = false;
     /**
+     * 
+     */
+    this.sessionManager = new SessionManager(new SessionDAO());
+    /**
      * @private
      */
-    // this.session = new Session();
+    this.session = null;
     /**
      * @name Subject#authorizer
      * @propertyOf angularShiro.services.Subject
      * @description <code>Authorizer</code> instance in charge of
      *              authorization operations
-     * @returns {Authorizer} <code>Authorizer</code> instance in charge of
-     *          authorization operations
      * 
      */
     this.authorizer = authorizer;
@@ -1267,9 +1913,14 @@
      * @name Subject#authenticationInfo
      * @propertyOf angularShiro.services.Subject
      * @description this Subject authenticiation infos
-     * @returns {AuthenticationInfo} this Subject authentication infos
      */
     this.authenticationInfo;
+    /**
+     * @name Subject#remembered
+     * @propertyOf angularShiro.services.Subject
+     * @description flag indicating if the current subject is to be remembered
+     */
+    this.remembered = false;
     /**
      * 
      * @ngdoc method
@@ -1304,12 +1955,32 @@
         me.authenticationInfo = infos.authc;
         me.authorizer.setAuthorizationInfo(infos.authz);
         me.authenticated = true;
-        token.username = null;
-        token.password = null;
+        if (token.isRememberMe()) {
+          // put the token in session to auto login if needed
+          var session = me.getSession(true);
+          session.setAttribute('token', token);
+          me.sessionManager.update(session);
+          me.remembered = true;
+        }
+        token.clear();
       }, function (data, status, headers, config) {
         me.clear();
       });
       return promise;
+    };
+    /**
+     * 
+     */
+    this.rememberMe = function (sessionId) {
+      var output = false;
+      var session = this.sessionManager.getSession(sessionId);
+      if (session !== null && session.getAttribute('token')) {
+        var token = new UsernamePasswordToken();
+        token.deserialize(session.getAttribute('token'));
+        // auto login to reload authorization infos
+        output = this.login(token);
+      }
+      return output;
     };
     /**
      * @ngdoc method
@@ -1329,14 +2000,6 @@
       this.clear();
     };
     /**
-     * 
-     */
-    this.clear = function () {
-      this.authenticated = false;
-      this.authenticationInfo = null;
-      this.authorizer.clear();
-    };
-    /**
      * Returns the application <code>Session</code> associated with this
      * Subject/User. If no session exists when this method is called, a new
      * session will be created, associated with this Subject, and then returned.
@@ -1345,6 +2008,10 @@
      *         SubjectUser
      */
     this.getSession = function (create) {
+      if (this.session === null && create) {
+        this.session = this.sessionManager.start();
+      }
+      return this.session;
     };
     /**
      * @ngdoc method
@@ -1378,6 +2045,20 @@
      */
     this.isAuthenticated = function () {
       return this.authenticated;
+    };
+    /**
+     * @ngdoc method
+     * @name Subject#isRemembered
+     * @methodOf angularShiro.services.Subject
+     * 
+     * @description Returns `true` if this Subject is remembered from a
+     *              successful authentication.
+     * 
+     * @return {boolean} Returns `true` if this Subject is remembered from a
+     *         successful authentication.
+     */
+    this.isRemembered = function () {
+      return this.remembered;
     };
     /**
      * @ngdoc method
@@ -1478,6 +2159,15 @@
     this.isPermittedAll = function (permissions) {
       return this.isAuthenticated() && this.authorizer.isPermittedAll(permissions);
     };
+    /**
+     * 
+     */
+    this.clear = function () {
+      this.authenticated = false;
+      this.authenticationInfo = null;
+      this.authorizer.clear();
+      this.remembered = false;
+    };
   }
   angular.module('angularShiro.templates', ['templates/usernamePasswordForm.html']);
   angular.module('templates/usernamePasswordForm.html', []).run([
@@ -1486,6 +2176,19 @@
       $templateCache.put('templates/usernamePasswordForm.html', '<div>\n' + '\t<div style="padding-top: 10px; padding-bottom: 10px;"\n' + '\t\tdata-ng-show="error">\n' + '\t\t<span class="label label-danger label-important"\n' + '\t\t\tdata-ng-bind="labels[\'connection.denied.message\']"> </span>\n' + '\t</div>\n' + '\t<form name="loginForm" data-role="form" data-ng-submit="submit()"\n' + '\t\tnovalidate>\n' + '\t\t<div class="form-group">\n' + '\t\t\t<input name="username" type="text" class="form-control"\n' + '\t\t\t\tplaceholder="{{labels[\'field.username.placeholder\']}}"\n' + '\t\t\t\tdata-ng-model="token.username" required />\n' + '\t\t</div>\n' + '\t\t<div class="form-group">\n' + '\t\t\t<input name="password" type="password" class="form-control"\n' + '\t\t\t\tplaceholder="{{labels[\'field.password.placeholder\']}}"\n' + '\t\t\t\tdata-ng-model="token.password" required />\n' + '\t\t</div>\n' + '\t\t<div class="form-group">\n' + '\t\t\t<button type="submit" class="btn btn-primary btn-block"\n' + '\t\t\t\tdata-ng-disabled="loginForm.$pristine || loginForm.$invalid">\n' + '\t\t\t\t<span data-ng-bind="labels[\'button.submit.label\']"></span>\n' + '\t\t\t</button>\n' + '\t\t</div>\n' + '\t</form>\n' + '</div>');
     }
   ]);
+  /**
+ * @ngdoc directive
+ * @name angularShiro.directives.authenticated
+ * @restrict A
+ * 
+ * @description Display its content only if the current Subject has successfully authenticated 
+ * 			    during their current session.
+ * 
+ * @element ANY
+ * @scope
+ * @priority 600
+ * 
+ */
   var authenticatedDirective = [
       'subject',
       '$animate',
@@ -1531,6 +2234,23 @@
         };
       }
     ];
+  /**
+ * @ngdoc directive
+ * @name angularShiro.directives.hasAnyPermission
+ * @restrict A
+ * 
+ * @description Display if the current `Subject` is assigned any of the
+ *              specified permissions (for example,
+ *              `['newsletter:read','newsletter:edit']`)
+ * 
+ * @element ANY
+ * @scope
+ * @priority 600
+ * @param {string |
+ *                array | expression} hasAnyPermission the specified specified
+ *                permissions (for example,
+ *                `['newsletter:read','newsletter:edit']`)
+ */
   var hasAnyPermissionDirective = [
       'subject',
       '$animate',
@@ -1579,6 +2299,22 @@
         };
       }
     ];
+  /**
+ * @ngdoc directive
+ * @name angularShiro.directives.hasAnyRole
+ * @restrict A
+ * 
+ * @description Display if the current `Subject` is assigned any of the
+ *              specified roles (for example, `'ADMIN'` or
+ *              `['ADMIN','DEVELOPPER','GUEST']`)
+ * 
+ * @element ANY
+ * @scope
+ * @priority 600
+ * @param {string |
+ *                array | expression} hasAnyRole the specified role names (for
+ *                example, `'ADMIN'` or `['ADMIN','DEVELOPPER','GUEST']`)
+ */
   var hasAnyRoleDirective = [
       'subject',
       '$animate',
@@ -1626,6 +2362,25 @@
         };
       }
     ];
+  /**
+ * @ngdoc directive
+ * @name angularShiro.directives.hasPermission
+ * @restrict A
+ * 
+ * @description Display its content only if the current `Subject` 'has'
+ *              (implies) the specified permission (for example,
+ *              `newletter$edit`)
+ * 
+ * Angular `$parse` service does not support `:` character so we replaced it by
+ * the character `$`
+ * 
+ * @element ANY
+ * @scope
+ * @priority 600
+ * @param {string |
+ *                expression} hasPermission the permission to check (for
+ *                example, `newletter$edit`)
+ */
   var hasPermissionDirective = [
       'subject',
       '$animate',
@@ -1672,6 +2427,21 @@
         };
       }
     ];
+  /**
+ * @ngdoc directive
+ * @name angularShiro.directives.hasRole
+ * @restrict A
+ * 
+ * @description Display if the current Subject has the specified role (for example, `ADMIN`)
+ * 
+ * 
+ * @element ANY
+ * @scope
+ * @priority 600
+ * @param {string | expression}
+ *            hasRole the role to check (for example, `ADMIN`)
+ * 
+ */
   var hasRoleDirective = [
       'subject',
       '$animate',
@@ -1718,6 +2488,24 @@
         };
       }
     ];
+  /**
+ * @ngdoc directive
+ * @name angularShiro.directives.lacksPermission
+ * @restrict A
+ * 
+ * @description Display if the current `Subject` 'has' (implies) the specified
+ *              permission (for example, `newletter$edit`)
+ * 
+ * Angular `$parse` service does not support `:` character so we replaced it by
+ * the character `$`
+ * 
+ * @element ANY
+ * @scope
+ * @priority 600
+ * @param {string |
+ *                expression} lacksPermission the permission to check (for
+ *                example, `newletter$edit`)
+ */
   var lacksPermissionDirective = [
       'subject',
       '$animate',
@@ -1764,6 +2552,21 @@
         };
       }
     ];
+  /**
+ * @ngdoc directive
+ * @name angularShiro.directives.lacksRole
+ * @restrict A
+ * 
+ * @description Display if the current Subject is **NOT** assigned the specified
+ *              role (for example, `ADMIN`)
+ * 
+ * @element ANY
+ * @scope
+ * @priority 600
+ * @param {string |
+ *            expression} lacksRole the excluded role (for example, `ADMIN`)
+ * 
+ */
   var lacksRoleDirective = [
       'subject',
       '$animate',
@@ -1810,6 +2613,21 @@
         };
       }
     ];
+  /**
+ * @ngdoc directive
+ * @name angularShiro.directives.notAuthenticated
+ * @restrict A
+ * 
+ * @description Display if the
+ *              current Subject has NOT yet successfully authenticated during
+ *              the current session.
+ * 
+ * 
+ * @element ANY
+ * @scope
+ * @priority 600
+ * 
+ */
   var notAuthenticatedDirective = [
       'subject',
       '$animate',
@@ -1972,8 +2790,8 @@
       'usernamePasswordForm': usernamePasswordFormDirective
     };
   var moduleDirectives = angular.module('angularShiro.directives', []);
-  for (var name in directives) {
-    moduleDirectives.directive(name, directives[name]);
+  for (var key in directives) {
+    moduleDirectives.directive(key, directives[key]);
   }
   angular.module('angularShiro', [
     'angularShiro.services',
@@ -1987,13 +2805,36 @@
     'filtersResolver',
     '$log',
     function ($rootScope, $location, subject, angularShiroConfig, filtersResolver, $log) {
-      $rootScope.$on('$locationChangeStart', function (event, next, current) {
+      var doFilter = function (filtersResolver, $location) {
         var filters = filtersResolver.resolve($location.path());
-        for (var i = 0; i < filters.length; i++) {
-          var filter = filters[i];
-          if (!filter()) {
-            event.preventDefault();
+        for (var i = 0, len = filters.length; i < len; i++) {
+          if (!filters[i]()) {
             break;
+          }
+        }
+      };
+      $rootScope.$on('$locationChangeStart', function (event, next, current) {
+        var params = $location.search();
+        if (!subject.isAuthenticated() && params.sessionId) {
+          try {
+            var output = subject.rememberMe(params.sessionId);
+            if (output !== false) {
+              output.then(function () {
+                doFilter(filtersResolver, $location);
+              });
+            } else {
+              $location.search('sessionId', null);
+              $location.path(angularShiroConfig.loginUrl);
+            }
+          } catch (e) {
+            $log.error(e.message);
+            $location.search('sessionId', null);
+            $location.path(angularShiroConfig.loginUrl);
+          }
+        } else {
+          doFilter(filtersResolver, $location);
+          if (subject.isRemembered() && !params.sessionId) {
+            $location.search('sessionId', subject.getSession(false).getId());
           }
         }
       });

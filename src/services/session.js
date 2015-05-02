@@ -2,13 +2,6 @@
 
 /* globals trim */
 
-function guid() {
-    function s4() {
-	return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
-    }
-    return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
-}
-
 /**
  * @ngdoc object
  * @name angularShiro.services.SessionException
@@ -36,7 +29,7 @@ function Session() {
      * @description unique identifier assigned by the system
      * @propertyOf angularShiro.services.Session
      */
-    this.uid = guid();
+    this.uid;
 
     /**
      * @name Session#startTimestamp
@@ -98,7 +91,19 @@ function Session() {
     this.getId = function() {
 	return this.uid;
     };
-
+    /**
+     * @ngdoc method
+     * @function
+     * @name Session#setId
+     * @methodOf angularShiro.services.Session
+     * 
+     * @description Assign a generated session ID to the session instance
+     *              directly
+     */
+    this.setId = function(uid){
+	this.uid = uid;
+    };
+    
     /**
      * 
      * @ngdoc method
@@ -128,7 +133,7 @@ function Session() {
      *          invocation from the user associated with this session
      */
     this.getLastAccessTime = function() {
-	return lastAccessTime;
+	return this.lastAccessTime;
     };
 
     /**
@@ -194,7 +199,7 @@ function Session() {
      * 
      */
     this.stop = function() {
-	if (this.stopTimestamp == null) {
+	if (this.stopTimestamp === null) {
 	    this.stopTimestamp = new Date();
 	}
     };
@@ -211,8 +216,8 @@ function Session() {
      * @returns {boolean} `true` if the session is stopped, `false' otherwise
      */
     this.isStopped = function() {
-	return this.stopTimestamp != null;
-    }
+	return this.stopTimestamp !== null;
+    };
 
     /**
      * 
@@ -227,7 +232,7 @@ function Session() {
      */
     this.isExpired = function() {
 	return this.expired;
-    }
+    };
     /**
      * 
      * @ngdoc method
@@ -241,7 +246,7 @@ function Session() {
     this.expire = function() {
 	this.stop();
 	this.expired = true;
-    }
+    };
     /**
      * 
      * @ngdoc method
@@ -256,22 +261,22 @@ function Session() {
      */
     this.isValid = function() {
 	return !this.isStopped() && !this.isExpired();
-    }
+    };
 
     /**
      * 
      */
     this.validate = function() {
 	if (this.isStopped()) {
-	    var msg = "Session with id [" + this.getId() + "] has been "
-		    + "explicitly stopped.  No further interaction under this session is " + "allowed.";
+	    var msg = 'Session with id [' + this.getId() + '] has been '
+		    + 'explicitly stopped.  No further interaction under this session is allowed.';
 	    throw new SessionException(msg);
 	}
-	if (isTimedOut()) {
-	    expire();
+	if (this.isTimedOut()) {
+	    this.expire();
 	    throw new SessionException('Session has expired');
 	}
-    }
+    };
     /**
      * 
      */
@@ -287,7 +292,7 @@ function Session() {
 	    }
 	}
 	return timedOut;
-    }
+    };
 
     /**
      * 
@@ -377,16 +382,83 @@ function Session() {
 }
 
 /**
+ * @ngdoc object
+ * @name angularShiro.services.SessionManager
+ * 
+ * @description `SessionManager` manages the creation, maintenance, and clean-up
+ *              of all application Sessions.
  * 
  */
-function SessionManager() {
+function SessionManager(sessionDAO) {
     
-    this.sessionDAO;
+    this.sessionDAO = sessionDAO ;
     
-    this.setSessionDAO = function(sessionDAO) {
-	this.sessionDAO = sessionDAO;
+    /**
+     * 
+     * @ngdoc method
+     * @function
+     * @name SessionManager#start
+     * @methodOf angularShiro.services.SessionManager
+     * 
+     * @description Starts a new session
+     * 
+     * @return the `Session` object or `null` if no session is found
+     */
+    this.start = function(){
+	var session = new Session();
+	this.sessionDAO.create(session);
+	return session;
+    };
+    /**
+     * 
+     * @ngdoc method
+     * @function
+     * @name SessionManager#getSession
+     * @methodOf angularShiro.services.SessionManager
+     * 
+     * @description Retrieves the session corresponding to the specified ID, or
+     *              `null` if no Session is found
+     * 
+     * @param {string}
+     *                session ID
+     * @return the `Session` object or `null` if no session is found
+     */
+    this.getSession = function(sessionId){
+	var session = this.sessionDAO.readSession(sessionId);
+	if (session){
+	    session.validate();
+	}
+	return session;
+    };
+    
+    /**
+     * 
+     * @ngdoc method
+     * @function
+     * @name SessionManager#update
+     * @methodOf angularShiro.services.SessionManager
+     * 
+     * @description Update the session
+     * 
+     * @param {angularShiro.services.Session}
+     *                session the session to update
+     */
+    this.update = function(session) {
+	this.sessionDAO.update(session);
     }
     
+}
+
+/**
+ * Function used to generate a unique session id
+ * 
+ * @returns
+ */
+function guid() {
+    function s4() {
+	return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+    }
+    return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
 }
 
 /**
@@ -406,9 +478,8 @@ function SessionDAO() {
      * @name SessionDAO#create
      * @methodOf angularShiro.services.SessionDAO
      * 
-     * @description Inserts a new Session record into the underling EIS (e.g.
-     *              Relational database, file system, persistent cache, etc,
-     *              depending on the DAO implementation)
+     * @description Inserts a new Session record into the browser session
+     *              storage
      * 
      * @param {angularShiro.services.Session}
      *                `session` the name under which the `value` object will be
@@ -416,7 +487,10 @@ function SessionDAO() {
      * @return the EIS id (e.g. primary key) of the created `Session` object
      */
     this.create = function(session) {
-	 
+	var sessionId = guid();
+	session.setId(sessionId);
+	sessionStorage.setItem(sessionId, angular.toJson(session));
+	return sessionId;
     };
  
     /**
@@ -434,7 +508,13 @@ function SessionDAO() {
      * @return the persisted session in the EIS identified by `sessionId`.
      */ 
     this.readSession = function(sessionId) {
-	
+	var session = null;
+	var obj = angular.fromJson(sessionStorage.getItem(sessionId));
+	if (obj){
+	    session = new Session();
+	    angular.extend(session, obj);	    
+	}
+	return session;
     }; 
  
     /**
@@ -445,13 +525,14 @@ function SessionDAO() {
      * @methodOf angularShiro.services.SessionDAO
      * 
      * @description Updates (persists) data from a previously created Session
-     *              instance in the EIS identified by `session.getId()`.
+     *              instance in the the browser session storage identified by
+     *              `session.getId()`.
      * 
      * @param {angularShiro.services.Session}
      *                `session` the Session to update
      */ 
     this.update = function(session) {
-	
+	sessionStorage.setItem(session.getId(), angular.toJson(session));
     };
  
     /**
@@ -461,30 +542,30 @@ function SessionDAO() {
      * @name SessionDAO#delete
      * @methodOf angularShiro.services.SessionDAO
      * 
-     * @description Deletes the associated EIS record of the specified
-     *              {@code session}
+     * @description Removes the `session` identified by `session.getId()` from
+     *              the browser session storage
      * 
      * @param {angularShiro.services.Session}
      *                `session` the session to delete.
      */ 
     this.delete = function(session){
-	
+	sessionStorage.removeItem(session.getId());
     }; 
  
-    /**
-     * 
-     * @ngdoc method
-     * @function
-     * @name SessionDAO#getActiveSessions
-     * @methodOf angularShiro.services.SessionDAO
-     * 
-     * @description Returns all sessions in the EIS that are considered active,
-     *              meaning all sessions that haven't been stopped/expired
-     * 
-     * @return {array} Sessions that are considered active, or an empty
-     *         collection or `null` if there are no active sessions.
-     */ 
-    this.getActiveSessions = function(){
-	
-    }; 
+// /**
+// *
+// * @ngdoc method
+// * @function
+// * @name SessionDAO#getActiveSessions
+// * @methodOf angularShiro.services.SessionDAO
+// *
+// * @description Returns all sessions in the EIS that are considered active,
+// * meaning all sessions that haven't been stopped/expired
+// *
+// * @return {array} Sessions that are considered active, or an empty
+// * collection or `null` if there are no active sessions.
+// */
+// this.getActiveSessions = function(){
+//	
+// };
 }

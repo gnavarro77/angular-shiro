@@ -74,23 +74,30 @@ function AuthenticatorProvider() {
  * 
  * @since 0.0.1
  */
-function UsernamePasswordToken() {
+function UsernamePasswordToken(username, password, rememberMe) {
     /**
      * @ngdoc property
      * @name UsernamePasswordToken#username
      * @propertyOf angularShiro.services.UsernamePasswordToken
      * @description the Subject's user name
-     * @returns {string} the Subject's user name
      */
-    this.username = null;
+    this.username = username || null;
     /**
      * @ngdoc property
      * @name UsernamePasswordToken#password
      * @propertyOf angularShiro.services.UsernamePasswordToken
      * @description the Subject's password
-     * @returns {string} the Subject's password
      */
-    this.password = null;
+    this.password = password || null;
+
+    /**
+     * @ngdoc property
+     * @name UsernamePasswordToken#rememberMe
+     * @propertyOf angularShiro.services.UsernamePasswordToken
+     * @description Whether or not 'rememberMe' should be enabled for the
+     *              corresponding login attempt; default is `false`
+     */
+    this.rememberMe = rememberMe || false;
 
     /**
      * @ngdoc method
@@ -116,6 +123,82 @@ function UsernamePasswordToken() {
     this.getCredentials = function() {
 	return this.password;
     };
+
+    /**
+     * @ngdoc method
+     * @name UsernamePasswordToken#isRememberMe
+     * @methodOf angularShiro.services.UsernamePasswordToken
+     * 
+     * 
+     * @description Returns `true` if the submitting user wishes their identity
+     *              (principal(s)) to be remembered across sessions, `false`
+     *              otherwise (`false` by default)
+     * 
+     * @return `true` if the submitting user wishes their identity
+     *         (principal(s)) to be remembered across sessions, `false`
+     *         otherwise (`false` by default)
+     */
+    this.isRememberMe = function() {
+	return this.rememberMe;
+    };
+
+    /**
+     * 
+     * @ngdoc method
+     * @name UsernamePasswordToken#setRememberMe
+     * @methodOf angularShiro.services.UsernamePasswordToken
+     * 
+     * @description If set to `true`, in cas of page reload, if a valid session
+     *              corresponding to the url `sessionId` param is found, use the
+     *              serialiazed token to auto login to reload authorizations
+     * 
+     * @param {boolean}
+     *                rememberMe value
+     */
+    this.setRememberMe = function(rememberMe) {
+	this.rememberMe = rememberMe;
+    };
+
+    /**
+     * @ngdoc method
+     * @name UsernamePasswordToken#clear
+     * @methodOf angularShiro.services.UsernamePasswordToken
+     * 
+     * @description Clear all the data
+     * 
+     */
+    this.clear = function() {
+	this.username = this.password = null;
+	this.rememberMe = false;
+    };
+    /**
+     * @ngdoc method
+     * @name UsernamePasswordToken#serialize
+     * @methodOf angularShiro.services.UsernamePasswordToken
+     * 
+     * @description Clear all the data
+     * 
+     * @return {string} the current token serialized as a json string
+     */
+    this.serialize = function() {
+	return angular.toJson(this);
+    };
+    /**
+     * @ngdoc method
+     * @name UsernamePasswordToken#deserialize
+     * @methodOf angularShiro.services.UsernamePasswordToken
+     * 
+     * @description Deserialize the json string representing the token and copy
+     *              the value to the current object
+     * 
+     * @param {string}
+     *                serializedToken json string representing the token
+     */
+    this.deserialize = function(serializedToken) {
+	var obj = angular.fromJson(serializedToken);
+	angular.extend(this, obj);
+    };
+
 }
 
 /**
