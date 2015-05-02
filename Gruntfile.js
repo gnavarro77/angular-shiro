@@ -143,7 +143,7 @@ module.exports = function(grunt) {
 		    expand : true,
 		    cwd : '<%= dist %>',
 		    src : [ '<%= pkg.name %>.js', '<%= pkg.name %>.min.js' ],
-		    dest : 'demo'
+		    dest : 'demo/bower_components/angular-shiro/dist'
 		} ]
 	    }
 	},
