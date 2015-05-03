@@ -177,10 +177,10 @@ The default _Filter_ instances available automatically for configuration are :
 |Filter Name    | Description 
 | ------------- |-------------
 | anon      | Filter that allows access to a path immediately without performing security checks of any kind
-| authc     | Filter that allows access if the current user is authenticated, otherwise forces the user to login by redirecting to the configured `login.path`
-| logout    | Filter that immediately log-out the current user and redirect him to the configured `logout.redirectUrl`
-| perms     | Filter that allows access if the current user has the permissions specified by the mapped value, or denies access if the user does not have all of the permissions specified and redirect him to the configured `login.path` 
-| roles     | Filter that allows access if the current user has the roles specified by the mapped value, or denies access if the user does not have all of the roles specified and redirect him to the configured `login.path`
+| authc     | Filter that allows access if the current user is authenticated, otherwise forces the user to login by redirecting to the configured path
+| logout    | Filter that immediately log-out the current user and redirect him to the configured path
+| perms     | Filter that allows access if the current user has the permissions specified by the mapped value, or denies access if the user does not have all of the permissions specified and redirect him to the configured path 
+| roles     | Filter that allows access if the current user has the roles specified by the mapped value, or denies access if the user does not have all of the roles specified and redirect him to the configured path
 
 
 ## API
