@@ -329,7 +329,7 @@ function Session() {
      *              collection
      * 
      * @param {object}
-     *                the unique name of the object bound to this session
+     *                key the unique name of the object bound to this session
      * 
      * @returns {object} the object bound under the specified `key` name or
      *          `null` if there is no object bound under that name
@@ -402,7 +402,7 @@ function SessionManager(sessionDAO) {
      * 
      * @description Starts a new session
      * 
-     * @return the `Session` object or `null` if no session is found
+     * @return {angularShiro.services.Session} the created `Session` object
      */
     this.start = function(){
 	var session = new Session();
@@ -421,7 +421,8 @@ function SessionManager(sessionDAO) {
      * 
      * @param {string}
      *                session ID
-     * @return the `Session` object or `null` if no session is found
+     * @return {angularShiro.services.Session} the `Session` object or `null` if
+     *         no session is found
      */
     this.getSession = function(sessionId){
 	var session = this.sessionDAO.readSession(sessionId);
@@ -445,7 +446,7 @@ function SessionManager(sessionDAO) {
      */
     this.update = function(session) {
 	this.sessionDAO.update(session);
-    }
+    };
     
 }
 
@@ -466,7 +467,7 @@ function guid() {
  * @name angularShiro.services.SessionDAO
  * 
  * @description Data Access Object design pattern specification to enable
- *              {@link Session} access to an EIS (Enterprise Information System)
+ *              {@link Session} access to the browser session storage
  * 
  */
 function SessionDAO() {
@@ -482,9 +483,8 @@ function SessionDAO() {
      *              storage
      * 
      * @param {angularShiro.services.Session}
-     *                `session` the name under which the `value` object will be
-     *                bound in this session
-     * @return the EIS id (e.g. primary key) of the created `Session` object
+     *                session the `Session` object
+     * @return {object} the unique identifier of the created `Session` object
      */
     this.create = function(session) {
 	var sessionId = guid();
@@ -505,7 +505,8 @@ function SessionDAO() {
      * @param {object}
      *                'sessionId' the system-wide unique identifier of the
      *                Session object to retrieve from the EIS.
-     * @return the persisted session in the EIS identified by `sessionId`.
+     * @return {angularShiro.services.Session} the session identified by
+     *         `sessionId`.
      */ 
     this.readSession = function(sessionId) {
 	var session = null;

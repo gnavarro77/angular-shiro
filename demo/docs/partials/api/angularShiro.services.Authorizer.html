@@ -1,0 +1,69 @@
+<a href="https://github.com/gnavarro77/angular-shiro.git/edit/master/src/services/authorize.js" class="improve-docs"><i class="icon-edit"> </i>Improve this doc</a><a href="https://github.com/gnavarro77/angular-shiro.git/blob/ed488fa/src/services/authorize.js#L329" class="view-source"><i class="icon-eye-open"> </i>View source</a><h1><code ng:non-bindable="">Authorizer</code>
+<div><span class="hint">service in module <code ng:non-bindable="">angularShiro.services</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="angularshiro-services-authorizer-page"><p>An <code>Authorizer</code> performs authorization (access
+control) operations for any given Subject</p>
+<p>All the authorization operations are based upon the instance of
+<code>AuthorizationInfo</code> that is injected through the
+<code>Authorizer</code> constructor.</p>
+</div></div>
+<h2 id="usage">Usage</h2>
+<div class="usage"><pre class="prettyprint linenums">Authorizer(authorizationInfo);</pre>
+<h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>authorizationInfo</td><td><a href="" class="label type-hint type-hint-authorizationinfo">AuthorizationInfo</a></td><td><div class="angularshiro-services-authorizer-page"><p>All informations regarding the Subject
+authorizations</p>
+</div></td></tr></tbody></table></div>
+<div class="member method"><h2 id="methods">Methods</h2>
+<ul class="methods"><li><a href="https://github.com/gnavarro77/angular-shiro.git/blob/ed488fa/src/services/authorize.js#L479" class="view-source icon-eye-open"> </a><h3 id="methods_hasallroles">hasAllRoles(roles)</h3>
+<div class="hasallroles"><div class="authorizer-hasallroles-page"><p>Returns <code>true</code> if the current
+<code>Subject</code> has all of the specified roles,
+<code>false</code> otherwise.</p>
+</div><h5 id="methods_hasallroles_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>roles</td><td><a href="" class="label type-hint type-hint-array">array</a></td><td><div class="authorizer-hasallroles-page"><p>the list of roles to check</p>
+</div></td></tr></tbody></table><h5 id="methods_hasallroles_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-boolean">boolean</a></td><td><div class="authorizer-hasallroles-page"><p><code>true</code> if the current <code>Subject</code>
+has all of the specified roles, <code>false</code> otherwise.</p>
+</div></td></tr></table></div>
+</li>
+<li><a href="https://github.com/gnavarro77/angular-shiro.git/blob/ed488fa/src/services/authorize.js#L431" class="view-source icon-eye-open"> </a><h3 id="methods_hasrole">hasRole(role)</h3>
+<div class="hasrole"><div class="authorizer-hasrole-page"><p>Returns <code>true</code> if the current
+<code>Subject</code> has the specified role,
+<code>false</code> otherwise.</p>
+</div><h5 id="methods_hasrole_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>role</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="authorizer-hasrole-page"><p>role to check</p>
+</div></td></tr></tbody></table><h5 id="methods_hasrole_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-boolean">boolean</a></td><td><div class="authorizer-hasrole-page"><p><code>true</code> if the current Subject has the
+specified role, <code>false</code> otherwise.</p>
+</div></td></tr></table></div>
+</li>
+<li><a href="https://github.com/gnavarro77/angular-shiro.git/blob/ed488fa/src/services/authorize.js#L455" class="view-source icon-eye-open"> </a><h3 id="methods_hasroles">hasRoles(roles)</h3>
+<div class="hasroles"><div class="authorizer-hasroles-page"><p>Returns an <code>array</code> of booleans whose indices
+correspond to the index of the roles in the given
+identifiers. At a given index, a <code>true</code> value
+indicates that the user has the role, a <code>false</code>
+value indicates that he does not have the role.</p>
+</div><h5 id="methods_hasroles_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>roles</td><td><a href="" class="label type-hint type-hint-array">array</a></td><td><div class="authorizer-hasroles-page"><p>the list of roles to check against the
+<code>Subject</code>&#39;s roles</p>
+</div></td></tr></tbody></table><h5 id="methods_hasroles_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-array">array</a></td><td><div class="authorizer-hasroles-page"><p>an array of booleans</p>
+</div></td></tr></table></div>
+</li>
+<li><a href="https://github.com/gnavarro77/angular-shiro.git/blob/ed488fa/src/services/authorize.js#L386" class="view-source icon-eye-open"> </a><h3 id="methods_ispermitted">isPermitted(permission)</h3>
+<div class="ispermitted"><div class="authorizer-ispermitted-page"><p>Returns <code>true</code> if the current
+<code>Subject</code> has the specified permission(s),
+<code>false</code> otherwise.</p>
+</div><h5 id="methods_ispermitted_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>permission</td><td><a href="" class="label type-hint type-hint-string">string </a><a href="" class="label type-hint type-hint-object">
+Permission </a><a href="" class="label type-hint type-hint-object"> array</a></td><td><div class="authorizer-ispermitted-page"><p>a permission</p>
+</div></td></tr></tbody></table><h5 id="methods_ispermitted_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-boolean">boolean | array</a></td><td><div class="authorizer-ispermitted-page"><p><code>true</code> if the current
+<code>Subject</code> has the specified permission(s),
+<code>false</code> otherwise.</p>
+</div></td></tr></table></div>
+</li>
+<li><a href="https://github.com/gnavarro77/angular-shiro.git/blob/ed488fa/src/services/authorize.js#L412" class="view-source icon-eye-open"> </a><h3 id="methods_ispermittedall">isPermittedAll(permissions)</h3>
+<div class="ispermittedall"><div class="authorizer-ispermittedall-page"><p>Returns <code>true</code> if the <code>Subject</code>
+has all the specified permissions.</p>
+</div><h5 id="methods_ispermittedall_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>permissions</td><td><a href="" class="label type-hint type-hint-array">array</a></td><td><div class="authorizer-ispermittedall-page"><p>a list of permission</p>
+</div></td></tr></tbody></table><h5 id="methods_ispermittedall_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-boolean">boolean</a></td><td><div class="authorizer-ispermittedall-page"><p><code>true</code> if the <code>Subject</code> has
+all the specified permissions, <code>false</code> otherwise.</p>
+</div></td></tr></table></div>
+</li>
+</ul>
+</div>
+</div>

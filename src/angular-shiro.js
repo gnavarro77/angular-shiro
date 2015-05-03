@@ -83,12 +83,12 @@ angular.module('angularShiro', [ 'angularShiro.services', 'angularShiro.directiv
 			    });
 			} else {
 			    $location.search('sessionId', null);
-			    $location.path(angularShiroConfig.loginUrl);
+			    $location.path(angularShiroConfig.login.path);
 			}
 		    } catch (e) {
 			$log.error(e.message);
 			$location.search('sessionId', null);
-			$location.path(angularShiroConfig.loginUrl);
+			$location.path(angularShiroConfig.login.path);
 		    }
 		} else {
 		    doFilter(filtersResolver, $location);

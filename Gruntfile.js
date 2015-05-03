@@ -15,7 +15,7 @@ module.exports = function(grunt) {
 	build : 'build',
 	src : 'src',
 	test : 'test',
-	docs : '<%= dist %>/docs',
+	docs : 'demo/docs',
 	pages : '../angular-shiro-gh-pages/angular-shiro',
 	concat : {
 	    dist : {
@@ -88,7 +88,6 @@ module.exports = function(grunt) {
 		browsers : [ 'PhantomJS' ]
 	    }
 	},
-
 	jshint : {
 	    options : {
 		jshintrc : '.jshintrc',
@@ -109,14 +108,14 @@ module.exports = function(grunt) {
 	ngdocs : {
 	    options : {
 		dest : '<%= docs %>',
-		scripts : [ 'angular.js', 'https://code.angularjs.org/1.2.16/angular-mocks.js',
-			'../<%= pkg.name %>.min.js' ],
+		// scripts : [ 'angular.js',
+		// 'https://code.angularjs.org/1.2.16/angular-mocks.js',
+		// '../<%= pkg.name %>.min.js' ],
 		title : '<%= pkg.description %>',
 		html5Mode : false
 	    },
 	    api : {
-		src : [ 'src/services/*.js', 'src/directives/*.js' ],
-		title : 'API Reference'
+		src : [ 'src/services/*.js', 'src/directives/*.js' ]
 	    }
 	},
 	copy : {

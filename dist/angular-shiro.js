@@ -1,6 +1,6 @@
 /**
  * angular-shiro
- * @version v0.1.2 - 2015-05-02
+ * @version v0.1.2 - 2015-05-03
  * @link https://github.com/gnavarro77/angular-shiro
  * @author Gilles Navarro ()
  * @license MIT License, http://www.opensource.org/licenses/MIT
@@ -9,7 +9,6 @@
   'use strict';
   function AngularShiroConfigProvider() {
     this.options = {
-      loginUrl: '/login',
       urls: {
         '/': 'anon',
         '/index': 'anon',
@@ -19,35 +18,111 @@
         '/signout': 'logout'
       },
       login: {
-        uri: '/api/authenticate',
+        api: '/api/authenticate',
         path: '/login'
       },
       logout: {
-        uri: '/api/logout',
-        path: 'logout',
-        redirectUrl: '/'
+        api: '/api/logout',
+        path: '/'
       }
     };
-    this.registerPathFilter = function (path, filterChain) {
-      var obj = {};
-      obj[path] = filterChain;
-      var replaced = false;
-      var urls = this.options.urls;
-      var tmp = [];
-      for (var i = 0; i < urls.length; i++) {
-        var url = urls[i];
-        var p = Object.keys(url)[0];
-        if (p === path) {
-          tmp.push(obj);
-          replaced = true;
-        } else {
-          tmp.push(url);
-        }
-      }
-      if (!replaced) {
-        tmp.push(obj);
-      }
-      this.options.urls = tmp;
+    /**
+     * 
+     * @ngdoc method
+     * @function
+     * @name AngularShiroConfigProvider#setFilter
+     * @methodOf angularShiro.services.angularShiroConfigProvider
+     * 
+     * @description Associate the specified filter(s) with the given path
+     * 
+     * @param {string}
+     *                path the path for which the filter(s) should be applied
+     * @param {string|array}
+     *                the filter(s) to apply to the path
+     * 
+     * @example
+     * 
+     * <pre>
+     * app.config([ 'angularShiroConfigProvider', function(config) {
+     *     config.setFilter();
+     * } ]);
+     * </pre>
+     */
+    this.setFilter = function (path, filterName) {
+      angular.extend(this.options, { path: filterName });
+    };
+    /**
+     * 
+     * @ngdoc method
+     * @function
+     * @name AngularShiroConfigProvider#setLogoutPath
+     * @methodOf angularShiro.services.angularShiroConfigProvider
+     * 
+     * @description The `logoutPath` specifies the path to apply to `$location`
+     *              when the user log out of the application.
+     * 
+     * @param {string}
+     *                logoutPath the application path to be applied on log out
+     * 
+     * @example
+     * 
+     * <pre>
+     * app.config([ 'angularShiroConfigProvider', function(config) {
+     *     config.setLogoutPath('/my/logout/page');
+     * } ]);
+     * </pre>
+     */
+    this.setLogoutPath = function (logoutPath) {
+      this.options.logout.path = logoutPath;
+    };
+    /**
+     * 
+     * @ngdoc method
+     * @function
+     * @name AngularShiroConfigProvider#setLoginPath
+     * @methodOf angularShiro.services.angularShiroConfigProvider
+     * 
+     * @description The `loginPath` specifies the path used for redirecting the
+     *              user on an attempt to reach a denied url.
+     * 
+     * @param {string}
+     *                loginPath The path to the login page (default '`/login`')
+     * 
+     * @example
+     * 
+     * <pre>
+     * app.config([ 'angularShiroConfigProvider', function(config) {
+     *     config.setLoginPath('/my/login/page');
+     * } ]);
+     * </pre>
+     */
+    this.setLoginPath = function (loginPath) {
+      this.options.login.path = loginPath;
+    };
+    /**
+     * 
+     * @ngdoc method
+     * @function
+     * @name AngularShiroConfigProvider#setAuthenticateUrl
+     * @methodOf angularShiro.services.angularShiroConfigProvider
+     * 
+     * @description The `authenticateUrl` specifies the url to call when the
+     *              user try to login to the application. The url is called with
+     *              a `POST` method.
+     * 
+     * @param {string}
+     *                authenticateUrl The uri to be called on a login attempt
+     *                (default '`/api/authenticate`')
+     * @example
+     * 
+     * <pre>
+     * app.config([ 'angularShiroConfigProvider', function(config) {
+     *     config.setAuthenticateUrl('/my/custom/url');
+     * } ]);
+     * </pre>
+     */
+    this.setAuthenticateUrl = function (authenticateUrl) {
+      this.options.login.api = authenticateUrl;
     };
     this.$get = [function () {
         return this.options;
@@ -66,9 +141,9 @@
             if (!token || !token.getPrincipal() || !token.getCredentials()) {
               throw '[Autheticate] Can not authenticate. Invalid token provided!';
             }
-            if (config && config.login && config.login.uri) {
+            if (config && config.login && config.login.api) {
               var deferred = $q.defer();
-              $http.post(config.login.uri, {
+              $http.post(config.login.api, {
                 token: {
                   principal: token.getPrincipal(),
                   credentials: token.getCredentials()
@@ -80,7 +155,7 @@
               });
               promise = deferred.promise;
             } else {
-              throw '[Autheticate] Can not authenticate since no \'config.login.uri\' is provided. Please check your configuration.';
+              throw '[Autheticate] Can not authenticate since no \'config.login.api\' is provided. Please check your configuration.';
             }
             return promise;
           }
@@ -149,13 +224,13 @@
      * @methodOf angularShiro.services.UsernamePasswordToken
      * 
      * 
-     * @description Returns `true` if the submitting user wishes their identity
-     *              (principal(s)) to be remembered across sessions, `false`
-     *              otherwise (`false` by default)
+     * @description Returns `true` if the `Subject` is to be remembered, i.e if
+     *              the credentials should be stored in the browser
+     *              `sessionStorage`, `false` otherwise (`false` by default)
      * 
-     * @return `true` if the submitting user wishes their identity
-     *         (principal(s)) to be remembered across sessions, `false`
-     *         otherwise (`false` by default)
+     * @return {boolean} `true` if the `Subject` is to be remembered, i.e if the
+     *         credentials should be stored in the browser `sessionStorage`,
+     *         `false` otherwise (`false` by default)
      */
     this.isRememberMe = function () {
       return this.rememberMe;
@@ -1133,7 +1208,7 @@
      * 
      * @description Starts a new session
      * 
-     * @return the `Session` object or `null` if no session is found
+     * @return {angularShiro.services.Session} the created `Session` object
      */
     this.start = function () {
       var session = new Session();
@@ -1152,7 +1227,8 @@
      * 
      * @param {string}
      *                session ID
-     * @return the `Session` object or `null` if no session is found
+     * @return {angularShiro.services.Session} the `Session` object or `null` if
+     *         no session is found
      */
     this.getSession = function (sessionId) {
       var session = this.sessionDAO.readSession(sessionId);
@@ -1208,9 +1284,8 @@
      *              storage
      * 
      * @param {angularShiro.services.Session}
-     *                `session` the name under which the `value` object will be
-     *                bound in this session
-     * @return the EIS id (e.g. primary key) of the created `Session` object
+     *                session the `Session` object
+     * @return {object} the unique identifier of the created `Session` object
      */
     this.create = function (session) {
       var sessionId = guid();
@@ -1230,7 +1305,8 @@
      * @param {object}
      *                'sessionId' the system-wide unique identifier of the
      *                Session object to retrieve from the EIS.
-     * @return the persisted session in the EIS identified by `sessionId`.
+     * @return {angularShiro.services.Session} the session identified by
+     *         `sessionId`.
      */
     this.readSession = function (sessionId) {
       var session = null;
@@ -1649,7 +1725,7 @@
     ];
   /**
  * The Subject must be authenticated for the request to continue, otherwise
- * forces the user to login by redirecting to the configured loginUrl
+ * forces the user to login by redirecting to the configured login.path
  */
   var formAuthenticationFilter = [
       '$rootScope',
@@ -1691,9 +1767,8 @@
             $log.debug('logoutFilter::execute');
             subject.logout();
             $location.search('sessionId', null);
-            console.log('$location.search(\'sessionId\', null)');
-            if (config.logout && config.logout.redirectUrl) {
-              $location.path(config.logout.redirectUrl);
+            if (config.logout && config.logout.path) {
+              $location.path(config.logout.path);
             }
             return true;
           }
@@ -2824,12 +2899,12 @@
               });
             } else {
               $location.search('sessionId', null);
-              $location.path(angularShiroConfig.loginUrl);
+              $location.path(angularShiroConfig.login.path);
             }
           } catch (e) {
             $log.error(e.message);
             $location.search('sessionId', null);
-            $location.path(angularShiroConfig.loginUrl);
+            $location.path(angularShiroConfig.login.path);
           }
         } else {
           doFilter(filtersResolver, $location);

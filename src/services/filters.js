@@ -388,7 +388,7 @@ var anonymousFilter = [ 'subject', '$log', function AnonymousFilter(subject, $lo
 
 /**
  * The Subject must be authenticated for the request to continue, otherwise
- * forces the user to login by redirecting to the configured loginUrl
+ * forces the user to login by redirecting to the configured login.path
  */
 var formAuthenticationFilter = [ '$rootScope', 'subject', 'angularShiroConfig', '$location', '$timeout', '$log',
 	function FormAuthenticationFilter($rootScope, subject, config, $location, $timeout, $log) {
@@ -419,9 +419,8 @@ var logoutFilter = [ 'subject', 'angularShiroConfig', '$location', '$timeout', '
 		    $log.debug('logoutFilter::execute');
 		    subject.logout();
 		    $location.search('sessionId', null);
-		    console.log("$location.search('sessionId', null)");
-		    if (config.logout && config.logout.redirectUrl) {
-			$location.path(config.logout.redirectUrl);
+		    if (config.logout && config.logout.path) {
+			$location.path(config.logout.path);
 		    }
 		    return true;
 		}

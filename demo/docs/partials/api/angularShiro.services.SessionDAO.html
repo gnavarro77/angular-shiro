@@ -1,0 +1,42 @@
+<a href="https://github.com/gnavarro77/angular-shiro.git/edit/master/src/services/session.js" class="improve-docs"><i class="icon-edit"> </i>Improve this doc</a><a href="https://github.com/gnavarro77/angular-shiro.git/blob/ed488fa/src/services/session.js#L473" class="view-source"><i class="icon-eye-open"> </i>View source</a><h1><code ng:non-bindable="">SessionDAO</code>
+<div><span class="hint">service in module <code ng:non-bindable="">angularShiro.services</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="angularshiro-services-sessiondao-page"><p>Data Access Object design pattern specification to enable
+<a href="#/api/Session">Session</a> access to the browser session storage</p>
+</div></div>
+<div class="member method"><h2 id="methods">Methods</h2>
+<ul class="methods"><li><a href="https://github.com/gnavarro77/angular-shiro.git/blob/ed488fa/src/services/session.js#L489" class="view-source icon-eye-open"> </a><h3 id="methods_create">create(session)</h3>
+<div class="create"><div class="sessiondao-create-page"><p>Inserts a new Session record into the browser session
+storage</p>
+</div><h5 id="methods_create_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>session</td><td><a href="" class="label type-hint type-hint-angularshiro">angularShiro.services.Session</a></td><td><div class="sessiondao-create-page"><p>the <code>Session</code> object</p>
+</div></td></tr></tbody></table><h5 id="methods_create_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="sessiondao-create-page"><p>the unique identifier of the created <code>Session</code> object</p>
+</div></td></tr></table></div>
+</li>
+<li><a href="https://github.com/gnavarro77/angular-shiro.git/blob/ed488fa/src/services/session.js#L552" class="view-source icon-eye-open"> </a><h3 id="methods_delete">delete(`session`)</h3>
+<div class="delete"><div class="sessiondao-delete-page"><p>Removes the <code>session</code> identified by <code>session.getId()</code> from
+the browser session storage</p>
+</div><h5 id="methods_delete_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>`session`</td><td><a href="" class="label type-hint type-hint-angularshiro">angularShiro.services.Session</a></td><td><div class="sessiondao-delete-page"><p>the session to delete.</p>
+</div></td></tr></tbody></table></div>
+</li>
+<li><a href="https://github.com/gnavarro77/angular-shiro.git/blob/ed488fa/src/services/session.js#L511" class="view-source icon-eye-open"> </a><h3 id="methods_readsession">readSession('sessionId')</h3>
+<div class="readsession"><div class="sessiondao-readsession-page"><p>Retrieves the session from the EIS uniquely identified by
+the specified <code>sessionId</code>.</p>
+</div><h5 id="methods_readsession_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>'sessionId'</td><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="sessiondao-readsession-page"><p>the system-wide unique identifier of the
+Session object to retrieve from the EIS.</p>
+</div></td></tr></tbody></table><h5 id="methods_readsession_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-angularshiro">angularShiro.services.Session</a></td><td><div class="sessiondao-readsession-page"><p>the session identified by
+<code>sessionId</code>.</p>
+</div></td></tr></table></div>
+</li>
+<li><a href="https://github.com/gnavarro77/angular-shiro.git/blob/ed488fa/src/services/session.js#L535" class="view-source icon-eye-open"> </a><h3 id="methods_update">update(`session`)</h3>
+<div class="update"><div class="sessiondao-update-page"><p>Updates (persists) data from a previously created Session
+instance in the the browser session storage identified by
+<code>session.getId()</code>.</p>
+</div><h5 id="methods_update_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>`session`</td><td><a href="" class="label type-hint type-hint-angularshiro">angularShiro.services.Session</a></td><td><div class="sessiondao-update-page"><p>the Session to update</p>
+</div></td></tr></tbody></table></div>
+</li>
+</ul>
+</div>
+</div>

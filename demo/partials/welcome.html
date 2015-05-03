@@ -113,7 +113,7 @@ urls : {
 angular.module('demo', [ 'angularShiro'])
 	.config(['angularShiroConfigProvider', function(config){
 		// Subject must be authenticated to access any path
-		config.options.urls['/**/*'] = 'authc';
+		config.setFilter('/**/*','authc');
 	}]);
 </pre>
 				</p>
