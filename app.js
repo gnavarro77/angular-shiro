@@ -9,7 +9,7 @@ var demo = angular
 							// Subject must be
 							// authenticated to
 							// access any path
-							config.options.urls['/**/*'] = 'authc';
+							config.setFilter('/**/*','authc');
 
 							$routeProvider.when('/login', {
 								templateUrl : 'partials/welcome.html'

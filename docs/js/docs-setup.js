@@ -1,6 +1,6 @@
 NG_DOCS={
   "sections": {
-    "api": "API Reference"
+    "api": "API Documentation"
   },
   "pages": [
     {
@@ -11,6 +11,15 @@ NG_DOCS={
       "moduleName": "angularShiro.directives",
       "shortDescription": "Display its content only if the current Subject has successfully authenticated",
       "keywords": "angularshiro api authenticated content current directive directives display session subject"
+    },
+    {
+      "section": "api",
+      "id": "angularShiro.directives.hasAnyPermission",
+      "shortName": "angularShiro.directives.hasAnyPermission",
+      "type": "directive",
+      "moduleName": "angularShiro.directives",
+      "shortDescription": "Display if the current Subject is assigned any of the",
+      "keywords": "angularshiro api array assigned current directive directives display example expression hasanypermission newsletter permissions subject"
     },
     {
       "section": "api",
@@ -86,12 +95,12 @@ NG_DOCS={
     },
     {
       "section": "api",
-      "id": "angularShiro.services.AngularShiroConfig",
-      "shortName": "angularShiro.services.AngularShiroConfig",
+      "id": "angularShiro.services.angularShiroConfigProvider",
+      "shortName": "angularShiro.services.angularShiroConfigProvider",
       "type": "service",
       "moduleName": "angularShiro.services",
-      "shortDescription": "Angular Shiro Configuration",
-      "keywords": "angular angularshiro angularshiroconfig angularshiroconfigprovider api app config configuration custom customize function login options service services shiro uri"
+      "shortDescription": "angularShiroConfigProvider is used to configure",
+      "keywords": "$location angular-shiro angularshiro angularshiroconfigprovider api app application applied apply associate attempt authc authenticateurl call called config configure denied filter filtername function log login loginpath logoutpath method path post reach redirecting service services setauthenticateurl setfilter setloginpath setlogoutpath specifies uri url user"
     },
     {
       "section": "api",
@@ -149,12 +158,48 @@ NG_DOCS={
     },
     {
       "section": "api",
+      "id": "angularShiro.services.Session",
+      "shortName": "angularShiro.services.Session",
+      "type": "object",
+      "moduleName": "angularShiro.services",
+      "shortDescription": "A Session is a stateful data context associated with a single",
+      "keywords": "angularshiro api application assign assigned associated attributes bind bound collection context creation current data directly empty ensure expire expired expires expiring explicitly false generated getattribute getattributekeys getid getlastaccesstime getstarttimestamp gettimeout identifier idle instance interacts invocation invoked isexpired isstopped isvalid key lastaccesstime method milliseconds null object period received remain removeattribute removes request returns services session setattribute setid sets settimeout single software started stateful stopped stops stored subject system time touch true unique updates user valid"
+    },
+    {
+      "section": "api",
+      "id": "angularShiro.services.SessionDAO",
+      "shortName": "angularShiro.services.SessionDAO",
+      "type": "object",
+      "moduleName": "angularShiro.services",
+      "shortDescription": "Data Access Object design pattern specification to enable",
+      "keywords": "access angularshiro api browser create created data delete design eis enable getid identified identifier inserts instance method object pattern readsession record removes retrieve retrieves services session sessiondao sessionid specification storage system-wide unique uniquely update updates"
+    },
+    {
+      "section": "api",
+      "id": "angularShiro.services.SessionException",
+      "shortName": "angularShiro.services.SessionException",
+      "type": "object",
+      "moduleName": "angularShiro.services",
+      "shortDescription": "Exception associated with the session management",
+      "keywords": "angularshiro api associated exception management object services session sessionexception"
+    },
+    {
+      "section": "api",
+      "id": "angularShiro.services.SessionManager",
+      "shortName": "angularShiro.services.SessionManager",
+      "type": "object",
+      "moduleName": "angularShiro.services",
+      "shortDescription": "SessionManager manages the creation, maintenance, and clean-up",
+      "keywords": "angularshiro api application clean-up corresponding created creation getsession maintenance manages method null object retrieves services session sessionmanager sessions start starts update"
+    },
+    {
+      "section": "api",
       "id": "angularShiro.services.Subject",
       "shortName": "angularShiro.services.Subject",
       "type": "service",
       "moduleName": "angularShiro.services",
-      "shortDescription": "A Subject represents state and security operations for an",
-      "keywords": "angularshiro anonymous api application application-specific application-wide array associated attempt attempts authenticated authentication authenticationresponseparser authenticator authorization authorizer boolean called check checks considered continue contrary correspond credentials current data desired encapsulating entities getprincipal hasallroles hasrole hasroles identifier identifiers identifying identity ids implies indicates indicating indices informations instance invalidates isauthenticated ispermitted ispermittedall log-in login logout logs method names non-null operations passed performs permission permissions principal principals promise provided quietly rejected removes represents return returned returning returns role roleidentifier roleidentifiers roles security service services subject submitted subsystem successful token true unique uniquely unsuccessful user valid verification"
+      "shortDescription": "A Subject represents state and security",
+      "keywords": "angularshiro anonymous api application application-specific application-wide array associated attempt attempts authenticated authentication authenticationresponseparser authenticator authorization authorizer boolean called check checks considered continue contrary correspond credentials current data desired encapsulating entities getprincipal hasallroles hasrole hasroles identifier identifiers identifying identity ids implies indicates indicating indices informations instance invalidates isauthenticated ispermitted ispermittedall isremembered log-in login logout logs method names non-null operations passed performs permission permissions principal principals promise provided quietly rejected remembered removes represents return returned returning returns role roleidentifier roleidentifiers roles security service services subject submitted subsystem successful token true unique uniquely unsuccessful user valid verification"
     },
     {
       "section": "api",
@@ -163,17 +208,16 @@ NG_DOCS={
       "type": "object",
       "moduleName": "angularShiro.services",
       "shortDescription": "UsernamePasswordToken is a simple",
-      "keywords": "angularshiro api authentication getcredentials getprincipal method object password property returns services simple subject token user username usernamepasswordtoken"
+      "keywords": "angularshiro api attempt authentication authorizations auto browser cas clear copy corresponding credentials current data default deserialize enabled false getcredentials getprincipal isrememberme json login method object param password property reload remembered rememberme representing returns serialiazed serialize serialized serializedtoken services session sessionid sessionstorage set setrememberme simple stored string subject token true url user username usernamepasswordtoken valid"
     }
   ],
   "apis": {
     "api": true
   },
   "html5Mode": false,
+  "editExample": true,
   "startPage": "/api",
   "scripts": [
-    "angular.min.js",
-    "angular-mocks.js",
-    "angular-shiro.min.js"
+    "angular.min.js"
   ]
 };

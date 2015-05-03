@@ -1,0 +1,36 @@
+{
+  "name": "angular-shiro demo app",
+  "description": "AngularShiro - Demo application",
+  "version": "0.0.0",
+  "keywords": [
+    "angular",
+    "shiro",
+    "security",
+    "authentication",
+    "authorization",
+    "role",
+    "permission"
+  ],
+  "homepage": "http://gnavarro77.github.io/angular-shiro/",
+  "author": {
+    "name": "Gilles Navarro"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gnavarro77/angular-shiro.git"
+  },
+  "bugs": "https://github.com/gnavarro77/angular-shiro/issues",
+  "licenses": [
+    {
+      "type": "MIT"
+    }
+  ],
+  "ignore": [
+  ],
+  "dependencies": {
+    "angular": "latest",
+    "angular-route" : "latest",
+    "angular-mocks" : "latest",
+    "angular-shiro" : "latest"
+  }
+}

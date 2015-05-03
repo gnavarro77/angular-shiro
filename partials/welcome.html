@@ -13,6 +13,19 @@
 					ng-href="https://github.com/gnavarro77/angular-shiro/tree/master/demo">View
 					source code &raquo;</a>
 			</p>
+			<div class="well">
+				<h5>
+					Check
+					<code>remember me</code>
+					to create a browser session (
+					<code>sessionStorage</code>
+					) that stores the credentials.
+				</h5>
+				<h5>When a page is reloaded, credentials retrieved from the
+					session are used to automatically login to reload authorizations
+					and to stay on the same page.</h5>
+
+			</div>
 		</div>
 		<div class="col-md-6">
 			<div class="well">
@@ -100,7 +113,7 @@ urls : {
 angular.module('demo', [ 'angularShiro'])
 	.config(['angularShiroConfigProvider', function(config){
 		// Subject must be authenticated to access any path
-		config.options.urls['/**/*'] = 'authc';
+		config.setFilter('/**/*','authc');
 	}]);
 </pre>
 				</p>

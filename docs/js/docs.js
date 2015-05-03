@@ -78,18 +78,11 @@ docsApp.directive.code = function() {
 
 
 docsApp.directive.sourceEdit = function(getEmbeddedTemplate) {
-  return {
-    template: '<div class="btn-group pull-right">' +
-        '<a class="btn dropdown-toggle btn-primary" data-toggle="dropdown" href>' +
-        '  <i class="icon-pencil icon-white"></i> Edit <span class="caret"></span>' +
-        '</a>' +
-        '<ul class="dropdown-menu">' +
-        '  <li><a ng-click="plunkr($event)" href="">In Plunkr</a></li>' +
-        '  <li><a ng-click="fiddle($event)" href="">In JsFiddle</a></li>' +
-        '</ul>' +
-        '</div>',
+  return NG_DOCS.editExample ? {
+    template: '<a class="edit-example pull-right" ng-click="plunkr($event)" href>' +
+      '<i class="icon-edit"></i> Edit in Plunkr</a>',
     scope: true,
-    controller: function($scope, $attrs, openJsFiddle, openPlunkr) {
+    controller: function($scope, $attrs, openPlunkr) {
       var sources = {
         module: $attrs.sourceEdit,
         deps: read($attrs.sourceEditDeps),
@@ -99,16 +92,12 @@ docsApp.directive.sourceEdit = function(getEmbeddedTemplate) {
         unit: read($attrs.sourceEditUnit),
         scenario: read($attrs.sourceEditScenario)
       };
-      $scope.fiddle = function(e) {
-        e.stopPropagation();
-        openJsFiddle(sources);
-      };
       $scope.plunkr = function(e) {
         e.stopPropagation();
         openPlunkr(sources);
       };
     }
-  };
+  } : {};
 
   function read(text) {
     var files = [];
@@ -201,46 +190,6 @@ docsApp.serviceFactory.openPlunkr = function(templateMerge, formPostData, loaded
     postData.description = 'AngularJS Example Plunkr';
 
     formPostData('http://plnkr.co/edit/?p=preview', postData);
-  };
-};
-
-docsApp.serviceFactory.openJsFiddle = function(templateMerge, formPostData, loadedUrls) {
-
-  var HTML = '<div ng-app=\"{{module}}\">\n{{html:2}}</div>',
-      SCRIPT_CACHE = '\n\n<!-- {{name}} -->\n<script type="text/ng-template" id="{{name}}">\n{{content:2}}</script>';
-
-  return function(content) {
-    var prop = {
-          module: content.module,
-          html: '',
-          css: '',
-          script: ''
-        };
-
-    angular.forEach(content.html, function(file, index) {
-      if (index) {
-        prop.html += templateMerge(SCRIPT_CACHE, file);
-      } else {
-        prop.html += file.content;
-      }
-    });
-
-    angular.forEach(content.js, function(file, index) {
-      prop.script += file.content;
-    });
-
-    angular.forEach(content.css, function(file, index) {
-      prop.css += file.content;
-    });
-
-    formPostData("http://jsfiddle.net/api/post/library/pure/dependencies/more/", {
-      title: 'AngularJS Example',
-      html: templateMerge(HTML, prop),
-      js: prop.script,
-      css: prop.css,
-      resources: loadedUrls.base.join(','),
-      wrap: 'b'
-    });
   };
 };
 
@@ -569,7 +518,19 @@ docsApp.controller.DocsController = function($scope, $location, $window, section
   }
 };
 
-angular.module('docsApp', ['ngAnimate', 'bootstrap', 'bootstrapPrettify']).
+function module(name, modules, optional) {
+  if (optional) {
+    angular.forEach(optional, function(name) {
+      try {
+        angular.module(name);
+        modules.push(name);
+      } catch(e) {}
+    });
+  }
+  return angular.module(name, modules);
+}
+
+module('docsApp', ['bootstrap', 'bootstrapPrettify'], ['ngAnimate']).
   config(function($locationProvider) {
     if (NG_DOCS.html5Mode) {
       $locationProvider.html5Mode(true).hashPrefix('!');
