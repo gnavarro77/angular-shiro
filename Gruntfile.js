@@ -16,7 +16,6 @@ module.exports = function(grunt) {
 	src : 'src',
 	test : 'test',
 	docs : 'demo/docs',
-	pages : '../angular-shiro-gh-pages/angular-shiro',
 	concat : {
 	    dist : {
 		options : {
@@ -119,24 +118,6 @@ module.exports = function(grunt) {
 	    }
 	},
 	copy : {
-	    pages : {
-		files : [ {
-		    expand : true,
-		    cwd : 'demo/',
-		    src : [ '**' ],
-		    dest : '<%= pages %>'
-		}, {
-		    expand : true,
-		    cwd : '<%= dist %>',
-		    src : [ '<%= pkg.name %>.min.js' ],
-		    dest : '<%= pages %>'
-		}, {
-		    expand : true,
-		    cwd : '<%= dist %>',
-		    src : [ 'docs/**/*' ],
-		    dest : '<%= pages %>'
-		} ]
-	    },
 	    demo : {
 		files : [ {
 		    expand : true,
@@ -146,14 +127,19 @@ module.exports = function(grunt) {
 		} ]
 	    }
 	},
+	'gh-pages' : {
+	    options : {
+		base : 'demo'
+	    },
+	    src : [ '**' ]
+	},
 	clean : {
 	    options : {
 		force : true
 	    },
 	    build : [ '<%= build %>' ],
 	    dist : [ '<%= dist %>' ],
-	    docs : [ '<%= docs %>' ],
-	    pages : [ '<%= pages %>/**/*' ]
+	    docs : [ '<%= docs %>' ]
 	},
 	changelog : {
 	    options : {}
@@ -188,11 +174,15 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-connect');
     grunt.loadNpmTasks('grunt-conventional-changelog');
     grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks('grunt-gh-pages');
 
     grunt.registerTask('doc', [ 'clean:docs', 'ngdocs' ]);
     grunt.registerTask('test', [ 'karma' ]);
     grunt.registerTask('build', [ 'clean:dist', 'html2js', 'concat:dist', 'ngmin:dist', 'uglify:dist', 'concat:banner',
 	    'clean:build', 'changelog' ]);
-    grunt.registerTask('pages', [ 'build', 'doc', 'clean:pages', 'copy:pages' ]);
     grunt.registerTask('demo', [ 'build', 'copy:demo' ]);
+    grunt.registerTask('demo:deploy', [ 'doc', 'gh-pages' ]);
+    
+    grunt.registerTask('release', ['bump:patch', 'demo', 'demo:deploy']);
+    
 };
