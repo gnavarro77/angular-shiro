@@ -38,13 +38,13 @@
      * @param {string}
      *                path the path for which the filter(s) should be applied
      * @param {string|array}
-     *                the filter(s) to apply to the path
+     *                filterName the filter(s) to apply to the path
      * 
      * @example
      * 
      * <pre>
      * app.config([ 'angularShiroConfigProvider', function(config) {
-     *     config.setFilter();
+     *     config.setFilter('/my/path', 'authc');
      * } ]);
      * </pre>
      */
@@ -349,6 +349,107 @@
      */
     this.getCredentials = function () {
       return this.credentials;
+    };
+  }
+  /**
+ * @ngdoc object
+ * @name angularShiro.services.AuthenticationResponseParser
+ * 
+ * @description `AuthenticationResponseParser` is responsible of validating then
+ *              parsing the response received from the authentication service
+ *              backend
+ * 
+ * #Response
+ * 
+ * The response returned from the backend have to be a `json` object that comply
+ * to the following structure :
+ * 
+ * <pre>
+ * {
+ *     info : {
+ * 	authc : {
+ * 	    principal : {
+ * 		// the Suject/User principal, for example
+ * 		&quot;login&quot; : &quot;edegas&quot;,
+ * 		&quot;apiKey&quot; : &quot;*******&quot;
+ * 	    },
+ * 	    credentials : {
+ * 		// the Subject/User credentials, for example
+ * 		&quot;name&quot; : &quot;Edgar Degas&quot;,
+ * 		&quot;email&quot; : &quot;degas@mail.com&quot;
+ * 	    }
+ * 	},
+ * 	authz : {
+ * 	    // list of the Subject/User roles, for example
+ * 	    roles : [ &quot;GUEST&quot; ],
+ * 	    // list of the Subject/User permissions, for example
+ * 	    permissions : [ &quot;newsletter$read&quot;, &quot;book$*&quot; ]
+ * 	}
+ *     }
+ * }
+ * </pre>
+ * 
+ * @since 0.0.1
+ */
+  function AuthenticationResponseParser() {
+    /**
+     * 
+     * @ngdoc method
+     * @function
+     * @name AuthenticationResponseParser#parse
+     * @methodOf angularShiro.services.AuthenticationResponseParser
+     * 
+     * @description Validates then parse the data received from the backend
+     *              authentication service
+     * 
+     * @param {Object}
+     *                data the token encapsulating the subject's principals and
+     *                credentials to be passed to the Authentication subsystem
+     *                for verification.
+     * 
+     * @returns {object} the parsed data
+     * 
+     */
+    this.parse = function (data) {
+      this.checkValidity(data);
+      return {
+        authc: this.parseAuthc(data.info.authc),
+        authz: this.parseAuthz(data.info.authz)
+      };
+    };
+    this.parseAuthc = function (authc) {
+      return new AuthenticationInfo(authc.principal, authc.credentials);
+    };
+    this.parseAuthz = function (authz) {
+      return new AuthorizationInfo(authz.roles, authz.permissions);
+    };
+    /**
+     * 
+     */
+    this.checkValidity = function (data) {
+      if (!angular.isDefined(data) || !angular.isDefined(data.info) || !this.isAuthcValid(data.info) || !this.isAuthzValid(data.info)) {
+        var msg = 'Response does not match expected structure.';
+        throw {
+          'name': 'ParseException',
+          'message': msg
+        };
+      }
+    };
+    this.isAuthcValid = function (info) {
+      var valid = angular.isDefined(info.authc);
+      if (valid) {
+        var authc = info.authc;
+        valid = angular.isDefined(authc.principal) && angular.isDefined(authc.credentials);
+      }
+      return valid;
+    };
+    this.isAuthzValid = function (info) {
+      var valid = angular.isDefined(info.authz);
+      if (valid) {
+        var authz = info.authz;
+        valid = angular.isDefined(authz.roles) && angular.isDefined(authz.permissions);
+      }
+      return valid;
     };
   }
   function Permission(wildcardString, caseSensitive) {
@@ -1140,7 +1241,7 @@
      *              collection
      * 
      * @param {object}
-     *                the unique name of the object bound to this session
+     *                key the unique name of the object bound to this session
      * 
      * @returns {object} the object bound under the specified `key` name or
      *          `null` if there is no object bound under that name
@@ -1269,7 +1370,7 @@
  * @name angularShiro.services.SessionDAO
  * 
  * @description Data Access Object design pattern specification to enable
- *              {@link Session} access to an EIS (Enterprise Information System)
+ *              {@link Session} access to the browser session storage
  * 
  */
   function SessionDAO() {
@@ -1829,109 +1930,6 @@
         };
       }
     ];
-  /**
- * @ngdoc object
- * @name angularShiro.services.AuthenticationResponseParser
- * 
- * @description `AuthenticationResponseParser` is responsible of validating then
- *              parsing the response received from the authentication service
- *              backend
- * 
- * #Response
- * 
- * The response returned from the backend have to be a `json` object that comply
- * to the following structure :
- * 
- * <pre>
- * {
- *     info : {
- * 	authc : {
- * 	    principal : {
- * 		// the Suject/User principal, for example
- * 		&quot;login&quot; : &quot;edegas&quot;,
- * 		&quot;apiKey&quot; : &quot;*******&quot;
- * 	    },
- * 	    credentials : {
- * 		// the Subject/User credentials, for example
- * 		&quot;name&quot; : &quot;Edgar Degas&quot;,
- * 		&quot;email&quot; : &quot;degas@mail.com&quot;
- * 	    }
- * 	},
- * 	authz : {
- * 	    roles : [
- * 	    // list of the Subject/User roles, for example
- * 	    &quot;GUEST&quot; ],
- * 	    permissions : [
- * 	    // list of the Subject/User permissions, for example
- * 	    &quot;newsletter$read&quot;, &quot;book$*&quot;, ]
- * 	}
- *     }
- * }
- * </pre>
- * 
- * @since 0.0.1
- */
-  function AuthenticationResponseParser() {
-    /**
-     * 
-     * @ngdoc method
-     * @function
-     * @name AuthenticationResponseParser#parse
-     * @methodOf angularShiro.services.AuthenticationResponseParser
-     * 
-     * @description Validates then parse the data received from the backend
-     *              authentication service
-     * 
-     * @param {Object}
-     *                data the token encapsulating the subject's principals and
-     *                credentials to be passed to the Authentication subsystem
-     *                for verification.
-     * 
-     * @returns {object} the parsed data
-     * 
-     */
-    this.parse = function (data) {
-      this.checkValidity(data);
-      return {
-        authc: this.parseAuthc(data.info.authc),
-        authz: this.parseAuthz(data.info.authz)
-      };
-    };
-    this.parseAuthc = function (authc) {
-      return new AuthenticationInfo(authc.principal, authc.credentials);
-    };
-    this.parseAuthz = function (authz) {
-      return new AuthorizationInfo(authz.roles, authz.permissions);
-    };
-    /**
-     * 
-     */
-    this.checkValidity = function (data) {
-      if (!angular.isDefined(data) || !angular.isDefined(data.info) || !this.isAuthcValid(data.info) || !this.isAuthzValid(data.info)) {
-        var msg = 'Response does not match expected structure.';
-        throw {
-          'name': 'ParseException',
-          'message': msg
-        };
-      }
-    };
-    this.isAuthcValid = function (info) {
-      var valid = angular.isDefined(info.authc);
-      if (valid) {
-        var authc = info.authc;
-        valid = angular.isDefined(authc.principal) && angular.isDefined(authc.credentials);
-      }
-      return valid;
-    };
-    this.isAuthzValid = function (info) {
-      var valid = angular.isDefined(info.authz);
-      if (valid) {
-        var authz = info.authz;
-        valid = angular.isDefined(authz.roles) && angular.isDefined(authz.permissions);
-      }
-      return valid;
-    };
-  }
   /**
  * 
  * @ngdoc service
