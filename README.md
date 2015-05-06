@@ -163,7 +163,7 @@ or in other words
 	config.setFilter('/newsletter/*','perms["newsletter:read", "newsletter:edit"]');
 
 declares that to access any path matching `/newsletter` or matching any of its first level sub paths (ex : `/newsletter/:id`) the `Subject\User` must 
-be granted with the `read` or `edit` permission on the `newsletter`.
+be granted with the `read` or `edit` permission on the `newsletter` entity.
 
 ### Default filters
 
