@@ -154,7 +154,7 @@ Use `angularShiroConfig` `setFilter(path, filter(s))` to associate the filter(s)
 
 The format of each line in the urls section is as follows :
 
-	_URL Ant Path Expression_ = _Path_Specific_Filter_Chain_
+_URL Ant Path Expression_ = _Path_Specific_Filter_Chain_
 
 _URL_Ant_Path_Expression_ is an Ant-style path expression. 
 
