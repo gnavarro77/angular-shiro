@@ -154,20 +154,19 @@ Use `angularShiroConfig` `setFilter(path, filter(s))` to associate the filter(s)
 
 The format of each line in the urls section is as follows :
 
-	_URL_Ant_Path_Expression_ = _Path_Specific_Filter_Chain_
+	_URL Ant Path Expression_ = _Path_Specific_Filter_Chain_
 
-	_URL_Ant_Path_Expression_ is an Ant-style path expression. 
+_URL_Ant_Path_Expression_ is an Ant-style path expression. 
+
+The `_Path_Specific_Filter_Chain_` is a comma-delimited list of filters to execute for a `$location` path matching _URL_Ant_Path_Expression_.
 
 For example, 
 	
     '/admin/**' = 'authc, roles["ADMIN"]'
-    '/newsletter/* = 'perms["newsletter:read", "newsletter:edit"]'
 
-declares that "any path of `/admin` or any of it's sub paths (`/admin/user`,`/admin/user/profile`) will trigger the 'authc, roles["ADMIN"]' filter chain.
+declares that any path of `/admin` or any sub paths (`/admin/user`,`/admin/user/profile`) will trigger the `authc, roles["ADMIN"]` filter chain in that order.
 
-The _Path_Specific_Filter_Chain_ is a comma-delimited list of filters to execute for a `$location` path matching that _URL_Ant_Path_Expression_.
-
-The default _Filter_ instances available automatically for configuration are :
+### Default filters
 
 |Filter Name    | Description 
 | ------------- |-------------
