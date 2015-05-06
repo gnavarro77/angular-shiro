@@ -154,13 +154,13 @@ Use `angularShiroConfig` `setFilter(path, filter(s))` to associate the filter(s)
 
 For example, 
 	
-    '/admin/**' = 'authc, roles["ADMIN"]'
+    config.setFilter('/admin/**','authc, roles["ADMIN"]');
 
 declares that any path matching `/admin` or any of its sub paths (ex : `/admin/user`,`/admin/user/profile`) will trigger the `authc, roles["ADMIN"]` filter chain in that order.
 
 or in other words
 
-	'/newsletter/* = 'perms["newsletter:read", "newsletter:edit"]'
+	config.setFilter('/newsletter/*','perms["newsletter:read", "newsletter:edit"]');
 
 declares that to access any path matching `/newsletter` or matching any of its first level sub paths (ex : `/newsletter/:id`) the `Subject\User` must 
 be granted with the `read` or `edit` permission on the `newsletter`.
