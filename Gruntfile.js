@@ -100,7 +100,7 @@ module.exports = function(grunt) {
 		commitFiles : [ '.' ],
 		commit : true,
 		createTag : true,
-		push : true,
+		push : false,
 		pushTo : 'origin'
 	    }
 	},

@@ -93,15 +93,10 @@ The response returned from the backend have to be a `json` object that comply to
 				}
 			},
 			authz : {
-				roles:[ 
-					// list of the Subject/User roles, for example
-					"GUEST" 
-				],
-				permissions:[ 
-					// list of the Subject/User permissions, for example
-					"newsletter:read",
-					"book:*",
-				]
+				// list of the Subject/User roles, for example
+				roles:["GUEST"],
+				// list of the Subject/User permissions, for example
+				permissions:["newsletter:read","book:*"]
 			}
 		}
 	}
@@ -151,17 +146,17 @@ Authorization can be done in 2 ways :
 
 `angular-shiro` offers the ability to define ad-hoc filter chains for any matching `$location` path in your application.
 
-The declarations are made through the `urls` attribut of `AngularShiroConfig`.
+Use `angularShiroConfig` `setFilter(path, filter(s))` to associate the filter(s) to the paths.
 
     app.config(['angularShiroConfigProvider', function(config) {
-        config.options.urls['/admin/**] = 'roles["ADMIN","GUEST"]';
+        config.setFilter('/admin/**', 'roles["ADMIN","GUEST"]');
     } ]);
 
 The format of each line in the urls section is as follows :
 
-_URL_Ant_Path_Expression_ = _Path_Specific_Filter_Chain_
+	_URL_Ant_Path_Expression_ = _Path_Specific_Filter_Chain_
 
-_URL_Ant_Path_Expression_ is an Ant-style path expression. 
+	_URL_Ant_Path_Expression_ is an Ant-style path expression. 
 
 For example, 
 	
