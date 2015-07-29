@@ -81,14 +81,14 @@ function UsernamePasswordToken(username, password, rememberMe) {
      * @propertyOf angularShiro.services.UsernamePasswordToken
      * @description the Subject's user name
      */
-    var username = username || null;
+    this.username = username || null;
     /**
      * @ngdoc property
      * @name UsernamePasswordToken#password
      * @propertyOf angularShiro.services.UsernamePasswordToken
      * @description the Subject's password
      */
-    var password = password || null;
+    this.password = password || null;
 
     /**
      * @ngdoc property
@@ -97,7 +97,7 @@ function UsernamePasswordToken(username, password, rememberMe) {
      * @description Whether or not 'rememberMe' should be enabled for the
      *              corresponding login attempt; default is `false`
      */
-    var rememberMe = rememberMe || false;
+    this.rememberMe = rememberMe || false;
 
     /**
      * @ngdoc method
@@ -108,7 +108,7 @@ function UsernamePasswordToken(username, password, rememberMe) {
      * @return {string} <code>username</code> value
      */
     this.getPrincipal = function() {
-	return username;
+	return this.username;
     };
 
     /**
@@ -121,7 +121,7 @@ function UsernamePasswordToken(username, password, rememberMe) {
      * @return {string} <code>password</code> value
      */
     this.getCredentials = function() {
-	return password;
+	return this.password;
     };
 
     /**
@@ -139,7 +139,7 @@ function UsernamePasswordToken(username, password, rememberMe) {
      *         `false` otherwise (`false` by default)
      */
     this.isRememberMe = function() {
-	return rememberMe;
+	return this.rememberMe;
     };
 
     /**
@@ -227,14 +227,14 @@ function AuthenticationInfo(principal, credentials) {
      * @description the Subject's principal
      * @returns {string} the Subject's principal
      */
-    var principal = principal;
+    this.principal = principal;
     /**
      * @name AuthenticationInfo#username
      * @propertyOf angularShiro.services.AuthenticationInfo
      * @description the Subject's credentials
      * @returns {object} the Subject's credentials
      */
-    var credentials = credentials;
+    this.credentials = credentials;
     
     /**
      * @ngdoc method
@@ -247,7 +247,7 @@ function AuthenticationInfo(principal, credentials) {
      * @since 0.0.1
      */
     this.getPrincipal = function() {
-	return principal;
+	return this.principal;
     };
 
     /**
@@ -262,7 +262,7 @@ function AuthenticationInfo(principal, credentials) {
      * @since 0.0.1
      */
     this.getCredentials = function() {
-	return credentials;
+	return this.credentials;
     };
 
 }

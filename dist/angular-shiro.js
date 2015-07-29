@@ -1,6 +1,6 @@
 /**
  * angular-shiro
- * @version v0.1.3 - 2015-05-03
+ * @version v0.1.3 - 2015-07-29
  * @link https://github.com/gnavarro77/angular-shiro
  * @author Gilles Navarro ()
  * @license MIT License, http://www.opensource.org/licenses/MIT
@@ -8,24 +8,24 @@
 (function (window, document, undefined) {
   'use strict';
   function AngularShiroConfigProvider() {
-    this.options = {
-      urls: {
-        '/': 'anon',
-        '/index': 'anon',
-        '/login': 'anon',
-        '/signin': 'anon',
-        '/logout': 'logout',
-        '/signout': 'logout'
-      },
-      login: {
-        api: '/api/authenticate',
-        path: '/login'
-      },
-      logout: {
-        api: '/api/logout',
-        path: '/'
-      }
-    };
+    var options = {
+        urls: {
+          '/': 'anon',
+          '/index': 'anon',
+          '/login': 'anon',
+          '/signin': 'anon',
+          '/logout': 'logout',
+          '/signout': 'logout'
+        },
+        login: {
+          api: '/api/authenticate',
+          path: '/login'
+        },
+        logout: {
+          api: '/api/logout',
+          path: '/'
+        }
+      };
     /**
      * 
      * @ngdoc method
@@ -49,7 +49,9 @@
      * </pre>
      */
     this.setFilter = function (path, filterName) {
-      angular.extend(this.options, { path: filterName });
+      var filterPath = {};
+      filterPath[path] = filterName;
+      angular.extend(options.urls, filterPath);
     };
     /**
      * 
@@ -73,7 +75,7 @@
      * </pre>
      */
     this.setLogoutPath = function (logoutPath) {
-      this.options.logout.path = logoutPath;
+      options.logout.path = logoutPath;
     };
     /**
      * 
@@ -97,7 +99,7 @@
      * </pre>
      */
     this.setLoginPath = function (loginPath) {
-      this.options.login.path = loginPath;
+      options.login.path = loginPath;
     };
     /**
      * 
@@ -122,10 +124,10 @@
      * </pre>
      */
     this.setAuthenticateUrl = function (authenticateUrl) {
-      this.options.login.api = authenticateUrl;
+      options.login.api = authenticateUrl;
     };
     this.$get = [function () {
-        return this.options;
+        return options;
       }];
   }
   function AuthenticatorProvider() {
@@ -2236,10 +2238,9 @@
      * 
      */
     this.clear = function () {
-      this.authenticated = false;
+      this.authenticated = this.remembered = false;
       this.authenticationInfo = null;
       this.authorizer.clear();
-      this.remembered = false;
     };
   }
   angular.module('angularShiro.templates', ['templates/usernamePasswordForm.html']);

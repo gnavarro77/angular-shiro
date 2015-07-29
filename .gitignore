@@ -3,6 +3,7 @@ node_modules
 build
 dist/docs
 .project
+.grunt
 
 demo/angular-shiro.js
 demo/angular-shiro.min.js
