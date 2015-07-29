@@ -51,11 +51,11 @@ function AngularShiroConfigProvider() {
      * } ]);
      * </pre>
      */
-    this.setFilter = function(path, filterName) {
-	angular.extend(options, {
-	    path : filterName
-	});
-    }
+    this.setFilter = function (path, filterName) {
+        var filterPath = {};
+        filterPath[path] = filterName;
+        angular.extend(options.urls, filterPath);
+    };
 
     /**
      * 
