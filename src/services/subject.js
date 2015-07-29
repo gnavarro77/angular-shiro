@@ -325,9 +325,8 @@ function Subject(authenticator, authorizer, authenticationResponseParser) {
      * 
      */
     this.clear = function() {
-	this.authenticated = false;
+	this.authenticated = this.remembered = false;
 	this.authenticationInfo = null;
 	this.authorizer.clear();
-	this.remembered = false;
     };
 }

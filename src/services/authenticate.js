@@ -81,14 +81,14 @@ function UsernamePasswordToken(username, password, rememberMe) {
      * @propertyOf angularShiro.services.UsernamePasswordToken
      * @description the Subject's user name
      */
-    this.username = username || null;
+    var username = username || null;
     /**
      * @ngdoc property
      * @name UsernamePasswordToken#password
      * @propertyOf angularShiro.services.UsernamePasswordToken
      * @description the Subject's password
      */
-    this.password = password || null;
+    var password = password || null;
 
     /**
      * @ngdoc property
@@ -97,7 +97,7 @@ function UsernamePasswordToken(username, password, rememberMe) {
      * @description Whether or not 'rememberMe' should be enabled for the
      *              corresponding login attempt; default is `false`
      */
-    this.rememberMe = rememberMe || false;
+    var rememberMe = rememberMe || false;
 
     /**
      * @ngdoc method
@@ -108,7 +108,7 @@ function UsernamePasswordToken(username, password, rememberMe) {
      * @return {string} <code>username</code> value
      */
     this.getPrincipal = function() {
-	return this.username;
+	return username;
     };
 
     /**
@@ -121,7 +121,7 @@ function UsernamePasswordToken(username, password, rememberMe) {
      * @return {string} <code>password</code> value
      */
     this.getCredentials = function() {
-	return this.password;
+	return password;
     };
 
     /**
@@ -139,7 +139,7 @@ function UsernamePasswordToken(username, password, rememberMe) {
      *         `false` otherwise (`false` by default)
      */
     this.isRememberMe = function() {
-	return this.rememberMe;
+	return rememberMe;
     };
 
     /**
@@ -219,21 +219,23 @@ function UsernamePasswordToken(username, password, rememberMe) {
  * @since 0.0.1
  */
 function AuthenticationInfo(principal, credentials) {
+    
+    
     /**
      * @name AuthenticationInfo#principal
      * @propertyOf angularShiro.services.AuthenticationInfo
      * @description the Subject's principal
      * @returns {string} the Subject's principal
      */
-    this.principal = principal;
+    var principal = principal;
     /**
      * @name AuthenticationInfo#username
      * @propertyOf angularShiro.services.AuthenticationInfo
      * @description the Subject's credentials
      * @returns {object} the Subject's credentials
      */
-    this.credentials = credentials;
-
+    var credentials = credentials;
+    
     /**
      * @ngdoc method
      * @name AuthenticationInfo#getCredentials
@@ -245,7 +247,7 @@ function AuthenticationInfo(principal, credentials) {
      * @since 0.0.1
      */
     this.getPrincipal = function() {
-	return this.principal;
+	return principal;
     };
 
     /**
@@ -260,7 +262,7 @@ function AuthenticationInfo(principal, credentials) {
      * @since 0.0.1
      */
     this.getCredentials = function() {
-	return this.credentials;
+	return credentials;
     };
 
 }

@@ -10,7 +10,7 @@
  */
 function AngularShiroConfigProvider() {
 
-    this.options = {
+    var options = {
 	urls : {
 	    '/' : 'anon',
 	    '/index' : 'anon',
@@ -52,7 +52,7 @@ function AngularShiroConfigProvider() {
      * </pre>
      */
     this.setFilter = function(path, filterName) {
-	angular.extend(this.options, {
+	angular.extend(options, {
 	    path : filterName
 	});
     }
@@ -79,7 +79,7 @@ function AngularShiroConfigProvider() {
      * </pre>
      */
     this.setLogoutPath = function(logoutPath) {
-	this.options.logout.path = logoutPath;
+	options.logout.path = logoutPath;
     }
 
     /**
@@ -104,7 +104,7 @@ function AngularShiroConfigProvider() {
      * </pre>
      */
     this.setLoginPath = function(loginPath) {
-	this.options.login.path = loginPath;
+	options.login.path = loginPath;
     }
     /**
      * 
@@ -129,11 +129,11 @@ function AngularShiroConfigProvider() {
      * </pre>
      */
     this.setAuthenticateUrl = function(authenticateUrl) {
-	this.options.login.api = authenticateUrl;
+	options.login.api = authenticateUrl;
     }
 
     this.$get = [ function() {
-	return this.options;
+	return options;
     } ];
 
 }

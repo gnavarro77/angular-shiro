@@ -30,8 +30,7 @@ module.exports = function(config) {
 				'src/directives/usernamePasswordForm.html',
 				'src/angular-shiro.js',
 
-				'test/services/sessionSpec.js'
-				//'test/directives/*Spec.js' 
+				'test/directives/*Spec.js' 
 				],
 
 		reporters : [ 'progress', 'junit', 'dots' ],
